@@ -156,7 +156,7 @@
         </div>
         <div class="article-info profile-block">
             <div class="article-info-block">
-                3
+                4
                 <span>文章</span>
             </div>
             <div class="article-info-block">
@@ -211,6 +211,148 @@
 
             
             <section id="main">
+    <article id="post-神器之git使用教程" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2017/03/09/神器之git使用教程/">MarkDown语法</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/03/09/神器之git使用教程/">
+            <time datetime="2017-03-09T09:14:42.000Z" itemprop="datePublished">2017-03-09</time>
+        </a>
+    </div>
+
+
+                        
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/MarkdownPad/">MarkdownPad</a>, <a class="tag-link" href="/tags/blog/">blog</a>, <a class="tag-link" href="/tags/hexo/">hexo</a>
+    </div>
+
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            <p><h1 id="第一篇博文来说一说markdown的语法"><a href="#第一篇博文来说一说markdown的语法" class="headerlink" title="第一篇博文来说一说markdown的语法"></a>第一篇博文来说一说<strong>markdown</strong>的语法</h1><ul>
+<li><a href="#why_learning">为什么要学习markdown</a></li>
+<li><a href="#know_sth">关于markdown你所要知道的</a></li>
+<li><a href="#where">在哪里编辑md文本呢？</a></li>
+<li><a href="#rules">markdown语法</a></li>
+<li><a href="#summary">总结</a></li>
+</ul>
+<p><a name="why_learning"></a></p>
+<h2 id="1-为什么要学习markdown"><a href="#1-为什么要学习markdown" class="headerlink" title="1.为什么要学习markdown"></a>1.为什么要学习markdown</h2><p><img src="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1488987030231&amp;di=641a30fb3c32f102f6c153659d17c35e&amp;imgtype=0&amp;src=http%3A%2F%2Fi1.hdslb.com%2Fvideo%2F08%2F086510262d86a381a52a3651174dbd4d.jpg" alt="title=&quot;markdown_pic&quot;">   </p>
+<ul>
+<li><p>许多网站像<em>github</em>，<em>stackoverflow</em>，<em>简书</em>等等都支持了markdown作为书写规范，而且越来越多的网站正在加入这个行列来，如果你还不会就未免显得太<strong>low</strong>了。</p>
+</li>
+<li><p>许多你所看到的博客都是用markdown语法来写的，不仅仅是程序员，markdown也为许多文字爱好者所接受，如果你想打算写自己的博客那就不要犹豫了。</p>
+</li>
+</ul></p>
+            <p class="article-more-link">
+                <a href="/2017/03/09/神器之git使用教程/#more">查看更多</a>
+            </p>
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="http://yoursite.com/2017/03/09/神器之git使用教程/" data-id="cj02gxhyi00078grnwne1j3gp" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="http://yoursite.com/2017/03/09/神器之git使用教程/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="http://yoursite.com/2017/03/09/神器之git使用教程/">评论</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
     <article id="post-写博客神器之MarkdownPad" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
@@ -267,7 +409,7 @@
 
 </div>
 
-    <a data-url="http://yoursite.com/2017/03/05/写博客神器之MarkdownPad/" data-id="cizwkvr4d0002ewrnrec81mna" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://yoursite.com/2017/03/05/写博客神器之MarkdownPad/" data-id="cj02gxhx300028grnpwogsg15" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -398,7 +540,7 @@
 
 </div>
 
-    <a data-url="http://yoursite.com/2017/03/05/新建的第一篇文章/" data-id="cizwkvr4s0004ewrnpgxb3djl" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://yoursite.com/2017/03/05/新建的第一篇文章/" data-id="cj02gxhxi00048grnmuh2kpeh" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -528,7 +670,7 @@
 
 </div>
 
-    <a data-url="http://yoursite.com/2017/03/01/hello-world/" data-id="cizwkvr3u0000ewrnqxrgg4yj" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://yoursite.com/2017/03/01/hello-world/" data-id="cj02gxhwj00008grnc51cl8dt" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -618,6 +760,25 @@
                     <li>
                         
                         <div class="item-thumbnail">
+                            <a href="/2017/03/09/神器之git使用教程/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/2017/03/09/神器之git使用教程/" class="title">MarkDown语法</a></p>
+                            <p class="item-date"><time datetime="2017-03-09T09:14:42.000Z" itemprop="datePublished">2017-03-09</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
                             <a href="/2017/03/05/写博客神器之MarkdownPad/" class="thumbnail">
     
     
@@ -690,7 +851,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">归档</h3>
         <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">3</span></li></ul>
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">4</span></li></ul>
         </div>
     </div>
 
@@ -699,7 +860,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">标签</h3>
         <div class="widget">
-            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/MarkdownPad/">MarkdownPad</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/blog/">blog</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python爬虫-web/">python爬虫 web</a><span class="tag-list-count">1</span></li></ul>
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/MarkdownPad/">MarkdownPad</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/blog/">blog</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python爬虫-web/">python爬虫 web</a><span class="tag-list-count">1</span></li></ul>
         </div>
     </div>
 
@@ -708,7 +869,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">标签云</h3>
         <div class="widget tagcloud">
-            <a href="/tags/MarkdownPad/" style="font-size: 10px;">MarkdownPad</a> <a href="/tags/blog/" style="font-size: 10px;">blog</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/python爬虫-web/" style="font-size: 10px;">python爬虫 web</a>
+            <a href="/tags/MarkdownPad/" style="font-size: 20px;">MarkdownPad</a> <a href="/tags/blog/" style="font-size: 20px;">blog</a> <a href="/tags/hexo/" style="font-size: 20px;">hexo</a> <a href="/tags/python爬虫-web/" style="font-size: 10px;">python爬虫 web</a>
         </div>
     </div>
 
