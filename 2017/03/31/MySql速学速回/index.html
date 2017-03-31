@@ -1,0 +1,764 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="mysql,database," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="Access MySql server进入数据库系统：mysql -u user_name -p;
+进入数据库系统且指定数据库：mysql -u user_name -p database_name;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySql速学速回">
+<meta property="og:url" content="http://yoursite.com/2017/03/31/MySql速学速回/index.html">
+<meta property="og:site_name" content="jimmydug's blog">
+<meta property="og:description" content="Access MySql server进入数据库系统：mysql -u user_name -p;
+进入数据库系统且指定数据库：mysql -u user_name -p database_name;">
+<meta property="og:updated_time" content="2017-03-31T13:12:07.764Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MySql速学速回">
+<meta name="twitter:description" content="Access MySql server进入数据库系统：mysql -u user_name -p;
+进入数据库系统且指定数据库：mysql -u user_name -p database_name;">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/03/31/MySql速学速回/"/>
+
+
+
+
+
+  <title> MySql速学速回 | jimmydug's blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">jimmydug's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Love life&coding</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/03/31/MySql速学速回/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="jimmydug">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="jimmydug's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                MySql速学速回
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Veröffentlicht am</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-03-31T17:14:42+08:00">
+                2017-03-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="Access-MySql-server"><a href="#Access-MySql-server" class="headerlink" title="Access MySql server"></a>Access MySql server</h2><h5 id="进入数据库系统："><a href="#进入数据库系统：" class="headerlink" title="进入数据库系统："></a>进入数据库系统：</h5><pre><code>mysql -u user_name -p;
+</code></pre><h5 id="进入数据库系统且指定数据库："><a href="#进入数据库系统且指定数据库：" class="headerlink" title="进入数据库系统且指定数据库："></a>进入数据库系统且指定数据库：</h5><pre><code>mysql -u user_name -p database_name;
+</code></pre><a id="more"></a>
+<h2 id="Working-with-database"><a href="#Working-with-database" class="headerlink" title="Working with database"></a>Working with database</h2><h5 id="创建新数据库"><a href="#创建新数据库" class="headerlink" title="创建新数据库:"></a>创建新数据库:</h5><pre><code>CREATE DATABASE database_name;
+</code></pre><h5 id="使用某个数据库："><a href="#使用某个数据库：" class="headerlink" title="使用某个数据库："></a>使用某个数据库：</h5><pre><code>USE database_name;
+</code></pre><h5 id="删除某个数据库："><a href="#删除某个数据库：" class="headerlink" title="删除某个数据库："></a>删除某个数据库：</h5><pre><code>DROP DATABASE database_name;
+</code></pre><h5 id="查看所有数据库："><a href="#查看所有数据库：" class="headerlink" title="查看所有数据库："></a>查看所有数据库：</h5><pre><code>SHOW DATABASES;
+</code></pre><h2 id="Working-with-tables"><a href="#Working-with-tables" class="headerlink" title="Working with tables"></a>Working with tables</h2><h5 id="查看选定数据库下所有表："><a href="#查看选定数据库下所有表：" class="headerlink" title="查看选定数据库下所有表："></a>查看选定数据库下所有表：</h5><pre><code>SHOW TABLES;
+</code></pre><h5 id="删除某个表："><a href="#删除某个表：" class="headerlink" title="删除某个表："></a>删除某个表：</h5><pre><code>DROP TABLE table_name;
+</code></pre><h5 id="查看表的各字段详细信息："><a href="#查看表的各字段详细信息：" class="headerlink" title="查看表的各字段详细信息："></a>查看表的各字段详细信息：</h5><pre><code>DESC table_name [column];
+</code></pre><h5 id="创建新表"><a href="#创建新表" class="headerlink" title="创建新表:"></a>创建新表:</h5><pre><code> CREATE TABLE table_name 
+(
+ pri_key_name INT NOT NULL AUTO_INCREMENT,
+ col2_name type(size) NOT NULL,
+ col3_name varchar(10) DEFAULT defu_value,
+ PRIMARY KEY(pri_key_name)
+);
+</code></pre><h5 id="查看创建表时的过程："><a href="#查看创建表时的过程：" class="headerlink" title="查看创建表时的过程："></a>查看创建表时的过程：</h5><pre><code>SHOW CREATE TABLE table_name;
+</code></pre><h5 id="向表中插入数据-一行或多行-："><a href="#向表中插入数据-一行或多行-：" class="headerlink" title="向表中插入数据(一行或多行)："></a>向表中插入数据(一行或多行)：</h5><pre><code>列出所有字段：
+INSERT INTO table_name 
+(col1_name, col2_name, col3_name, 。。。)
+VALUES
+(col1_value1, col2_value1, col3_value1, 。。。),
+(col1_value2, col2_value2, col3_value2, 。。。),
+                。。。
+                。。。
+(col1_value_n, col2_value_n, col3_value_n。。。);
+
+
+省略所有字段(必须为所有字段赋值)：
+INSERT INTO table_name 
+VALUES
+(col1_value1, col2_value1, col3_value1。。。),
+(col1_value2, col2_value2, col3_value2。。。),
+                。。。
+                。。。
+(col1_value_n, col2_value_n, col3_value_n。。。);
+
+为部分指定字段赋值：
+INSERT INTO table_name
+(col1_name, col3_name, col7_name)
+VALUES
+(col1_value1, col3_value1, col7_value1),
+(col1_value2, col3_value2, col7_value2),
+                。。。
+                。。。
+(col1_value_n, col3_value_n, col7_value_n);
+</code></pre><h2 id="Querying-Data"><a href="#Querying-Data" class="headerlink" title="Querying Data"></a>Querying Data</h2><h5 id="显示表结构："><a href="#显示表结构：" class="headerlink" title="显示表结构："></a>显示表结构：</h5><pre><code>SHOW COLUMNS FRON table_name;
+(=DESC table_name)
+</code></pre><h5 id="显示整个表数据："><a href="#显示整个表数据：" class="headerlink" title="显示整个表数据："></a>显示整个表数据：</h5><pre><code>SELECT * FROM table_name;
+</code></pre><h5 id="查看符合条件的记录-record"><a href="#查看符合条件的记录-record" class="headerlink" title="查看符合条件的记录(record):"></a>查看符合条件的记录(record):</h5><pre><code> SELECT * FROM table_name
+ WHERE
+ col_x_name = col_x_value
+ AND [OR]
+ col_y_name = col_y_value
+ AND [OR]
+ [
+ col_name &gt;(&lt; &gt;= &lt;= &lt;&gt;) value;
+ col_name IS NULL ;
+ (正则表达式，仅文本) 
+ col_name LIKE &quot;%inese&quot;;
+ col_name LIKE &quot;_im&quot;;
+ col_name BETWEEN 10 AND 30;
+ col_name IN (value1,value2,value3, ...);
+ (NOT直接放在WHERE,AND,OR后面)
+ NOT col_name BETWEEN 1 AND 5;
+ NOT col_name LIKE &quot;%iness&quot;;
+ NOT col_name IN (value1,value2,value3, ...);
+]
+</code></pre><h5 id="查看返回的record中指定的field："><a href="#查看返回的record中指定的field：" class="headerlink" title="查看返回的record中指定的field："></a>查看返回的record中指定的field：</h5><pre><code> SELECT col_i_name,col_j_name  
+ WHERE
+ col_x_name = col_x_value
+ AND
+ col_y_name = col_y_value；
+[
+ OR 
+ col_y_name = col_y_value
+]       
+</code></pre><h2 id="Correcting-the-Data"><a href="#Correcting-the-Data" class="headerlink" title="Correcting the Data"></a>Correcting the Data</h2><h4 id="DELETE不能删除单一列的值或某一列所有值，只可用于删除一行或多行。"><a href="#DELETE不能删除单一列的值或某一列所有值，只可用于删除一行或多行。" class="headerlink" title="DELETE不能删除单一列的值或某一列所有值，只可用于删除一行或多行。"></a>DELETE不能删除单一列的值或某一列所有值，只可用于删除一行或多行。</h4><h5 id="删除表中所有record："><a href="#删除表中所有record：" class="headerlink" title="删除表中所有record："></a>删除表中所有record：</h5><pre><code>DELETE FROM table_name;
+</code></pre><h5 id="删除指定的record："><a href="#删除指定的record：" class="headerlink" title="删除指定的record："></a>删除指定的record：</h5><pre><code>DELETE FROM table_name
+WHERE
+...
+(条件与上SELECT相同)
+</code></pre><h5 id="UPDATE修正已存在的指定record中指定field的值："><a href="#UPDATE修正已存在的指定record中指定field的值：" class="headerlink" title="UPDATE修正已存在的指定record中指定field的值："></a>UPDATE修正已存在的指定record中指定field的值：</h5><pre><code>UPDATE table_name
+SET
+col1_name = value1
+col2_name = value2
+WHERE
+...
+;    
+</code></pre><h5 id="ALTER-TABLE为已有表的结构做修改："><a href="#ALTER-TABLE为已有表的结构做修改：" class="headerlink" title="ALTER TABLE为已有表的结构做修改："></a>ALTER TABLE为已有表的结构做修改：</h5><pre><code>ALTER TABLE table_name
+ADD COLUMN col_name INT NOT NULL AUTO_INCREMENT
+ADD PRIMARY KEy(col_name)(添加主键)
+</code></pre>
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/mysql/" rel="tag"># mysql</a>
+          
+            <a href="/tags/database/" rel="tag"># database</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/31/Excel自学成才！ /" rel="next" title="">
+                <i class="fa fa-chevron-left"></i> 
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="jimmydug" />
+          <p class="site-author-name" itemprop="name">jimmydug</p>
+           
+              <p class="site-description motion-element" itemprop="description">web,python,linux,noob</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">Artikel</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">Kategorien</span>
+              
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">Tags</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Access-MySql-server"><span class="nav-number">1.</span> <span class="nav-text">Access MySql server</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#进入数据库系统："><span class="nav-number">1.0.0.1.</span> <span class="nav-text">进入数据库系统：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#进入数据库系统且指定数据库："><span class="nav-number">1.0.0.2.</span> <span class="nav-text">进入数据库系统且指定数据库：</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Working-with-database"><span class="nav-number">2.</span> <span class="nav-text">Working with database</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#创建新数据库"><span class="nav-number">2.0.0.1.</span> <span class="nav-text">创建新数据库:</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#使用某个数据库："><span class="nav-number">2.0.0.2.</span> <span class="nav-text">使用某个数据库：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#删除某个数据库："><span class="nav-number">2.0.0.3.</span> <span class="nav-text">删除某个数据库：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#查看所有数据库："><span class="nav-number">2.0.0.4.</span> <span class="nav-text">查看所有数据库：</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Working-with-tables"><span class="nav-number">3.</span> <span class="nav-text">Working with tables</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#查看选定数据库下所有表："><span class="nav-number">3.0.0.1.</span> <span class="nav-text">查看选定数据库下所有表：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#删除某个表："><span class="nav-number">3.0.0.2.</span> <span class="nav-text">删除某个表：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#查看表的各字段详细信息："><span class="nav-number">3.0.0.3.</span> <span class="nav-text">查看表的各字段详细信息：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#创建新表"><span class="nav-number">3.0.0.4.</span> <span class="nav-text">创建新表:</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#查看创建表时的过程："><span class="nav-number">3.0.0.5.</span> <span class="nav-text">查看创建表时的过程：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#向表中插入数据-一行或多行-："><span class="nav-number">3.0.0.6.</span> <span class="nav-text">向表中插入数据(一行或多行)：</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Querying-Data"><span class="nav-number">4.</span> <span class="nav-text">Querying Data</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#显示表结构："><span class="nav-number">4.0.0.1.</span> <span class="nav-text">显示表结构：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#显示整个表数据："><span class="nav-number">4.0.0.2.</span> <span class="nav-text">显示整个表数据：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#查看符合条件的记录-record"><span class="nav-number">4.0.0.3.</span> <span class="nav-text">查看符合条件的记录(record):</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#查看返回的record中指定的field："><span class="nav-number">4.0.0.4.</span> <span class="nav-text">查看返回的record中指定的field：</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Correcting-the-Data"><span class="nav-number">5.</span> <span class="nav-text">Correcting the Data</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#DELETE不能删除单一列的值或某一列所有值，只可用于删除一行或多行。"><span class="nav-number">5.0.1.</span> <span class="nav-text">DELETE不能删除单一列的值或某一列所有值，只可用于删除一行或多行。</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#删除表中所有record："><span class="nav-number">5.0.1.1.</span> <span class="nav-text">删除表中所有record：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#删除指定的record："><span class="nav-number">5.0.1.2.</span> <span class="nav-text">删除指定的record：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#UPDATE修正已存在的指定record中指定field的值："><span class="nav-number">5.0.1.3.</span> <span class="nav-text">UPDATE修正已存在的指定record中指定field的值：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ALTER-TABLE为已有表的结构做修改："><span class="nav-number">5.0.1.4.</span> <span class="nav-text">ALTER TABLE为已有表的结构做修改：</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">jimmydug</span>
+</div>
+
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>
