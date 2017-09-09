@@ -3,18 +3,36 @@
 <head>
     <meta charset="utf-8">
     
-    <title>categories | jimmydug&#39;s blog</title>
+    <title>&#39;TensorFlow学习笔记&#39; | jimmydug&#39;s blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="web,python,linux,noob">
-<meta property="og:type" content="website">
-<meta property="og:title" content="categories">
-<meta property="og:url" content="http://yoursite.com/categories/index.html">
+    <meta name="description" content="import tensorflow as tf
+from numpy.random import RandomState
+
+w1 = tf.Variable(tf.random_normal([2, 3], stddev=1, seed=1))
+w2 = tf.Variable(tf.random_normal([3, 1], stddev=1, seed=1))
+
+batch_size = 8">
+<meta property="og:type" content="article">
+<meta property="og:title" content="'TensorFlow学习笔记'">
+<meta property="og:url" content="http://yoursite.com/2017/09/04/TensorFlow学习笔记/index.html">
 <meta property="og:site_name" content="jimmydug's blog">
-<meta property="og:description" content="web,python,linux,noob">
-<meta property="og:updated_time" content="2017-03-05T10:37:32.864Z">
+<meta property="og:description" content="import tensorflow as tf
+from numpy.random import RandomState
+
+w1 = tf.Variable(tf.random_normal([2, 3], stddev=1, seed=1))
+w2 = tf.Variable(tf.random_normal([3, 1], stddev=1, seed=1))
+
+batch_size = 8">
+<meta property="og:updated_time" content="2017-09-04T13:15:44.146Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="categories">
-<meta name="twitter:description" content="web,python,linux,noob">
+<meta name="twitter:title" content="'TensorFlow学习笔记'">
+<meta name="twitter:description" content="import tensorflow as tf
+from numpy.random import RandomState
+
+w1 = tf.Variable(tf.random_normal([2, 3], stddev=1, seed=1))
+w2 = tf.Variable(tf.random_normal([3, 1], stddev=1, seed=1))
+
+batch_size = 8">
     
 
     
@@ -211,7 +229,7 @@
 </aside>
 
             
-            <section id="main"><article id="page-undefined" class="article article-type-page" itemscope itemprop="blogPost">
+            <section id="main"><article id="post-TensorFlow学习笔记" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
         
@@ -219,10 +237,24 @@
                 
     
         <h1 class="article-title" itemprop="name">
-            categories
+            &#39;TensorFlow学习笔记&#39;
         </h1>
     
 
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/09/04/TensorFlow学习笔记/">
+            <time datetime="2017-09-04T11:38:12.000Z" itemprop="datePublished">2017-09-04</time>
+        </a>
+    </div>
+
+
+                        
+                        
+                    </div>
                 
             </header>
         
@@ -230,7 +262,52 @@
         <div class="article-entry" itemprop="articleBody">
         
             
-            
+            <pre><code>import tensorflow as tf
+from numpy.random import RandomState
+
+w1 = tf.Variable(tf.random_normal([2, 3], stddev=1, seed=1))
+w2 = tf.Variable(tf.random_normal([3, 1], stddev=1, seed=1))
+
+batch_size = 8
+
+x = tf.placeholder(tf.float32, shape=(None, 2), name=&apos;x-input&apos;)
+y_ = tf.placeholder(tf.float32, shape=(None, 1), name=&apos;y-input&apos;)
+
+a = tf.matmul(x, w1)
+y = tf.matmul(a, w2)
+
+cross_entropy = -tf.reduce_mean(
+    y_ * tf.log(tf.clip_by_value(y, 1e-10, 1.0)))
+
+train_step = tf.train.AdamOptimizer(0.001).minimize(cross_entropy)
+
+rdm = RandomState(1)
+dataset_size = 128
+
+X = rdm.rand(dataset_size, 2)
+Y = [int(x1+x2 &lt; 1) for (x1, x2) in X]
+
+sess = tf.Session()
+init_op = tf.initialize_all_variables()
+sess.run(init_op)
+print(sess.run(w1))
+print(sess.run(w2))
+</code></pre><p>[[-0.81131822  1.48459876  0.06532937]<br> [-2.4427042   0.0992484   0.59122431]]<br>[[-0.81131822]<br> [ 1.48459876]<br> [ 0.06532937]]</p>
+<pre><code>STEPS = 5000
+for i in range(STEPS):
+    start = (i * batch_size) % dataset_size
+    end = min(start+batch_size, dataset_size)
+    sess.run(train_step,
+                feed_dict={x: X[start:end], y_: Y[start:end]})
+    if i % 1000 == 0:
+        total_cross_entropy = sess.run(
+            cross_entropy, feed_dict={x: X, y_: Y})
+        print(&quot;After %d tarining step(s), cross entropy on all data is %g&quot; %(i, total_cross_entropy))
+
+
+sess.close()
+</code></pre><p>ValueError: Cannot feed value of shape (8,) for Tensor ‘y-input_1:0’, which has shape ‘(None, 1)’</p>
+
         
         </div>
         <footer class="article-footer">
@@ -240,7 +317,7 @@
 
 </div>
 
-    <a data-url="http://yoursite.com/categories/index.html" data-id="cj7cph8az000yq8rnbkdp93wr" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://yoursite.com/2017/09/04/TensorFlow学习笔记/" data-id="cj7cph8400008q8rnztb8ilv8" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -308,13 +385,32 @@
 
             
     
-        <a href="http://yoursite.com/categories/index.html#comments" class="article-comment-link disqus-comment-count" data-disqus-url="http://yoursite.com/categories/index.html">评论</a>
+        <a href="http://yoursite.com/2017/09/04/TensorFlow学习笔记/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="http://yoursite.com/2017/09/04/TensorFlow学习笔记/">评论</a>
     
 
         </footer>
     </div>
     
         
+<nav id="article-nav">
+    
+        <a href="/2017/09/08/Scrapy学习日记/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">上一篇</strong>
+            <div class="article-nav-title">
+                
+                    (no title)
+                
+            </div>
+        </a>
+    
+    
+        <a href="/2017/08/27/Python机器学习及实战（一）之向量机初步/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">&#39;Python机器学习及实战（一）之向量机初步&#39;</div>
+        </a>
+    
+</nav>
+
 
     
 </article>
@@ -511,9 +607,9 @@
     <script>
     var disqus_config = function () {
         
-            this.page.url = 'http://yoursite.com/categories/index.html';
+            this.page.url = 'http://yoursite.com/2017/09/04/TensorFlow学习笔记/';
         
-        this.page.identifier = 'undefined';
+        this.page.identifier = 'TensorFlow学习笔记';
     };
     (function() { 
         var d = document, s = d.createElement('script');  
