@@ -3,18 +3,21 @@
 <head>
     <meta charset="utf-8">
     
-    <title>jimmydug&#39;s blog</title>
+    <title>&#39;向量机初步&#39; | jimmydug&#39;s blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="&amp;emsp;&amp;emsp;爬取的是豆瓣经典电影，即将这个页面下电影的名字，评分，网址下载至csv文件，封面图片下载到文件夹，由于下载实在有点慢故只下载了前100部。">
+    <meta name="description" content="##基于线性假设下支持向量机模型处理二分类问题(来自python机器学习及实践)
+&amp;emsp;&amp;emsp;对于之前的Logistic回归模型，参数的确定要遍历数据集中所有数据，所有的训练样本都对参数有影响，而支持向量机模型中使用的是可以用来真正帮助我们决策的数据点，即支持向量，即那些离分隔超平面最近的那些点，其余的数据点将被丢弃。支持向量的选取采用序列最小优化算法(SMO),这个算法实在看不懂。。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="jimmydug's blog">
-<meta property="og:url" content="http://yoursite.com/2017/09/08/Scrapy学习日记/index.html">
+<meta property="og:title" content="'向量机初步'">
+<meta property="og:url" content="http://yoursite.com/2017/08/27/向量机初步/index.html">
 <meta property="og:site_name" content="jimmydug's blog">
-<meta property="og:description" content="&amp;emsp;&amp;emsp;爬取的是豆瓣经典电影，即将这个页面下电影的名字，评分，网址下载至csv文件，封面图片下载到文件夹，由于下载实在有点慢故只下载了前100部。">
-<meta property="og:updated_time" content="2017-09-10T09:53:49.704Z">
+<meta property="og:description" content="##基于线性假设下支持向量机模型处理二分类问题(来自python机器学习及实践)
+&amp;emsp;&amp;emsp;对于之前的Logistic回归模型，参数的确定要遍历数据集中所有数据，所有的训练样本都对参数有影响，而支持向量机模型中使用的是可以用来真正帮助我们决策的数据点，即支持向量，即那些离分隔超平面最近的那些点，其余的数据点将被丢弃。支持向量的选取采用序列最小优化算法(SMO),这个算法实在看不懂。。">
+<meta property="og:updated_time" content="2017-09-10T09:45:40.002Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="jimmydug's blog">
-<meta name="twitter:description" content="&amp;emsp;&amp;emsp;爬取的是豆瓣经典电影，即将这个页面下电影的名字，评分，网址下载至csv文件，封面图片下载到文件夹，由于下载实在有点慢故只下载了前100部。">
+<meta name="twitter:title" content="'向量机初步'">
+<meta name="twitter:description" content="##基于线性假设下支持向量机模型处理二分类问题(来自python机器学习及实践)
+&amp;emsp;&amp;emsp;对于之前的Logistic回归模型，参数的确定要遍历数据集中所有数据，所有的训练样本都对参数有影响，而支持向量机模型中使用的是可以用来真正帮助我们决策的数据点，即支持向量，即那些离分隔超平面最近的那些点，其余的数据点将被丢弃。支持向量的选取采用序列最小优化算法(SMO),这个算法实在看不懂。。">
     
 
     
@@ -211,30 +214,98 @@
 </aside>
 
             
-            <section id="main"><article id="post-Scrapy学习日记" class="article article-type-post" itemscope itemprop="blogPost">
+            <section id="main"><article id="post-向量机初步" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+            &#39;向量机初步&#39;
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/08/27/向量机初步/">
+            <time datetime="2017-08-27T07:18:57.000Z" itemprop="datePublished">2017-08-27</time>
+        </a>
+    </div>
+
+
+                        
+                        
+                    </div>
+                
+            </header>
         
         
         <div class="article-entry" itemprop="articleBody">
         
             
-            <p>&emsp;&emsp;爬取的是<a href="https://movie.douban.com/explore#!type=movie&amp;tag=%E7%BB%8F%E5%85%B8&amp;sort=recommend&amp;page_limit=20&amp;page_start=0" target="_blank" rel="external"><strong>豆瓣经典电影</strong></a>，即将这个页面下电影的名字，评分，网址下载至csv文件，封面图片下载到文件夹，由于下载实在有点慢故只下载了前100部。</p>
+            <p>##基于线性假设下支持向量机模型处理二分类问题(来自python机器学习及实践)</p>
+<p>&emsp;&emsp;对于之前的Logistic回归模型，参数的确定要遍历数据集中所有数据，所有的训练样本都对参数有影响，而支持向量机模型中使用的是可以用来真正帮助我们决策的数据点，即支持向量，即那些离分隔超平面最近的那些点，其余的数据点将被丢弃。支持向量的选取采用<strong>序列最小优化算法</strong>(SMO),这个算法实在看不懂。。。</p>
 <a id="more"></a>
-<p>1.在cmder命令行下创建project</p>
-<pre><code>scrapy startproject douban_hot_movies
-</code></pre><p>2.编辑douban_hot_movies/items.py文件，设置数据field</p>
-<pre><code>import scrapy
+<p>###手写体数据读取代码样例</p>
+<pre><code># 导入手写体数字加载器
+from sklearn.datasets import load_digits
+# 从通过数据加载器获得手写体数字的数码图像数据并储存在digits变量中
+digits = load_digits()
 
-class DoubanHotMoviesItem(scrapy.Item):
-# define the fields for your item here like:
-# name = scrapy.Field()
-# 设置评分，标题，简介网址，封面网址4个字段
-    score = scrapy.Field()
-    title = scrapy.Field()
-    info = scrapy.Field()
-    pic = scrapy.Field()
-</code></pre><p>3.在douban_hot_movies/spiders/目录下创建douban_hot_movies_spider.py文件</p>
+#1797条数据，为8*8=64的像素矩阵
+digits.data.shape
+&lt;&lt;&lt;(1797, 64)
+# 分割数据集
+from sklearn.cross_validation import train_test_split
+
+X_train, X_test, y_train, y_test = train_test_split(digits.data, digits.target, test_size=0.25, random_state=33)
+# 导入数据标准化模块
+from sklearn.preprocessing import StandardScaler
+# 导入线性支持向量机分类器
+from sklearn.svm import LinearSVC
+
+ss = StandardScaler()
+X_train = ss.fit_transform(X_train)
+X_test = ss.transform(X_test)
+# 初始化
+lsvc = LinearSVC()
+# 训练模型
+lsvc.fit(X_train, y_train)
+&lt;&lt;&lt;LinearSVC(C=1.0, class_weight=None, dual=True, fit_intercept=True,
+ intercept_scaling=1, loss=&apos;squared_hinge&apos;, max_iter=1000,
+ multi_class=&apos;ovr&apos;, penalty=&apos;l2&apos;, random_state=None, tol=0.0001,
+ verbose=0)
+# 进行预测
+y_predict = lsvc.predict(X_test)
+
+# 使用模型自带的评估函数进行准确性测评 
+print (&apos;The Accuracy of Linear SVC is&apos;, lsvc.score(X_test, y_test))
+&lt;&lt;&lt;The Accuracy of Linear SVC is 0.953333333333
+# classification_report模块对预测结果做更加详细的分析
+from sklearn.metrics import classification_report
+
+print(classification_report(y_test, y_predict, target_names=digits.target_names.astype(str)))
+
+     precision    recall  f1-score   support
+
+  0       0.92      1.00      0.96        35
+  1       0.96      0.98      0.97        54
+  2       0.98      1.00      0.99        44
+  3       0.93      0.93      0.93        46
+  4       0.97      1.00      0.99        35
+  5       0.94      0.94      0.94        48
+  6       0.96      0.98      0.97        51
+  7       0.92      1.00      0.96        35
+  8       0.98      0.84      0.91        58
+  9       0.95      0.91      0.93        44
+
+avg / total       0.95      0.95      0.95       450
+</code></pre><p>##来自机器学习实战</p>
+<p>&emsp;&emsp;SVM本身是一个二类分类器，对于多类问题应用SVM需要对代码做一些修改，机器学习上的例子太难了就没贴上来了。</p>
 
         
         </div>
@@ -245,7 +316,7 @@ class DoubanHotMoviesItem(scrapy.Item):
 
 </div>
 
-    <a data-url="http://yoursite.com/2017/09/08/Scrapy学习日记/" data-id="cj7ejapsq0008skrne50j1x98" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://yoursite.com/2017/08/27/向量机初步/" data-id="cj7ejmj3o0010skrn4d9pwjfi" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -313,7 +384,7 @@ class DoubanHotMoviesItem(scrapy.Item):
 
             
     
-        <a href="http://yoursite.com/2017/09/08/Scrapy学习日记/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="http://yoursite.com/2017/09/08/Scrapy学习日记/">评论</a>
+        <a href="http://yoursite.com/2017/08/27/向量机初步/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="http://yoursite.com/2017/08/27/向量机初步/">评论</a>
     
 
         </footer>
@@ -322,10 +393,19 @@ class DoubanHotMoviesItem(scrapy.Item):
         
 <nav id="article-nav">
     
+        <a href="/2017/09/04/TensorFlow学习笔记/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">上一篇</strong>
+            <div class="article-nav-title">
+                
+                    &#39;TensorFlow学习笔记&#39;
+                
+            </div>
+        </a>
     
-        <a href="/2017/09/04/TensorFlow学习笔记/" id="article-nav-older" class="article-nav-link-wrap">
+    
+        <a href="/2017/08/24/线性分类器/" id="article-nav-older" class="article-nav-link-wrap">
             <strong class="article-nav-caption">下一篇</strong>
-            <div class="article-nav-title">&#39;TensorFlow学习笔记&#39;</div>
+            <div class="article-nav-title">&#39;线性分类器&#39;</div>
         </a>
     
 </nav>
@@ -526,9 +606,9 @@ class DoubanHotMoviesItem(scrapy.Item):
     <script>
     var disqus_config = function () {
         
-            this.page.url = 'http://yoursite.com/2017/09/08/Scrapy学习日记/';
+            this.page.url = 'http://yoursite.com/2017/08/27/向量机初步/';
         
-        this.page.identifier = 'Scrapy学习日记';
+        this.page.identifier = '向量机初步';
     };
     (function() { 
         var d = document, s = d.createElement('script');  
