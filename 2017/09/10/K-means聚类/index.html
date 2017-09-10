@@ -3,27 +3,30 @@
 <head>
     <meta charset="utf-8">
     
-    <title>python学习小结 | jimmydug&#39;s blog</title>
+    <title>K-means聚类 | jimmydug&#39;s blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="enumerate用法a = enumerate([])
-import numpy as np
-a = np.array(([1,5,10,100],[5,7,1,8],[9,2,4,5])) /接受一个元组参数array([[  1,   5,  10, 100],       [  5,   7,   1,   8],       [  9,   2,   4,   5]])
-a.min()返">
+    <meta name="description" content="数据聚类：K-means算法（K均值）K均值算法的主要步骤：
+1.随机设置K个特征空间内的点作为初始的聚类中心。
+2.对于每个数据样例的特征向量，从K个聚类中心里找到距离最近的一个，并把该数据标记为从属这个聚类中心。
+3.根据这些数据新分配的类簇，重新对K个聚类中心位置进行计算。
+4.如果K个聚类中心位置发生变化，则回到2继续循环，否则迭代停止。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="python学习小结">
-<meta property="og:url" content="http://yoursite.com/2017/04/01/python学习小结/index.html">
+<meta property="og:title" content="K-means聚类">
+<meta property="og:url" content="http://yoursite.com/2017/09/10/K-means聚类/index.html">
 <meta property="og:site_name" content="jimmydug's blog">
-<meta property="og:description" content="enumerate用法a = enumerate([])
-import numpy as np
-a = np.array(([1,5,10,100],[5,7,1,8],[9,2,4,5])) /接受一个元组参数array([[  1,   5,  10, 100],       [  5,   7,   1,   8],       [  9,   2,   4,   5]])
-a.min()返">
-<meta property="og:updated_time" content="2017-09-10T09:59:37.013Z">
+<meta property="og:description" content="数据聚类：K-means算法（K均值）K均值算法的主要步骤：
+1.随机设置K个特征空间内的点作为初始的聚类中心。
+2.对于每个数据样例的特征向量，从K个聚类中心里找到距离最近的一个，并把该数据标记为从属这个聚类中心。
+3.根据这些数据新分配的类簇，重新对K个聚类中心位置进行计算。
+4.如果K个聚类中心位置发生变化，则回到2继续循环，否则迭代停止。">
+<meta property="og:updated_time" content="2017-09-10T11:04:21.792Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="python学习小结">
-<meta name="twitter:description" content="enumerate用法a = enumerate([])
-import numpy as np
-a = np.array(([1,5,10,100],[5,7,1,8],[9,2,4,5])) /接受一个元组参数array([[  1,   5,  10, 100],       [  5,   7,   1,   8],       [  9,   2,   4,   5]])
-a.min()返">
+<meta name="twitter:title" content="K-means聚类">
+<meta name="twitter:description" content="数据聚类：K-means算法（K均值）K均值算法的主要步骤：
+1.随机设置K个特征空间内的点作为初始的聚类中心。
+2.对于每个数据样例的特征向量，从K个聚类中心里找到距离最近的一个，并把该数据标记为从属这个聚类中心。
+3.根据这些数据新分配的类簇，重新对K个聚类中心位置进行计算。
+4.如果K个聚类中心位置发生变化，则回到2继续循环，否则迭代停止。">
     
 
     
@@ -220,7 +223,7 @@ a.min()返">
 </aside>
 
             
-            <section id="main"><article id="post-python学习小结" class="article article-type-post" itemscope itemprop="blogPost">
+            <section id="main"><article id="post-K-means聚类" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
         
@@ -228,7 +231,7 @@ a.min()返">
                 
     
         <h1 class="article-title" itemprop="name">
-            python学习小结
+            K-means聚类
         </h1>
     
 
@@ -237,19 +240,14 @@ a.min()返">
                         
     <div class="article-date">
         <i class="fa fa-calendar"></i>
-        <a href="/2017/04/01/python学习小结/">
-            <time datetime="2017-04-01T02:46:15.000Z" itemprop="datePublished">2017-04-01</time>
+        <a href="/2017/09/10/K-means聚类/">
+            <time datetime="2017-09-10T10:52:33.000Z" itemprop="datePublished">2017-09-10</time>
         </a>
     </div>
 
 
                         
                         
-    <div class="article-tag">
-        <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/Python/">Python</a>
-    </div>
-
                     </div>
                 
             </header>
@@ -258,14 +256,22 @@ a.min()返">
         <div class="article-entry" itemprop="articleBody">
         
             
-            <h2 id="enumerate用法"><a href="#enumerate用法" class="headerlink" title="enumerate用法"></a>enumerate用法</h2><pre><code>a = enumerate([])
-</code></pre><p>import numpy as np</p>
-<p>a = np.array(([1,5,10,100],[5,7,1,8],[9,2,4,5])) /接受一个元组参数<br>array([[  1,   5,  10, 100],<br>       [  5,   7,   1,   8],<br>       [  9,   2,   4,   5]])</p>
-<p>a.min()返回矩阵中最小的一个值<br>a.min(0)返回每列中最小的值，是一个1×n一维数组<br>a.min(1)返回每行中最小的值，1×n一维数组</p>
-<p>max()函数同理</p>
-<p>a.shape     #返回一个元组(hang,gao)<br>a.shape[0]   返回行数<br>a.shape[1]   返回列数</p>
-<p>对于m<em>n矩阵a, a.sum(axis=0)为列相加，形成1</em>n<br>             a.sum(axis=1)为行相加，形成1*m</p>
-<p>对于1*n矩阵，例如a[7,4,2,3],a.argsort()返回元素从小到大排列的索引值元组</p>
+            <h1 id="数据聚类："><a href="#数据聚类：" class="headerlink" title="数据聚类："></a>数据聚类：</h1><h4 id="K-means算法（K均值）"><a href="#K-means算法（K均值）" class="headerlink" title="K-means算法（K均值）"></a>K-means算法（K均值）</h4><p>K均值算法的主要步骤：</p>
+<pre><code>1.随机设置K个特征空间内的点作为初始的聚类中心。
+2.对于每个数据样例的特征向量，从K个聚类中心里找到距离最近的一个，并把该数据标记为从属这个聚类中心。
+3.根据这些数据新分配的类簇，重新对K个聚类中心位置进行计算。
+4.如果K个聚类中心位置发生变化，则回到2继续循环，否则迭代停止。
+</code></pre><a id="more"></a>
+<p>K-means算法在手写体数字图像上的使用示例:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">import numpy as np</div><div class="line">import matplotlib.pyplot as plt</div><div class="line">import pandas as pd</div><div class="line"><span class="comment"># 读取训练数据和测试数据</span></div><div class="line">digits_train = pd.read_csv(<span class="string">'http://archive.ics.uci.edu/ml/machine-learning-databases/optdigits/optdigits.tra'</span>, header=None)</div><div class="line">digits_test = pd.read_csv(<span class="string">'http://archive.ics.uci.edu/ml/machine-learning-databases/optdigits/optdigits.tes'</span>, header=None)</div><div class="line"><span class="comment"># 图像数据由8*8的像素矩阵表示，64个像素维度，还有1个标记维度</span></div><div class="line">x_train = digits_train[np.arange(64)]</div><div class="line">y_train = digits_train[64]</div><div class="line"></div><div class="line">x_test = digits_test[np.arange(64)]</div><div class="line">y_test = digits_test[64]</div><div class="line"><span class="comment"># 导入聚类下的K-means模型</span></div><div class="line">from sklearn.cluster import KMeans</div><div class="line"><span class="comment"># 初始化模型，设置聚类中心个数</span></div><div class="line">k_means = KMeans(n_clusters=10)</div><div class="line"><span class="comment"># 训练模型</span></div><div class="line">k_means.fit(x_train)</div><div class="line"><span class="comment"># 进行预测，判断每个测试图像所属聚类中心</span></div><div class="line">y_pred = k_means.predict(x_test)</div></pre></td></tr></table></figure>
+<p>对于有标注类别的数据集可以用ARI指标，类似于分类中的Accuracy</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 导入度量函数库</span></div><div class="line">from sklearn import metrics</div><div class="line"><span class="built_in">print</span>(metrics.adjusted_rand_score(y_test, y_pred))</div></pre></td></tr></table></figure>
+<p>对于没有标注类别的数据，使用轮廓系数（Silhouette Coefficient），同时兼顾了簇内的凝聚度（Cohesion）和簇之间的分离度（Separation），这里不写出具体计算公式了</p>
+<p>利用轮廓系数评价在不同类簇数量K下结果的K-means聚类实例</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div></pre></td><td class="code"><pre><div class="line">import numpy as np</div><div class="line">import matplotlib.pyplot as plt</div><div class="line">import pandas as pd</div><div class="line">from sklearn.cluster import KMeans</div><div class="line"><span class="comment"># 导入轮廓系数函数</span></div><div class="line">from sklearn.metrics import silhouette_score</div><div class="line"><span class="comment"># 创建一个窗口并且分割为3*2=6个子图，当前在1号子图作图</span></div><div class="line">plt.subplot(3,2,1)</div><div class="line"></div><div class="line">x1 = np.array([1,2,3,1,5,6,5,5,6,7,8,9,7,9])</div><div class="line">x2 = np.array([1,3,2,2,8,6,7,6,7,1,2,1,1,3])</div><div class="line"><span class="comment"># 14个直角坐标系平面上的初始数据点，zip()函数作用会生出zip对象，需要list(zip())：[(a0, b0), (a1, b1),(a2, b2)],内tuple，外list</span></div><div class="line">X = np.array(list(zip(x1, x2))).reshape(len(x1), 2)</div><div class="line"><span class="comment"># 目的就是将这14个点聚成K个类簇</span></div><div class="line">X</div><div class="line">&lt;&lt;&lt; array([[1, 1],</div><div class="line">   	[2, 3],</div><div class="line">   	[3, 2],</div><div class="line">  	[1, 2],</div><div class="line"></div><div class="line"><span class="comment"># 在1号子图做出原始数据点阵的分布</span></div><div class="line">plt.xlim([0, 10])</div><div class="line">plt.ylim([0, 10])</div><div class="line"></div><div class="line">plt.title(<span class="string">'Instance'</span>)</div><div class="line"><span class="comment"># scater()函数用来绘制散点图</span></div><div class="line">plt.scatter(x1, x2)</div><div class="line"><span class="comment"># 定义点的颜色和形状</span></div><div class="line">colors = [<span class="string">'b'</span>, <span class="string">'g'</span>, <span class="string">'r'</span>, <span class="string">'c'</span>, <span class="string">'m'</span>, <span class="string">'y'</span>, <span class="string">'k'</span>, <span class="string">'b'</span>]</div><div class="line">markers = [<span class="string">'o'</span>, <span class="string">'s'</span>, <span class="string">'D'</span>, <span class="string">'v'</span>, <span class="string">'^'</span>, <span class="string">'p'</span>, <span class="string">'*'</span>, <span class="string">'+'</span>]</div><div class="line"><span class="comment"># 不同的聚类中心个数</span></div><div class="line">clusters = [2, 3, 4, 5, 8]</div><div class="line">subplot_counter = 1</div><div class="line"><span class="comment"># 每个聚类中心K值对应的轮廓系数</span></div><div class="line">sc_scores = []</div><div class="line"><span class="keyword">for</span> t <span class="keyword">in</span> clusters:</div><div class="line">	subplot_counter += 1</div><div class="line"><span class="comment"># 在不同子图内作图</span></div><div class="line">	plt.subplot(3, 2, subplot_counter)</div><div class="line">	kmeans_model = KMeans(n_clusters=t).fit(X)</div><div class="line">	<span class="keyword">for</span> i,l <span class="keyword">in</span> enumerate(kmeans_model.labels_):</div><div class="line"><span class="comment"># 带你们看看i,l的值(K=3)左边是枚举后的索引，右边是每个点被打上的label</span></div><div class="line"><span class="comment">#	i j</span></div><div class="line"><span class="comment">#	0 1</span></div><div class="line"><span class="comment">#	1 1</span></div><div class="line"><span class="comment">#	2 1</span></div><div class="line">		plt.plot(x1[i], x2[i], color=colors[l], marker=markers[l], ls = <span class="string">'None'</span>)</div><div class="line">	plt.xlim([0, 10])</div><div class="line">	plt.ylim([0, 10])</div><div class="line"><span class="comment"># 计算轮廓系数</span></div><div class="line">	sc_score = silhouette_score(X, kmeans_model.labels_, metric=<span class="string">'euclidean'</span>)</div><div class="line">	sc_scores.append(sc_score)</div><div class="line"><span class="comment"># 绘制轮廓系数与不同类簇数量的直观显示图</span></div><div class="line">	plt.title(<span class="string">'K=%s, silhouette cofficient=%0.03f'</span> %(t, sc_score))</div><div class="line"></div><div class="line"><span class="comment"># 绘制轮廓系数与不同类簇数量的关系曲线图</span></div><div class="line"><span class="comment">#另外创建一个窗口</span></div><div class="line">plt.figure()</div><div class="line"><span class="comment"># 画图，传入x,y轴的俩个列表,第3个参数为曲线的颜色和线形</span></div><div class="line">plt.plot(clusters, sc_scores, <span class="string">'*-'</span>)</div><div class="line"><span class="comment"># 设置轴标</span></div><div class="line">plt.xlabel(<span class="string">'Numbers of Clusters'</span>)</div><div class="line">plt.ylabel(<span class="string">'Silhouette Coefficient Score'</span>)	</div><div class="line"><span class="comment"># 显示所有窗口</span></div><div class="line">plt.show()</div></pre></td></tr></table></figure>
+<p>&emsp;&emsp;K均值算法有2个缺点，一是容易收敛到局部最优解，这是受到初始中心点位置的影响，可以多次设置初始中心点不同位置来改善，二是需要预先设定簇的数量(这个可以像上面一样多设几个K值来比较，记住有俩种方法比较哦)</p>
+<p>&emsp;&emsp;介绍一种“肘部”观察法粗略估计类簇的合理个数,肘部观察法的原理是聚类中心数K从1开始增大时，各数据点离其中心点的距离平方和将减小，且下降速度先增大后减小(即出现一个拐点),一般这个拐点数就是合理的聚类中心数。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line">import numpy as np</div><div class="line">from sklearn.cluster import KMeans</div><div class="line"><span class="comment"># 这个是啥</span></div><div class="line">from scipy.spatial.distance import cdist</div><div class="line">import matplotlib.pyplot as plt</div><div class="line"></div><div class="line">cluster1 = np.random.uniform(0.5, 1.5, (2, 10))</div><div class="line">cluster2 = np.random.uniform(5.5, 6.5, (2, 10))</div><div class="line">cluster3 = np.random.uniform(3.0, 4.0, (2, 10))</div><div class="line">&gt;&gt;&gt; cluster1</div><div class="line">	array([[ 1.03314051,  1.03985783,  1.10361846,  0.67811508,  0.5498399 ,</div><div class="line">     		 1.24802795,  0.86710746,  1.13982963,  1.39469541,  0.68231248],</div><div class="line">   		   [ 0.74132302,  0.59433527,  1.2077444 ,  1.39111467,  1.06372197,</div><div class="line">             0.61534148,  0.70850745,  0.52107887,  1.00069837,  1.46818705]])</div><div class="line"><span class="comment"># hstack是啥方法</span></div><div class="line">X = np.hstack((cluster1, cluster2, cluster3)).T</div><div class="line">&gt;&gt;&gt; X</div><div class="line">	array([[ 1.03314051,  0.74132302],</div><div class="line">   		   [ 1.03985783,  0.59433527],</div><div class="line">           [ 1.10361846,  1.2077444 ],</div><div class="line">   		   [ 0.67811508,  1.39111467],</div><div class="line">plt.scatter(X[:, 0], X[:, 1])</div><div class="line">plt.xlabel(<span class="string">'x1'</span>)</div><div class="line">plt.ylabel(<span class="string">'x2'</span>)</div><div class="line">plt.show()</div><div class="line">meandistortions = []</div><div class="line"><span class="keyword">for</span> k <span class="keyword">in</span> range(1, 10):</div><div class="line">	kmeans = KMeans(n_clusters=k)</div><div class="line">	kmeans.fit(X)</div><div class="line">	meandistortions.append(</div><div class="line">		sum(np.min(cdist(X, kmeans.cluster_centers_, <span class="string">'euclidean'</span>), axis=1))/X.shape[0])</div><div class="line">plt.plot(range(1, 10), meandistortions, <span class="string">'bx-'</span>)</div><div class="line">plt.xlabel(<span class="string">'k'</span>)</div><div class="line">plt.ylabel(<span class="string">'Average Dispersion'</span>)</div><div class="line">plt.title(<span class="string">'Selecting k with Elbow Method'</span>)</div><div class="line">plt.show()</div></pre></td></tr></table></figure>
 
         
         </div>
@@ -276,7 +282,7 @@ a.min()返">
 
 </div>
 
-    <a data-url="http://yoursite.com/2017/04/01/python学习小结/" data-id="cj7emmd8k000bqcrn8hv7chd1" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://yoursite.com/2017/09/10/K-means聚类/" data-id="cj7emmd5y0000qcrnsnf55mkn" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -344,7 +350,7 @@ a.min()返">
 
             
     
-        <a href="http://yoursite.com/2017/04/01/python学习小结/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="http://yoursite.com/2017/04/01/python学习小结/">评论</a>
+        <a href="http://yoursite.com/2017/09/10/K-means聚类/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="http://yoursite.com/2017/09/10/K-means聚类/">评论</a>
     
 
         </footer>
@@ -353,19 +359,10 @@ a.min()返">
         
 <nav id="article-nav">
     
-        <a href="/2017/08/24/线性分类器/" id="article-nav-newer" class="article-nav-link-wrap">
-            <strong class="article-nav-caption">上一篇</strong>
-            <div class="article-nav-title">
-                
-                    线性分类器
-                
-            </div>
-        </a>
     
-    
-        <a href="/2017/03/31/MySql速学速回/" id="article-nav-older" class="article-nav-link-wrap">
+        <a href="/2017/09/04/TensorFlow学习笔记/" id="article-nav-older" class="article-nav-link-wrap">
             <strong class="article-nav-caption">下一篇</strong>
-            <div class="article-nav-title">MySql速学速回</div>
+            <div class="article-nav-title">TensorFlow学习笔记</div>
         </a>
     
 </nav>
@@ -559,9 +556,9 @@ a.min()返">
     <script>
     var disqus_config = function () {
         
-            this.page.url = 'http://yoursite.com/2017/04/01/python学习小结/';
+            this.page.url = 'http://yoursite.com/2017/09/10/K-means聚类/';
         
-        this.page.identifier = 'python学习小结';
+        this.page.identifier = 'K-means聚类';
     };
     (function() { 
         var d = document, s = d.createElement('script');  

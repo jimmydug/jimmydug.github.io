@@ -156,7 +156,7 @@
         </div>
         <div class="article-info profile-block">
             <div class="article-info-block">
-                9
+                10
                 <span>文章</span>
             </div>
             <div class="article-info-block">
@@ -211,6 +211,134 @@
 
             
             <section id="main">
+    <article id="post-K-means聚类" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2017/09/10/K-means聚类/">K-means聚类</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/09/10/K-means聚类/">
+            <time datetime="2017-09-10T10:52:33.000Z" itemprop="datePublished">2017-09-10</time>
+        </a>
+    </div>
+
+
+                        
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            <p><h1 id="数据聚类："><a href="#数据聚类：" class="headerlink" title="数据聚类："></a>数据聚类：</h1><h4 id="K-means算法（K均值）"><a href="#K-means算法（K均值）" class="headerlink" title="K-means算法（K均值）"></a>K-means算法（K均值）</h4><p>K均值算法的主要步骤：</p>
+<pre><code>1.随机设置K个特征空间内的点作为初始的聚类中心。
+2.对于每个数据样例的特征向量，从K个聚类中心里找到距离最近的一个，并把该数据标记为从属这个聚类中心。
+3.根据这些数据新分配的类簇，重新对K个聚类中心位置进行计算。
+4.如果K个聚类中心位置发生变化，则回到2继续循环，否则迭代停止。
+</code></pre></p>
+            <p class="article-more-link">
+                <a href="/2017/09/10/K-means聚类/#more">查看更多</a>
+            </p>
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="http://yoursite.com/2017/09/10/K-means聚类/" data-id="cj7emmd5y0000qcrnsnf55mkn" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="http://yoursite.com/2017/09/10/K-means聚类/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="http://yoursite.com/2017/09/10/K-means聚类/">评论</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
     <article id="post-TensorFlow学习笔记" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
@@ -263,7 +391,7 @@ from numpy.random import RandomState
 
 </div>
 
-    <a data-url="http://yoursite.com/2017/09/04/TensorFlow学习笔记/" data-id="cj7eksn2m0007d8rnv1d603my" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://yoursite.com/2017/09/04/TensorFlow学习笔记/" data-id="cj7emmd9d000gqcrn3g71a7xf" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -391,7 +519,7 @@ from numpy.random import RandomState
 
 </div>
 
-    <a data-url="http://yoursite.com/2017/09/04/Scrapy学习日记/" data-id="cj7eksn180002d8rntk68yivm" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://yoursite.com/2017/09/04/Scrapy学习日记/" data-id="cj7emmd7y0007qcrnessyfljv" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -515,7 +643,7 @@ from numpy.random import RandomState
 
 </div>
 
-    <a data-url="http://yoursite.com/2017/08/27/向量机初步/" data-id="cj7eksn36000ad8rniyythmpo" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://yoursite.com/2017/08/27/向量机初步/" data-id="cj7emmd8w000cqcrnd73q5r20" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -639,7 +767,7 @@ from numpy.random import RandomState
 
 </div>
 
-    <a data-url="http://yoursite.com/2017/08/24/线性分类器/" data-id="cj7eksn3g000bd8rntrw53ugm" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://yoursite.com/2017/08/24/线性分类器/" data-id="cj7emmd94000eqcrn7ndj1d7s" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -773,7 +901,7 @@ from numpy.random import RandomState
 
 </div>
 
-    <a data-url="http://yoursite.com/2017/04/01/python学习小结/" data-id="cj7eksn2w0008d8rnnqd6bgaz" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://yoursite.com/2017/04/01/python学习小结/" data-id="cj7emmd8k000bqcrn8hv7chd1" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -903,7 +1031,7 @@ from numpy.random import RandomState
 
 </div>
 
-    <a data-url="http://yoursite.com/2017/03/31/MySql速学速回/" data-id="cj7eksn220005d8rnrk0wwxfp" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://yoursite.com/2017/03/31/MySql速学速回/" data-id="cj7emmd6y0004qcrnrfyqko9s" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1061,7 +1189,7 @@ J：删除光标所在行行尾的换行符(拼接行)
 
 </div>
 
-    <a data-url="http://yoursite.com/2017/03/11/How-to-use-Vim/" data-id="cj7eksn0o0000d8rnutube57h" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://yoursite.com/2017/03/11/How-to-use-Vim/" data-id="cj7emmd6j0002qcrnmxhjex11" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1197,7 +1325,7 @@ J：删除光标所在行行尾的换行符(拼接行)
 
 </div>
 
-    <a data-url="http://yoursite.com/2017/03/09/博客神器MarkdownPad/" data-id="cj7eksn3q000fd8rnayyxxoje" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://yoursite.com/2017/03/09/博客神器MarkdownPad/" data-id="cj7emmd8f0009qcrn6jv5f8ng" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1321,7 +1449,7 @@ J：删除光标所在行行尾的换行符(拼接行)
 
 </div>
 
-    <a data-url="http://yoursite.com/2017/03/01/hello-world/" data-id="cj7eksn3g000dd8rn92smpkri" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://yoursite.com/2017/03/01/hello-world/" data-id="cj7emmd880008qcrnvnjl4kc1" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1412,6 +1540,25 @@ J：删除光标所在行行尾的换行符(拼接行)
                     <li>
                         
                         <div class="item-thumbnail">
+                            <a href="/2017/09/10/K-means聚类/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/2017/09/10/K-means聚类/" class="title">K-means聚类</a></p>
+                            <p class="item-date"><time datetime="2017-09-10T10:52:33.000Z" itemprop="datePublished">2017-09-10</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
                             <a href="/2017/09/04/TensorFlow学习笔记/" class="thumbnail">
     
     
@@ -1485,25 +1632,6 @@ J：删除光标所在行行尾的换行符(拼接行)
                         </div>
                     </li>
                 
-                    <li>
-                        
-                        <div class="item-thumbnail">
-                            <a href="/2017/04/01/python学习小结/" class="thumbnail">
-    
-    
-        <span class="thumbnail-image thumbnail-none"></span>
-    
-</a>
-
-                        </div>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"></p>
-                            <p class="item-title"><a href="/2017/04/01/python学习小结/" class="title">python学习小结</a></p>
-                            <p class="item-date"><time datetime="2017-04-01T02:46:15.000Z" itemprop="datePublished">2017-04-01</time></p>
-                        </div>
-                    </li>
-                
             </ul>
         </div>
     </div>
@@ -1515,7 +1643,7 @@ J：删除光标所在行行尾的换行符(拼接行)
     <div class="widget-wrap">
         <h3 class="widget-title">归档</h3>
         <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">4</span></li></ul>
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">4</span></li></ul>
         </div>
     </div>
 
