@@ -5,15 +5,15 @@
     
     <title>jimmydug&#39;s blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="web,python,linux,noob">
+    <meta name="description" content="Want Success Entremely!!!">
 <meta property="og:type" content="website">
 <meta property="og:title" content="jimmydug's blog">
 <meta property="og:url" content="http://yoursite.com/index.html">
 <meta property="og:site_name" content="jimmydug's blog">
-<meta property="og:description" content="web,python,linux,noob">
+<meta property="og:description" content="Want Success Entremely!!!">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="jimmydug's blog">
-<meta name="twitter:description" content="web,python,linux,noob">
+<meta name="twitter:description" content="Want Success Entremely!!!">
     
 
     
@@ -150,7 +150,7 @@
         <div class="base-info profile-block">
             <img id="avatar" src="/css/images/gd.jpg" />
             <h2 id="name">jimmydug</h2>
-            <h3 id="title">Web python linux</h3>
+            <h3 id="title">Machine Learning Python Scrapy</h3>
             <span id="location"><i class="fa fa-map-marker"></i>hefei, China</span>
             <a id="follow" target="_blank" href="https://github.com/jimmydug/">关注我</a>
         </div>
@@ -244,7 +244,7 @@ class DoubanHotMoviesItem(scrapy.Item):
 
 </div>
 
-    <a data-url="http://yoursite.com/2017/09/08/Scrapy学习日记/" data-id="cj7cph83h0006q8rnf2iudnad" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://yoursite.com/2017/09/08/Scrapy学习日记/" data-id="cj7eij7ck0006zornizmaksi8" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -410,7 +410,7 @@ sess.close()
 
 </div>
 
-    <a data-url="http://yoursite.com/2017/09/04/TensorFlow学习笔记/" data-id="cj7cph8400008q8rnztb8ilv8" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://yoursite.com/2017/09/04/TensorFlow学习笔记/" data-id="cj7eij7da000bzornmrfryw0b" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -520,8 +520,11 @@ sess.close()
         
         <div class="article-entry" itemprop="articleBody">
         
-            
-            
+            <p><p>##基于线性假设下支持向量机模型处理二分类问题(来自python机器学习及实践)</p>
+<p>对于之前的Logistic回归模型，参数的确定要遍历数据集中所有数据，所有的训练样本都对参数有影响，而支持向量机模型中使用的是可以用来真正帮助我们决策的数据点，即支持向量，即那些离分隔超平面最近的那些点，其余的数据点将被丢弃。支持向量的选取采用<strong>序列最小优化算法</strong>(SMO)<br>,这个算法实在看不懂。。。</p></p>
+            <p class="article-more-link">
+                <a href="/2017/08/27/Python机器学习及实战（一）之向量机初步/#more">查看更多</a>
+            </p>
         
         </div>
         <footer class="article-footer">
@@ -531,7 +534,7 @@ sess.close()
 
 </div>
 
-    <a data-url="http://yoursite.com/2017/08/27/Python机器学习及实战（一）之向量机初步/" data-id="cj7cph83d0005q8rn2vfdbk07" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://yoursite.com/2017/08/27/Python机器学习及实战（一）之向量机初步/" data-id="cj7eij7cs0008zornvrns5fjd" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -641,256 +644,11 @@ sess.close()
         
         <div class="article-entry" itemprop="articleBody">
         
-            
-            <h1 id="这是《Python机器学习及实战》一书的学习笔记第一篇"><a href="#这是《Python机器学习及实战》一书的学习笔记第一篇" class="headerlink" title="这是《Python机器学习及实战》一书的学习笔记第一篇"></a>这是<em>《Python机器学习及实战》</em>一书的学习笔记第一篇</h1><p>##线性分类器<br> 线性分类器，是一种假设特征feature与分类结果target/label存在线性关系的模型，通过累加计算每个维度的特征与各自权重的乘积来帮助进行类别决策。</p>
-<p>假设定义x = (x1,x2,x3,…,xn)为n维特征列向量，同时n维列向量w = (w1,w2,w3,…,wn)为对应的权重，或者叫做系数coefficient，同时为了避免其过坐标原点这种硬性假设，增加截距(intercept)b。于是这种线性关系可表示为:<img src="http://chart.googleapis.com/chart?cht=tx&chl=\Large f(w,x,b)=w^Tx %2b b" style="border:none;"></p>
-<p>对于处理二分类问题，我们希望f取值于(0, 1),因此可以用Logistic函数将f映射到(0, 1),函数式为：<img src="http://chart.googleapis.com/chart?cht=tx&chl=\Large g(z)=\frac{1}{1 %2b e^{-z}}" style="border:none;"></p>
-<p>如果将z替换为f，则得到经典的<strong>Logistic回归模型</strong>(虽然叫回归，但是的确是用来处理分类问题)：<br><img src="http://chart.googleapis.com/chart?cht=tx&chl=\Large h_{w, b}(x)=\frac{1}{1 %2b e^{-(w^Tx %2b b)}}" style="border:none;"></p>
-<p>其中w，b即为我们要在训练数据集中学习到的参数</p>
-<pre><code>import pandas as pd   #pandas用于对数据处理和分析
-import numpy as np    #numpy提供向量，矩阵运算功能
-
-# 创建特征列表，No.1为每行数据id，No.2-10为9个feature，No.11为label 
-column_names = [&apos;Sample code number&apos;, &apos;Clump Thickness&apos;, &apos;Uniformity od Cell Size&apos;, &apos;Uniformity of Cell Shape&apos;, &apos;Marginal Adhesion&apos;, &apos;Single Epithelial Cell Size&apos;, &apos;Bare Nuclei&apos;, &apos;Bland Chromatin&apos;, &apos;Normal Nucleoli&apos;, &apos;Mitoses&apos;, &apos;Class&apos;]
-# 使用pandas.read_csv函数从网页读取数据
-data = pd.read_csv(&apos;http://archive.ics.uci.edu/ml/machine-learning-databases/breast-cancer-wisconsin/breast-cancer-wisconsin.data&apos;, names = column_names)
-# 将？用标准缺失值np.nan替换
-data = data.replace(to_replace=&apos;?&apos;, value = np.nan)
-# 丢弃带有缺失值的数据（只要有一个维度缺失）
-data = data.dropna(how=&apos;any&apos;)
-data.shape
-(683, 11)#16个数据样本有缺失值，去除后数据样本总数由699变为683
-# sklearn.cross_validation中的train_test_split模块用于分割数据
-from sklearn.cross_validation import train_test_split
-# 随机采样75%数据样本作训练集，25%作测试集
-X_train, X_test, y_train, y_test = train_test_split(data[column_names[1:10]], data[column_names[10]], test_size=0.25, random_state=33)
-# 训练样本的数量和类别分布
-y_train.value_counts()
-2    344
-4    168
-Name: Class, dtype: int64
-# 测试样本的数量和类别分布
- y_test.value_counts()
-2    100
-4     71
-Name: Class, dtype: int64
-# 导入预处理中的StandardScaler模块来标准化数据
-from sklearn.preprocessing import StandardScaler
-# 导入线性模型中的逻辑斯蒂回归模型和随机梯度下降模型
-from sklearn.linear_model import LogisticRegression
-from sklearn.linear_model import SGDClassifier
-# 标准化数据，保证每个维度的特征数据方差为1，均值为0，使得预测结果不会被某些维度过大的特征值而主导
-ss = StandardScaler()
-X_train = ss.fit_transform(X_train)
-X_test = ss.transform(X_test)
-# 初始化俩种模型
-lr = LogisticRegression()
-sgdc = SGDClassifier()
-lr.fit(X_train, y_train) # fit函数来训练模型参数
-LogisticRegression(C=1.0, class_weight=None, dual=False, fit_intercept=True,
-      intercept_scaling=1, max_iter=100, multi_class=&apos;ovr&apos;, n_jobs=1,
-      penalty=&apos;l2&apos;, random_state=None, solver=&apos;liblinear&apos;, tol=0.0001,
-      verbose=0, warm_start=False)
-# 训练好的模型lr对测试集X_test预测，结果为lr_y_predict
-lr_y_predict = lr.predict(X_test)
-sgdc.fit(X_train, y_train) # 同样随机梯度下降模型训练
-SGDClassifier(alpha=0.0001, average=False, class_weight=None, epsilon=0.1,
-   eta0=0.0, fit_intercept=True, l1_ratio=0.15,
-   learning_rate=&apos;optimal&apos;, loss=&apos;hinge&apos;, n_iter=5, n_jobs=1,
-   penalty=&apos;l2&apos;, power_t=0.5, random_state=None, shuffle=True,
-   verbose=0, warm_start=False)
-# 训练好的模型对X_test预测，结果为sgdc_y_predict
-sgdc_y_predict = sgdc.predict(X_test)
-# 导入classification_report模块对分类器性能进行评价
-from sklearn.metrics import classification_report
-# 使用逻辑斯蒂回归模型自带的评分函数score获得在测试集上的准确性accuracy结果
-print(&apos;accuracy of lr classifier:&apos;, lr.score(X_test, y_test))
-accuracy of lr classifier: 0.988304093567
-# 获得其他三个指标precision，recall，fimeasure的结果
-print(classification_report(y_test, lr_y_predict, target_names=[&apos;Benign&apos;, &apos;Malignant&apos;]))
-         precision    recall  f1-score   support
-
- Benign       0.99      0.99      0.99       100
-Malignant       0.99      0.99      0.99        71
-
-avg / total       0.99      0.99      0.99       171
-# 随机梯度模型同上
-print(&apos;Accuarcy of SGD Classifier:&apos;, sgdc.score(X_test, y_test))
-Accuarcy of SGD Classifier: 0.982456140351
-print(classification_report(y_test, sgdc_y_predict, target_names=[&apos;Benign&apos;, &apos;Malignant&apos;]))
-         precision    recall  f1-score   support
-
- Benign       1.00      0.97      0.98       100
- Malignant       0.96      1.00      0.98        71
-
-avg / total       0.98      0.98      0.98       171
-</code></pre><p>该示例受限于数据特征与分类目标之间存在线性假设，这里使用的俩种模型为LogisticRegression与SGDClassifier，前者对参数的计算采用精确解析的方式，计算时间长但模型性能略高，后者用随机梯度下降算法估计模型参数，计算时间短但性能没有前者高。（虽然名为Regression但是处理的是分类问题）</p>
-<h1 id="数据聚类："><a href="#数据聚类：" class="headerlink" title="数据聚类："></a>数据聚类：</h1><h4 id="K-means算法（K均值）"><a href="#K-means算法（K均值）" class="headerlink" title="K-means算法（K均值）"></a>K-means算法（K均值）</h4><p>K均值算法的主要步骤：</p>
-<pre><code>1.随机设置K个特征空间内的点作为初始的聚类中心。
-2.对于每个数据样例的特征向量，从K个聚类中心里找到距离最近的一个，并把该数据标记为从属这个聚类中心。
-3.根据这些数据新分配的类簇，重新对K个聚类中心位置进行计算。
-4.如果K个聚类中心位置发生变化，则回到2继续循环，否则迭代停止。
-</code></pre><p>K-means算法在手写体数字图像上的使用示例</p>
-<pre><code>import numpy as np
-import matplotlib.pyplot as plt
-import pandas as pd
-# 读取训练数据和测试数据
-digits_train = pd.read_csv(&apos;http://archive.ics.uci.edu/ml/machine-learning-databases/optdigits/optdigits.tra&apos;, header=None)
-digits_test = pd.read_csv(&apos;http://archive.ics.uci.edu/ml/machine-learning-databases/optdigits/optdigits.tes&apos;, header=None)
-# 图像数据由8*8的像素矩阵表示，64个像素维度，还有1个标记维度
-x_train = digits_train[np.arange(64)]
-y_train = digits_train[64]
-
-x_test = digits_test[np.arange(64)]
-y_test = digits_test[64]
-# 导入聚类下的K-means模型
-from sklearn.cluster import KMeans
-# 初始化模型，设置聚类中心个数
-k_means = KMeans(n_clusters=10)
-# 训练模型
-k_means.fit(x_train)
-# 进行预测，判断每个测试图像所属聚类中心
-y_pred = k_means.predict(x_test)
-
-# 对于有标注类别的数据集可以用ARI指标，类似于分类中的Accuracy
-
-# 导入度量函数库
-from sklearn import metrics
-print(metrics.adjusted_rand_score(y_test, y_pred))
-
-# 对于没有标注类别的数据，使用轮廓系数（Silhouette Coefficient），同时兼顾了簇内的凝聚度（Cohesion）和簇之间的分离度（Separation），这里不写出具体计算公式了
-</code></pre><h2 id="利用轮廓系数评价在不同类簇数量K下结果的K-means聚类实例"><a href="#利用轮廓系数评价在不同类簇数量K下结果的K-means聚类实例" class="headerlink" title="利用轮廓系数评价在不同类簇数量K下结果的K-means聚类实例"></a>利用轮廓系数评价在不同类簇数量K下结果的K-means聚类实例</h2><pre><code>import numpy as np
-import matplotlib.pyplot as plt
-import pandas as pd
-from sklearn.cluster import KMeans
-# 导入轮廓系数函数
-from sklearn.metrics import silhouette_score
-# 创建一个窗口并且分割为3*2=6个子图，当前在1号子图作图
-plt.subplot(3,2,1)
-
-x1 = np.array([1,2,3,1,5,6,5,5,6,7,8,9,7,9])
-x2 = np.array([1,3,2,2,8,6,7,6,7,1,2,1,1,3])
-# 14个直角坐标系平面上的初始数据点，zip()函数作用会生出zip对象，需要list(zip())：[(a0, b0), (a1, b1),(a2, b2)],内tuple，外list
-X = np.array(list(zip(x1, x2))).reshape(len(x1), 2)
-# 目的就是将这14个点聚成K个类簇
-X
-&lt;&lt;&lt; array([[1, 1],
-       [2, 3],
-       [3, 2],
-      [1, 2],
-       [5, 8],
-      [6, 6],
-      [5, 7],
-      [5, 6],
-       [6, 7],
-      [7, 1],
-       [8, 2],
-       [9, 1],
-       [7, 1],
-       [9, 3]])
-# 在1号子图做出原始数据点阵的分布
-plt.xlim([0, 10])
-plt.ylim([0, 10])
-
-plt.title(&apos;Instance&apos;)
-# scater()函数用来绘制散点图
-plt.scatter(x1, x2)
-# 定义点的颜色和形状
-colors = [&apos;b&apos;, &apos;g&apos;, &apos;r&apos;, &apos;c&apos;, &apos;m&apos;, &apos;y&apos;, &apos;k&apos;, &apos;b&apos;]
-markers = [&apos;o&apos;, &apos;s&apos;, &apos;D&apos;, &apos;v&apos;, &apos;^&apos;, &apos;p&apos;, &apos;*&apos;, &apos;+&apos;]
-# 不同的聚类中心个数
-clusters = [2, 3, 4, 5, 8]
-subplot_counter = 1
-# 每个聚类中心K值对应的轮廓系数
-sc_scores = []
-
-for t in clusters:
-    subplot_counter += 1
-# 在不同子图内作图
-    plt.subplot(3, 2, subplot_counter)
-
-    kmeans_model = KMeans(n_clusters=t).fit(X)
-
-    for i,l in enumerate(kmeans_model.labels_):
-# 带你们看看i,l的值(K=3)左边是枚举后的索引，右边是每个点被打上的label
-#    i j
-
-#    0 1
-#    1 1
-#    2 1
-#    3 1
-#    4 0
-#    5 0
-#    6 0
-#    7 0
-#    8 0
-#    9 2
-#    10 2
-#    11 2
-#    12 2
-#    13 2
-        plt.plot(x1[i], x2[i], color=colors[l], marker=markers[l], ls = &apos;None&apos;)
-
-    plt.xlim([0, 10])
-    plt.ylim([0, 10])
-# 计算轮廓系数
-    sc_score = silhouette_score(X, kmeans_model.labels_, metric=&apos;euclidean&apos;)
-    sc_scores.append(sc_score)
-# 绘制轮廓系数与不同类簇数量的直观显示图
-    plt.title(&apos;K=%s, silhouette cofficient=%0.03f&apos; %(t, sc_score))
-
-# 绘制轮廓系数与不同类簇数量的关系曲线图
-#另外创建一个窗口
-plt.figure()
-# 画图，传入x,y轴的俩个列表,第3个参数为曲线的颜色和线形
-plt.plot(clusters, sc_scores, &apos;*-&apos;)
-# 设置轴标
-plt.xlabel(&apos;Numbers of Clusters&apos;)
-plt.ylabel(&apos;Silhouette Coefficient Score&apos;)    
-# 显示所有窗口
-plt.show()
-</code></pre><h2 id="K均值算法有2个缺点，一是容易收敛到局部最优解，这是受到初始中心点位置的影响，可以多次设置初始中心点不同位置来改善，二是需要预先设定簇的数量-这个可以像上面一样多设几个K值来比较，记住有俩种方法比较哦"><a href="#K均值算法有2个缺点，一是容易收敛到局部最优解，这是受到初始中心点位置的影响，可以多次设置初始中心点不同位置来改善，二是需要预先设定簇的数量-这个可以像上面一样多设几个K值来比较，记住有俩种方法比较哦" class="headerlink" title="K均值算法有2个缺点，一是容易收敛到局部最优解，这是受到初始中心点位置的影响，可以多次设置初始中心点不同位置来改善，二是需要预先设定簇的数量(这个可以像上面一样多设几个K值来比较，记住有俩种方法比较哦)"></a>K均值算法有2个缺点，一是容易收敛到局部最优解，这是受到初始中心点位置的影响，可以多次设置初始中心点不同位置来改善，二是需要预先设定簇的数量(这个可以像上面一样多设几个K值来比较，记住有俩种方法比较哦)</h2><h2 id="介绍一种“肘部”观察法粗略估计类簇的合理个数"><a href="#介绍一种“肘部”观察法粗略估计类簇的合理个数" class="headerlink" title="介绍一种“肘部”观察法粗略估计类簇的合理个数"></a>介绍一种“肘部”观察法粗略估计类簇的合理个数</h2><pre><code>import numpy as np
-from sklearn.cluster import KMeans
-# 这个是啥
-from scipy.spatial.distance import cdist
-import matplotlib.pyplot as plt
-
-cluster1 = np.random.uniform(0.5, 1.5, (2, 10))
-cluster2 = np.random.uniform(5.5, 6.5, (2, 10))
-cluster3 = np.random.uniform(3.0, 4.0, (2, 10))
-
-&gt;&gt;&gt; cluster1
-    array([[ 1.03314051,  1.03985783,  1.10361846,  0.67811508,  0.5498399 ,
-              1.24802795,  0.86710746,  1.13982963,  1.39469541,  0.68231248],
-              [ 0.74132302,  0.59433527,  1.2077444 ,  1.39111467,  1.06372197,
-             0.61534148,  0.70850745,  0.52107887,  1.00069837,  1.46818705]])
-
-X = np.hstack((cluster1, cluster2, cluster3)).T
-&gt;&gt;&gt; X
-    array([[ 1.03314051,  0.74132302],
-              [ 1.03985783,  0.59433527],
-           [ 1.10361846,  1.2077444 ],
-              [ 0.67811508,  1.39111467],
-                        ……
-
-plt.scatter(X[:, 0], X[:, 1])
-plt.xlabel(&apos;x1&apos;)
-plt.ylabel(&apos;x2&apos;)
-plt.show()
-
-meandistortions = []
-for k in range(1, 10):
-    kmeans = KMeans(n_clusters=k)
-    kmeans.fit(X)
-    meandistortions.append(
-        sum(np.min(cdist(X, kmeans.cluster_centers_, &apos;euclidean&apos;), axis=1))/X.shape[0])
-
-plt.plot(range(1, 10), meandistortions, &apos;bx-&apos;)
-plt.xlabel(&apos;k&apos;)
-plt.ylabel(&apos;Average Dispersion&apos;)
-plt.title(&apos;Selecting k with Elbow Method&apos;)
-plt.show()    
-</code></pre>
+            <p><p>##线性分类器（来自python机器学习及实践）</p>
+<p> 线性分类器，是一种假设特征feature与分类结果target/label存在线性关系的模型，通过累加计算每个维度的特征与各自权重的乘积来帮助进行类别决策。</p></p>
+            <p class="article-more-link">
+                <a href="/2017/08/24/Python机器学习及实战（一）/#more">查看更多</a>
+            </p>
         
         </div>
         <footer class="article-footer">
@@ -900,7 +658,7 @@ plt.show()
 
 </div>
 
-    <a data-url="http://yoursite.com/2017/08/24/Python机器学习及实战（一）/" data-id="cj7cph82a0002q8rn7zb9uv70" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://yoursite.com/2017/08/24/Python机器学习及实战（一）/" data-id="cj7eij7c90004zornyjjt2naq" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1034,7 +792,7 @@ plt.show()
 
 </div>
 
-    <a data-url="http://yoursite.com/2017/04/01/python学习小结/" data-id="cj7cph84p000dq8rnp9uokxf0" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://yoursite.com/2017/04/01/python学习小结/" data-id="cj7eij7dx000izornh4mn3o3o" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1155,7 +913,7 @@ plt.show()
 
 </div>
 
-    <a data-url="http://yoursite.com/2017/03/31/Excel速成/" data-id="cj7cph81i0000q8rnq9i0sb2c" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://yoursite.com/2017/03/31/Excel速成/" data-id="cj7eij7bm0002zornqc7nsn0y" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1285,7 +1043,7 @@ plt.show()
 
 </div>
 
-    <a data-url="http://yoursite.com/2017/03/31/MySql速学速回/" data-id="cj7cph82y0004q8rnxdcmvj89" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://yoursite.com/2017/03/31/MySql速学速回/" data-id="cj7eij7cg0005zorn69iv0gdo" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1426,7 +1184,7 @@ plt.show()
 
 </div>
 
-    <a data-url="http://yoursite.com/2017/03/15/gailvlun/" data-id="cj7cph8440009q8rnwkynxr19" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://yoursite.com/2017/03/15/gailvlun/" data-id="cj7eij7d50009zornl6dl4bda" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1584,7 +1342,7 @@ J：删除光标所在行行尾的换行符(拼接行)
 
 </div>
 
-    <a data-url="http://yoursite.com/2017/03/11/How-to-use-Vim/" data-id="cj7cph81z0001q8rn3qou0jvb" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://yoursite.com/2017/03/11/How-to-use-Vim/" data-id="cj7eij7b00000zornwkppwil9" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1726,7 +1484,7 @@ J：删除光标所在行行尾的换行符(拼接行)
 
 </div>
 
-    <a data-url="http://yoursite.com/2017/03/09/博客神器MarkdownPad/" data-id="cj7cph84w000gq8rn3uf7gt9l" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://yoursite.com/2017/03/09/博客神器MarkdownPad/" data-id="cj7eij7e2000kzornumwbaqzy" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding

@@ -5,22 +5,22 @@
     
     <title>&#39;Python机器学习及实战（一）&#39; | jimmydug&#39;s blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="这是《Python机器学习及实战》一书的学习笔记第一篇##线性分类器 线性分类器，是一种假设特征feature与分类结果target/label存在线性关系的模型，通过累加计算每个维度的特征与各自权重的乘积来帮助进行类别决策。
-假设定义x = (x1,x2,x3,…,xn)为n维特征列向量，同时n维列向量w = (w1,w2,w3,…,wn)为对应的权重，或者叫做系数coefficient，同时为">
+    <meta name="description" content="##线性分类器（来自python机器学习及实践）
+ 线性分类器，是一种假设特征feature与分类结果target/label存在线性关系的模型，通过累加计算每个维度的特征与各自权重的乘积来帮助进行类别决策。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="'Python机器学习及实战（一）'">
 <meta property="og:url" content="http://yoursite.com/2017/08/24/Python机器学习及实战（一）/index.html">
 <meta property="og:site_name" content="jimmydug's blog">
-<meta property="og:description" content="这是《Python机器学习及实战》一书的学习笔记第一篇##线性分类器 线性分类器，是一种假设特征feature与分类结果target/label存在线性关系的模型，通过累加计算每个维度的特征与各自权重的乘积来帮助进行类别决策。
-假设定义x = (x1,x2,x3,…,xn)为n维特征列向量，同时n维列向量w = (w1,w2,w3,…,wn)为对应的权重，或者叫做系数coefficient，同时为">
+<meta property="og:description" content="##线性分类器（来自python机器学习及实践）
+ 线性分类器，是一种假设特征feature与分类结果target/label存在线性关系的模型，通过累加计算每个维度的特征与各自权重的乘积来帮助进行类别决策。">
 <meta property="og:image" content="http://chart.googleapis.com/chart?cht=tx&chl=\Large f(w,x,b)=w^Tx %2b b">
 <meta property="og:image" content="http://chart.googleapis.com/chart?cht=tx&chl=\Large g(z)=\frac{1}{1 %2b e^{-z}}">
 <meta property="og:image" content="http://chart.googleapis.com/chart?cht=tx&chl=\Large h_{w, b}(x)=\frac{1}{1 %2b e^{-(w^Tx %2b b)}}">
-<meta property="og:updated_time" content="2017-09-09T02:41:46.992Z">
+<meta property="og:updated_time" content="2017-09-10T09:03:25.765Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="'Python机器学习及实战（一）'">
-<meta name="twitter:description" content="这是《Python机器学习及实战》一书的学习笔记第一篇##线性分类器 线性分类器，是一种假设特征feature与分类结果target/label存在线性关系的模型，通过累加计算每个维度的特征与各自权重的乘积来帮助进行类别决策。
-假设定义x = (x1,x2,x3,…,xn)为n维特征列向量，同时n维列向量w = (w1,w2,w3,…,wn)为对应的权重，或者叫做系数coefficient，同时为">
+<meta name="twitter:description" content="##线性分类器（来自python机器学习及实践）
+ 线性分类器，是一种假设特征feature与分类结果target/label存在线性关系的模型，通过累加计算每个维度的特征与各自权重的乘积来帮助进行类别决策。">
 <meta name="twitter:image" content="http://chart.googleapis.com/chart?cht=tx&chl=\Large f(w,x,b)=w^Tx %2b b">
     
 
@@ -158,7 +158,7 @@
         <div class="base-info profile-block">
             <img id="avatar" src="/css/images/gd.jpg" />
             <h2 id="name">jimmydug</h2>
-            <h3 id="title">Web python linux</h3>
+            <h3 id="title">Machine Learning Python Scrapy</h3>
             <span id="location"><i class="fa fa-map-marker"></i>hefei, China</span>
             <a id="follow" target="_blank" href="https://github.com/jimmydug/">关注我</a>
         </div>
@@ -251,90 +251,116 @@
         <div class="article-entry" itemprop="articleBody">
         
             
-            <h1 id="这是《Python机器学习及实战》一书的学习笔记第一篇"><a href="#这是《Python机器学习及实战》一书的学习笔记第一篇" class="headerlink" title="这是《Python机器学习及实战》一书的学习笔记第一篇"></a>这是<em>《Python机器学习及实战》</em>一书的学习笔记第一篇</h1><p>##线性分类器<br> 线性分类器，是一种假设特征feature与分类结果target/label存在线性关系的模型，通过累加计算每个维度的特征与各自权重的乘积来帮助进行类别决策。</p>
-<p>假设定义x = (x1,x2,x3,…,xn)为n维特征列向量，同时n维列向量w = (w1,w2,w3,…,wn)为对应的权重，或者叫做系数coefficient，同时为了避免其过坐标原点这种硬性假设，增加截距(intercept)b。于是这种线性关系可表示为:<img src="http://chart.googleapis.com/chart?cht=tx&chl=\Large f(w,x,b)=w^Tx %2b b" style="border:none;"></p>
-<p>对于处理二分类问题，我们希望f取值于(0, 1),因此可以用Logistic函数将f映射到(0, 1),函数式为：<img src="http://chart.googleapis.com/chart?cht=tx&chl=\Large g(z)=\frac{1}{1 %2b e^{-z}}" style="border:none;"></p>
+            <p>##线性分类器（来自python机器学习及实践）</p>
+<p> 线性分类器，是一种假设特征feature与分类结果target/label存在线性关系的模型，通过累加计算每个维度的特征与各自权重的乘积来帮助进行类别决策。</p>
+<a id="more"></a>
+<p>假设定义x = (x1,x2,x3,…,xn)为n维特征<strong>列</strong>向量，同时n维<strong>列</strong>向量w = (w1,w2,w3,…,wn)为对应的<strong>权重</strong>，或者叫做系数coefficient，同时为了避免其过坐标原点这种硬性假设，增加截距(intercept)b。于是这种线性关系可表示为:<img src="http://chart.googleapis.com/chart?cht=tx&chl=\Large f(w,x,b)=w^Tx %2b b" style="border:none;"></p>
+<p>对于处理二分类问题，我们希望f取值于(0, 1),一般以0.5为阈值，因此可以用Logistic函数(也叫Sigmoid函数)将f映射到(0, 1),函数式为：<img src="http://chart.googleapis.com/chart?cht=tx&chl=\Large g(z)=\frac{1}{1 %2b e^{-z}}" style="border:none;"></p>
 <p>如果将z替换为f，则得到经典的<strong>Logistic回归模型</strong>(虽然叫回归，但是的确是用来处理分类问题)：<br><img src="http://chart.googleapis.com/chart?cht=tx&chl=\Large h_{w, b}(x)=\frac{1}{1 %2b e^{-(w^Tx %2b b)}}" style="border:none;"></p>
-<p>其中w，b即为我们要在训练数据集中学习到的参数</p>
-<pre><code>import pandas as pd   #pandas用于对数据处理和分析
+<p>Logistic回归模型处理二分类任务的主要原理：将测试数据集上的特征向量乘以最优化方法得来的回归系数，再将乘积结果求和输入到sigmoid函数中即可，结果大于0.5则预测类别标签为1，否则为0。其中最优化方法有许多，这里使用的是随机梯度上升。</p>
+<p>其中w，b即为我们要在训练数据集中学习到的参数，<a href="http://archive.ics.uci.edu/ml/machine-learning-databases/breast-cancer-wisconsin/breast-cancer-wisconsin.data" target="_blank" rel="external">获取数据点击这里</a>,总体数据(包含train和test)维度为(699, 11),1列为数据id，1列为数据的label/target(2或4)，9列为医学特征(已经量化为1-10)，数据中有16个缺失值，已经用？标出。</p>
+<h3 id="下面将使用Logistic回归和随机梯度下降-Stochastic-Gradient-Descend-俩种线性分类模型来进行良-恶性乳腺肿瘤预测"><a href="#下面将使用Logistic回归和随机梯度下降-Stochastic-Gradient-Descend-俩种线性分类模型来进行良-恶性乳腺肿瘤预测" class="headerlink" title="下面将使用Logistic回归和随机梯度下降(Stochastic Gradient Descend)俩种线性分类模型来进行良/恶性乳腺肿瘤预测"></a>下面将使用<strong>Logistic回归</strong>和<strong>随机梯度下降</strong>(Stochastic Gradient Descend)俩种线性分类模型来进行<strong>良/恶性乳腺肿瘤预测</strong></h3><pre><code>import pandas as pd   #pandas用于对数据处理和分析
 import numpy as np    #numpy提供向量，矩阵运算功能
 
 # 创建特征列表，No.1为每行数据id，No.2-10为9个feature，No.11为label 
 column_names = [&apos;Sample code number&apos;, &apos;Clump Thickness&apos;, &apos;Uniformity od Cell Size&apos;, &apos;Uniformity of Cell Shape&apos;, &apos;Marginal Adhesion&apos;, &apos;Single Epithelial Cell Size&apos;, &apos;Bare Nuclei&apos;, &apos;Bland Chromatin&apos;, &apos;Normal Nucleoli&apos;, &apos;Mitoses&apos;, &apos;Class&apos;]
 # 使用pandas.read_csv函数从网页读取数据
 data = pd.read_csv(&apos;http://archive.ics.uci.edu/ml/machine-learning-databases/breast-cancer-wisconsin/breast-cancer-wisconsin.data&apos;, names = column_names)
-# 将？用标准缺失值np.nan替换
+# 将标准缺失值np.nan替换缺失值？
 data = data.replace(to_replace=&apos;?&apos;, value = np.nan)
 # 丢弃带有缺失值的数据（只要有一个维度缺失）
 data = data.dropna(how=&apos;any&apos;)
-data.shape
-(683, 11)#16个数据样本有缺失值，去除后数据样本总数由699变为683
+#16个数据样本有缺失值，去除后数据样本总数由699变为683
+&lt;&lt;&lt;data.shape
+    (683, 11)
+
 # sklearn.cross_validation中的train_test_split模块用于分割数据
 from sklearn.cross_validation import train_test_split
 # 随机采样75%数据样本作训练集，25%作测试集
 X_train, X_test, y_train, y_test = train_test_split(data[column_names[1:10]], data[column_names[10]], test_size=0.25, random_state=33)
+
 # 训练样本的数量和类别分布
-y_train.value_counts()
-2    344
-4    168
-Name: Class, dtype: int64
+&lt;&lt;&lt;y_train.value_counts()
+    2    344
+    4    168
+    Name: Class, dtype: int64
 # 测试样本的数量和类别分布
- y_test.value_counts()
-2    100
-4     71
-Name: Class, dtype: int64
+&lt;&lt;&lt;y_test.value_counts()
+    2    100
+    4     71
+    Name: Class, dtype: int64
+
 # 导入预处理中的StandardScaler模块来标准化数据
 from sklearn.preprocessing import StandardScaler
+
 # 导入线性模型中的逻辑斯蒂回归模型和随机梯度下降模型
 from sklearn.linear_model import LogisticRegression
 from sklearn.linear_model import SGDClassifier
+
 # 标准化数据，保证每个维度的特征数据方差为1，均值为0，使得预测结果不会被某些维度过大的特征值而主导
 ss = StandardScaler()
+
+# 前者合并fit和transform两个方法，根据X_train设置标准化缩放比例并标准化,后者用之前设置的比例标准化X_test
 X_train = ss.fit_transform(X_train)
 X_test = ss.transform(X_test)
 # 初始化俩种模型
 lr = LogisticRegression()
 sgdc = SGDClassifier()
-lr.fit(X_train, y_train) # fit函数来训练模型参数
-LogisticRegression(C=1.0, class_weight=None, dual=False, fit_intercept=True,
-      intercept_scaling=1, max_iter=100, multi_class=&apos;ovr&apos;, n_jobs=1,
-      penalty=&apos;l2&apos;, random_state=None, solver=&apos;liblinear&apos;, tol=0.0001,
-      verbose=0, warm_start=False)
+
+# fit函数来训练模型参数
+lr.fit(X_train, y_train)
+# 训练显示 
+&lt;&lt;&lt;LogisticRegression(C=1.0, class_weight=None,     dual=False, fit_intercept=True,
+          intercept_scaling=1, max_iter=100, multi_class=&apos;ovr&apos;, n_jobs=1,
+          penalty=&apos;l2&apos;, random_state=None, solver=&apos;liblinear&apos;, tol=0.0001,
+          verbose=0, warm_start=False)
+
 # 训练好的模型lr对测试集X_test预测，结果为lr_y_predict
 lr_y_predict = lr.predict(X_test)
-sgdc.fit(X_train, y_train) # 同样随机梯度下降模型训练
-SGDClassifier(alpha=0.0001, average=False, class_weight=None, epsilon=0.1,
-   eta0=0.0, fit_intercept=True, l1_ratio=0.15,
-   learning_rate=&apos;optimal&apos;, loss=&apos;hinge&apos;, n_iter=5, n_jobs=1,
-   penalty=&apos;l2&apos;, power_t=0.5, random_state=None, shuffle=True,
-   verbose=0, warm_start=False)
+
+# 同样随机梯度下降模型训练
+sgdc.fit(X_train, y_train)
+# 训练显示 
+&lt;&lt;&lt;SGDClassifier(alpha=0.0001, average=False,     class_weight=None, epsilon=0.1,
+           eta0=0.0, fit_intercept=True, l1_ratio=0.15,
+           learning_rate=&apos;optimal&apos;, loss=&apos;hinge&apos;, n_iter=5, n_jobs=1,
+           penalty=&apos;l2&apos;, power_t=0.5, random_state=None, shuffle=True,
+           verbose=0, warm_start=False)
+
 # 训练好的模型对X_test预测，结果为sgdc_y_predict
 sgdc_y_predict = sgdc.predict(X_test)
+
 # 导入classification_report模块对分类器性能进行评价
 from sklearn.metrics import classification_report
+
 # 使用逻辑斯蒂回归模型自带的评分函数score获得在测试集上的准确性accuracy结果
 print(&apos;accuracy of lr classifier:&apos;, lr.score(X_test, y_test))
-accuracy of lr classifier: 0.988304093567
-# 获得其他三个指标precision，recall，fimeasure的结果
+&lt;&lt;&lt;accuracy of lr classifier: 0.988304093567
+
+# 获得其他三个指标精确率precision，召回率recall，F1指数f1measure的结果
 print(classification_report(y_test, lr_y_predict, target_names=[&apos;Benign&apos;, &apos;Malignant&apos;]))
+
          precision    recall  f1-score   support
 
  Benign       0.99      0.99      0.99       100
 Malignant       0.99      0.99      0.99        71
 
 avg / total       0.99      0.99      0.99       171
+
 # 随机梯度模型同上
 print(&apos;Accuarcy of SGD Classifier:&apos;, sgdc.score(X_test, y_test))
-Accuarcy of SGD Classifier: 0.982456140351
+&lt;&lt;&lt;Accuarcy of SGD Classifier: 0.982456140351
+
 print(classification_report(y_test, sgdc_y_predict, target_names=[&apos;Benign&apos;, &apos;Malignant&apos;]))
+
          precision    recall  f1-score   support
 
  Benign       1.00      0.97      0.98       100
  Malignant       0.96      1.00      0.98        71
 
 avg / total       0.98      0.98      0.98       171
-</code></pre><p>该示例受限于数据特征与分类目标之间存在线性假设，这里使用的俩种模型为LogisticRegression与SGDClassifier，前者对参数的计算采用精确解析的方式，计算时间长但模型性能略高，后者用随机梯度下降算法估计模型参数，计算时间短但性能没有前者高。（虽然名为Regression但是处理的是分类问题）</p>
-<h1 id="数据聚类："><a href="#数据聚类：" class="headerlink" title="数据聚类："></a>数据聚类：</h1><h4 id="K-means算法（K均值）"><a href="#K-means算法（K均值）" class="headerlink" title="K-means算法（K均值）"></a>K-means算法（K均值）</h4><p>K均值算法的主要步骤：</p>
+</code></pre><p>线性分类模型受限于数据特征与分类目标之间存在<strong>线性假设</strong>，这里使用的俩种模型为LogisticRegression与SGDClassifier，前者对参数的计算采用精确解析的方式，计算时间长但模型性能略高，后者用随机梯度下降算法估计模型参数，计算时间短但性能没有前者高。（虽然名为Regression但是处理的是分类问题）</p>
+<h2 id="梯度上升法-Grandient"><a href="#梯度上升法-Grandient" class="headerlink" title="梯度上升法(Grandient)"></a>梯度上升法(Grandient)</h2><h1 id="数据聚类："><a href="#数据聚类：" class="headerlink" title="数据聚类："></a>数据聚类：</h1><h4 id="K-means算法（K均值）"><a href="#K-means算法（K均值）" class="headerlink" title="K-means算法（K均值）"></a>K-means算法（K均值）</h4><p>K均值算法的主要步骤：</p>
 <pre><code>1.随机设置K个特征空间内的点作为初始的聚类中心。
 2.对于每个数据样例的特征向量，从K个聚类中心里找到距离最近的一个，并把该数据标记为从属这个聚类中心。
 3.根据这些数据新分配的类簇，重新对K个聚类中心位置进行计算。
@@ -458,7 +484,7 @@ plt.xlabel(&apos;Numbers of Clusters&apos;)
 plt.ylabel(&apos;Silhouette Coefficient Score&apos;)    
 # 显示所有窗口
 plt.show()
-</code></pre><h2 id="K均值算法有2个缺点，一是容易收敛到局部最优解，这是受到初始中心点位置的影响，可以多次设置初始中心点不同位置来改善，二是需要预先设定簇的数量-这个可以像上面一样多设几个K值来比较，记住有俩种方法比较哦"><a href="#K均值算法有2个缺点，一是容易收敛到局部最优解，这是受到初始中心点位置的影响，可以多次设置初始中心点不同位置来改善，二是需要预先设定簇的数量-这个可以像上面一样多设几个K值来比较，记住有俩种方法比较哦" class="headerlink" title="K均值算法有2个缺点，一是容易收敛到局部最优解，这是受到初始中心点位置的影响，可以多次设置初始中心点不同位置来改善，二是需要预先设定簇的数量(这个可以像上面一样多设几个K值来比较，记住有俩种方法比较哦)"></a>K均值算法有2个缺点，一是容易收敛到局部最优解，这是受到初始中心点位置的影响，可以多次设置初始中心点不同位置来改善，二是需要预先设定簇的数量(这个可以像上面一样多设几个K值来比较，记住有俩种方法比较哦)</h2><h2 id="介绍一种“肘部”观察法粗略估计类簇的合理个数"><a href="#介绍一种“肘部”观察法粗略估计类簇的合理个数" class="headerlink" title="介绍一种“肘部”观察法粗略估计类簇的合理个数"></a>介绍一种“肘部”观察法粗略估计类簇的合理个数</h2><pre><code>import numpy as np
+</code></pre><h2 id="K均值算法有2个缺点，一是容易收敛到局部最优解，这是受到初始中心点位置的影响，可以多次设置初始中心点不同位置来改善，二是需要预先设定簇的数量-这个可以像上面一样多设几个K值来比较，记住有俩种方法比较哦"><a href="#K均值算法有2个缺点，一是容易收敛到局部最优解，这是受到初始中心点位置的影响，可以多次设置初始中心点不同位置来改善，二是需要预先设定簇的数量-这个可以像上面一样多设几个K值来比较，记住有俩种方法比较哦" class="headerlink" title="K均值算法有2个缺点，一是容易收敛到局部最优解，这是受到初始中心点位置的影响，可以多次设置初始中心点不同位置来改善，二是需要预先设定簇的数量(这个可以像上面一样多设几个K值来比较，记住有俩种方法比较哦)"></a>K均值算法有2个缺点，一是容易收敛到局部最优解，这是受到初始中心点位置的影响，可以多次设置初始中心点不同位置来改善，二是需要预先设定簇的数量(这个可以像上面一样多设几个K值来比较，记住有俩种方法比较哦)</h2><h2 id="介绍一种“肘部”观察法粗略估计类簇的合理个数-肘部观察法的原理是聚类中心数K从1开始增大时，各数据点离其中心点的距离平方和将减小，且下降速度先增大后减小-即出现一个拐点-一般这个拐点数就是合理的聚类中心数。"><a href="#介绍一种“肘部”观察法粗略估计类簇的合理个数-肘部观察法的原理是聚类中心数K从1开始增大时，各数据点离其中心点的距离平方和将减小，且下降速度先增大后减小-即出现一个拐点-一般这个拐点数就是合理的聚类中心数。" class="headerlink" title="介绍一种“肘部”观察法粗略估计类簇的合理个数,肘部观察法的原理是聚类中心数K从1开始增大时，各数据点离其中心点的距离平方和将减小，且下降速度先增大后减小(即出现一个拐点),一般这个拐点数就是合理的聚类中心数。"></a>介绍一种“肘部”观察法粗略估计类簇的合理个数,肘部观察法的原理是聚类中心数K从1开始增大时，各数据点离其中心点的距离平方和将减小，且下降速度先增大后减小(即出现一个拐点),一般这个拐点数就是合理的聚类中心数。</h2><pre><code>import numpy as np
 from sklearn.cluster import KMeans
 # 这个是啥
 from scipy.spatial.distance import cdist
@@ -499,6 +525,115 @@ plt.xlabel(&apos;k&apos;)
 plt.ylabel(&apos;Average Dispersion&apos;)
 plt.title(&apos;Selecting k with Elbow Method&apos;)
 plt.show()    
+</code></pre><p>##梯度上升(来自&lt;&lt;机器学习实战&gt;&gt;第5章)<br>梯度上升法的思想是：要想找到某函数的最大值，最好的办法是沿着该函数的梯度方向去找，每次沿梯度方向移动一小步(alpha)，每次移动后都会重新计算梯度方向，每次迭代时都会使用所有数据计算梯度方向。</p>
+<p>示例使用了Logistic回归模型，回归系数最优化算法为随机梯度上升法。</p>
+<pre><code>import numpy as np
+#三列参数为w0,w1,w2, w0即为截距b，x0恒为1
+import matplotlib.pyplot as plt
+
+dataMat = np.zeros((100, 3))
+labelMat = np.zeros((100, 1))
+i = 0
+with open(&apos;testSet.txt&apos;, &apos;r&apos;) as f:
+    for each_line in f.readlines():
+        #去俩端空格，返回一个list，split()默认按空格分
+        lineArr = each_line.strip().split()
+        #添加x0,且恒为1，则w0x0恒定
+        dataMat[i] = [1.0, float(lineArr[0]), float(lineArr[1])]
+        labelMat[i] = int(lineArr[2])
+        i+=1
+
+# 接受参数类型和返回一致
+def sigmoid(inX):
+    return 1.0/(1+np.exp(-inX))
+
+#每次梯度上升移动的步长和迭代次数
+alpha = 0.001
+maxCycles = 500
+
+#权重初始参数值为1
+weights = np.ones((3,1))
+for k in range(maxCycles):
+    #(100,3)*(3,1),矩阵乘法为np.dot(),对应元素相乘为*
+    h = sigmoid(np.dot(dataMat, weights))
+    #(100,1)    
+    error = (labelMat - h)            
+    #转置,和.T相同 (3, 100)*(100, 1)
+    weights = weights + alpha * np.dot(dataMat.transpose(), error)
+
+    #.shape和np.shape(Mat)等价
+n = np.shape(dataMat)[0] #100
+x1 = []
+x2 = []
+y1 = []
+y2 = []
+# 遍历每个数据
+for i in range(n):
+    if int(labelMat[i])== 1:
+     # [i,1]和[i][1]等价，不同类型数据分开
+        x1.append(dataMat[i][1]), y1.append(dataMat[i][2])
+    else:
+        x2.append(dataMat[i][1]), y2.append(dataMat[i][2])
+
+fig = plt.figure()
+ax = fig.add_subplot(1,1,1)
+# 画数据散点图
+ax.scatter(x1, y1, s=30, c=&apos;red&apos;, marker=&apos;s&apos;)
+ax.scatter(x2, y2, s=30, c=&apos;green&apos;)
+# 作学习到的分隔线
+x = np.arange(-3.0, 3.0, 0.1)
+y = (-weights[0][0]-weights[1][0]*x)/weights[2][0]
+ax.plot(x, y)
+plt.xlabel(&apos;X1&apos;); plt.ylabel(&apos;X2&apos;);
+plt.show()
+</code></pre><p>##随机梯度上升(SGA)<br>梯度上升法每次更新回归系数时都要遍历整个数据集(进行了矩阵乘法)，随机梯度的思想是一次仅用一个数据来更新回归系数，属于<strong>增量式更新</strong>，也是一种<strong>在线学习算法</strong>。</p>
+<p>这是我自己改进的代码<br>    weights = np.ones((3,1))<br>    m,n = np.shape(dataMat)</p>
+<pre><code># 迭代次数
+numIter=150
+for j in range(numIter):
+# 不断删减的数据索引，每次迭代用过的数据不再用
+    dataIndex = list(range(m))
+    for i in range(m):
+        # alpha不断减小，但不为0
+        alpha = 4/(1.0+j+i)+0.0001 
+
+        # 随机抽取每次计算梯度的幸运样本
+        randIndex = int(np.random.uniform(0,len(dataIndex)))#go to 0 because of the constant
+
+        # h是一维数组(1, 1) (1,3)*(3,1)
+        h = sigmoid(np.dot(dataMat[randIndex], weights))
+        # error也是一个数值
+        error = labelMat[randIndex][0] - h[0]
+        # weights(3,1), error(1,1) dataMat[randIndex]为(1, 3).T
+           weights = weights + alpha * error * dataMat[randIndex].transpose()
+        # 每次迭代中相同数据仅出现一次
+        del(dataIndex[randIndex])
+</code></pre><p>这是书上的代码，改变了weights的维度。不知道为什么我写的和书上的最后的分隔线不一样，我写的有错误，但是我找不到，呜呜呜呜呜</p>
+<pre><code>    m,n = np.shape(dataMat)
+    #这里是(1, n)
+    weights = np.ones(n)
+    #迭代次数   
+for j in range(150):
+    dataIndex = list(range(m))
+    for i in range(m):
+        alpha = 4/(1.0+j+i)+0.0001    
+        randIndex = int(np.random.uniform(0,len(dataIndex)))
+         #这里用*是对应乘，没毛病
+        h = sigmoid(np.sum(dataMat[randIndex]*weights))
+        # h,error都是数值
+           error = labelMat[randIndex] - h
+        weights = weights + alpha * error * dataMat[randIndex]
+        del(dataIndex[randIndex])
+</code></pre><p>随机梯度算法相比来说一是alpha每次迭代过程中都会调整，二是每次更新回归系数的时候样本是随机选取的，所以系数值不会出现周期变化。</p>
+<p>##用Logistic回归进行二分类预测（分类任务）</p>
+<h3 id="Logistic回归模型处理二分类任务的主要原理：将测试数据集上的特征向量乘以最优化方法得来的回归系数，再将乘积结果求和输入到sigmoid函数中即可，结果大于0-5则预测类别标签为1，否则为0。其中最优化方法有许多，这里使用的是随机梯度上升。"><a href="#Logistic回归模型处理二分类任务的主要原理：将测试数据集上的特征向量乘以最优化方法得来的回归系数，再将乘积结果求和输入到sigmoid函数中即可，结果大于0-5则预测类别标签为1，否则为0。其中最优化方法有许多，这里使用的是随机梯度上升。" class="headerlink" title="Logistic回归模型处理二分类任务的主要原理：将测试数据集上的特征向量乘以最优化方法得来的回归系数，再将乘积结果求和输入到sigmoid函数中即可，结果大于0.5则预测类别标签为1，否则为0。其中最优化方法有许多，这里使用的是随机梯度上升。"></a>Logistic回归模型处理二分类任务的主要原理：将测试数据集上的特征向量乘以最优化方法得来的回归系数，再将乘积结果求和输入到sigmoid函数中即可，结果大于0.5则预测类别标签为1，否则为0。其中最优化方法有许多，这里使用的是随机梯度上升。</h3><p>数据集中有部分特征值缺失，对于缺失值作如下处理：</p>
+<pre><code>1.对训练集中特征缺失情况下用0代替，由回归系数公式：
+h = sigmoid(np.sum(dataMat[randIndex]*weights))
+error = labelMat[randIndex] - h
+weights = weights + alpha * error * dataMat[randIndex]
+当dataMat某特征值为0时，那么该特征的系数将不做更新，同时因为sigmoid(0)=0.5,对结果的预测不具有任何倾向性。
+
+2.对于测试数据中出现label标签缺失时，则丢弃该数据，因为很难替代该特征。
 </code></pre>
         
         </div>
@@ -509,7 +644,7 @@ plt.show()
 
 </div>
 
-    <a data-url="http://yoursite.com/2017/08/24/Python机器学习及实战（一）/" data-id="cj7cph82a0002q8rn7zb9uv70" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://yoursite.com/2017/08/24/Python机器学习及实战（一）/" data-id="cj7eij7c90004zornyjjt2naq" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
