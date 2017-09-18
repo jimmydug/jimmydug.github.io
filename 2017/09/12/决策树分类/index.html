@@ -1,0 +1,676 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="决策树分类模型决策树分类模型不要求数据特征和分类目标间遵守线性假设，且常用来描述非线性关系，在搭建多层决策树时，模型在训练时要考虑特征节点的选择顺序。常用的度量方式有信息熵(Entropy)和基尼不纯性(Gini Impurity),sklearn中默认选用后者。注意：各特征值要转化为数值类型！且要了解DecisionTreeClassifier()是怎么转化的。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="决策树分类">
+<meta property="og:url" content="http://yoursite.com/2017/09/12/决策树分类/index.html">
+<meta property="og:site_name" content="jimmydug's blog">
+<meta property="og:description" content="决策树分类模型决策树分类模型不要求数据特征和分类目标间遵守线性假设，且常用来描述非线性关系，在搭建多层决策树时，模型在训练时要考虑特征节点的选择顺序。常用的度量方式有信息熵(Entropy)和基尼不纯性(Gini Impurity),sklearn中默认选用后者。注意：各特征值要转化为数值类型！且要了解DecisionTreeClassifier()是怎么转化的。">
+<meta property="og:image" content="http://chart.googleapis.com/chart?cht=tx&chl=\Large l(x_i)=-log_2p(x_i)">
+<meta property="og:image" content="http://chart.googleapis.com/chart?cht=tx&chl=\Large H=-\sum_{i=1}^{n}p(x_i)log_2p(x_i)">
+<meta property="og:updated_time" content="2017-09-12T07:12:50.132Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="决策树分类">
+<meta name="twitter:description" content="决策树分类模型决策树分类模型不要求数据特征和分类目标间遵守线性假设，且常用来描述非线性关系，在搭建多层决策树时，模型在训练时要考虑特征节点的选择顺序。常用的度量方式有信息熵(Entropy)和基尼不纯性(Gini Impurity),sklearn中默认选用后者。注意：各特征值要转化为数值类型！且要了解DecisionTreeClassifier()是怎么转化的。">
+<meta name="twitter:image" content="http://chart.googleapis.com/chart?cht=tx&chl=\Large l(x_i)=-log_2p(x_i)">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":true},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/09/12/决策树分类/"/>
+
+
+
+
+
+  <title> 决策树分类 | jimmydug's blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">jimmydug's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Love Life&Coding</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/12/决策树分类/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="jimmydug">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="jimmydug's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                决策树分类
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Veröffentlicht am</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-09-12T09:24:14+08:00">
+                2017-09-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="决策树分类模型"><a href="#决策树分类模型" class="headerlink" title="决策树分类模型"></a>决策树分类模型</h1><p>决策树分类模型不要求数据特征和分类目标间遵守<strong>线性假设</strong>，且常用来描述非线性关系，在搭建多层决策树时，模型在训练时要考虑特征节点的选择顺序。常用的度量方式有<strong>信息熵(Entropy)</strong>和<strong>基尼不纯性(Gini Impurity)</strong>,sklearn中默认选用后者。<br>注意：各特征值要转化为<strong>数值</strong>类型！且要了解DecisionTreeClassifier()是怎么转化的。<br><a id="more"></a></p>
+<h2 id="搭建泰坦尼克号生还人群决策树模型"><a href="#搭建泰坦尼克号生还人群决策树模型" class="headerlink" title="搭建泰坦尼克号生还人群决策树模型"></a>搭建泰坦尼克号生还人群决策树模型</h2><p>从网上收集泰坦尼克号乘客数据<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">import pandas as pd</div><div class="line">titanic = pd.read_csv(<span class="string">'http://biostat.mc.vanderbilt.edu/wiki/pub/Main/DataSets/titanic.txt'</span>)</div></pre></td></tr></table></figure></p>
+<p>查看前5行数据，发现数据种类各异，数值型、类别型，甚至还有缺失数据，对dataframe二维数组直接使用info()，查看数据的统计特性<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">titanic.head()</div><div class="line">titanic.info()</div></pre></td></tr></table></figure></p>
+<p>数据的统计信息<br><em><class 'pandas.core.frame.dataframe'=""></class></em><br><em>“Int64Index: 1313 entries, 0 to 1312</em><br><em>“Data columns (total 11 columns):</em><br><em>“row.names    1313 non-null int64</em><br><em>“pclass       1313 non-null object</em><br><em>“survived     1313 non-null int64</em><br><em>“name         1313 non-null object</em><br><em>“age          633 non-null float64</em><br><em>“embarked     821 non-null object</em><br><em>“home.dest    754 non-null object</em><br><em>“room         77 non-null object</em><br><em>“ticket       69 non-null object</em><br><em>“boat         347 non-null object</em><br><em>“sex          1313 non-null object</em><br><em>“dtypes: float64(1), int64(2), object(8)</em><br><em>“memory usage: 123.1+ KB</em><br>共<strong>1313</strong>条数据，且丢失了很多特征，且数据的类型也不一致，要对数据进行预处理才能搭建模型，这里我们认为船舱等级pclass，性别sex，年龄age对最终的生还survived影响最大，所以舍弃其他不重要特征。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"> <span class="comment"># X是dataframe，y是series</span></div><div class="line">X = titanic[[<span class="string">'pclass'</span>, <span class="string">'age'</span>, <span class="string">'sex'</span>]]</div><div class="line">y = titanic[<span class="string">'survived'</span>]</div><div class="line">X.info()</div></pre></td></tr></table></figure></p>
+<p><em><class 'pandas.core.frame.dataframe'=""></class></em><br><em>“Int64Index: 1313 entries, 0 to 1312</em><br><em>“Data columns (total 3 columns):</em><br><em>“pclass    1313 non-null object</em><br><em>“age       633 non-null float64</em><br><em>“sex       1313 non-null object</em><br><em>“dtypes: float64(1), object(2)</em><br><em>“memory usage: 41.0+ KB</em><br>可以看到<strong>age</strong>这个特征只有633个值，我们用<strong>平均数</strong>将它补全对模型偏离造成影响最小.<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">X[<span class="string">'age'</span>].fillna(X[<span class="string">'age'</span>].mean(), inplace=True)</div><div class="line">X.info()</div></pre></td></tr></table></figure></p>
+<p><em>“pclass    1313 non-null object</em><br><em>“age       1313 non-null float64</em><br><em>“sex       1313 non-null object</em><br>分割数据集<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">from sklearn.cross_validation import train_test_split</div><div class="line">X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state = 33)</div></pre></td></tr></table></figure></p>
+<p>另外需要把pclass和sex属性转化为<strong>数值</strong>特征，0/1代替(这是非常关键的一步，不可缺少)<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">from sklearn.feature_extraction import DictVectorizer</div><div class="line">vec = DictVectorizer(sparse=False)</div><div class="line">X_train = vec.fit_transform(X_train.to_dict(orient=<span class="string">'record'</span>))</div><div class="line">X_test = vec.transform(X_test.to_dict(orient=<span class="string">'record'</span>))</div><div class="line"><span class="built_in">print</span>(vec.feature_names_)</div><div class="line">&lt;&lt;&lt;[<span class="string">'age'</span>, <span class="string">'pclass=1st'</span>, <span class="string">'pclass=2nd'</span>, <span class="string">'pclass=3rd'</span>, <span class="string">'sex=female'</span>, <span class="string">'sex=male'</span>]</div><div class="line">X_train[1]</div><div class="line">&lt;&lt;&lt;array([ 48.,   1.,   0.,   0.,   1.,   0.])</div></pre></td></tr></table></figure></p>
+<p>转换特征后，我们发现凡是类别型的特征都单独剥离出来，独成一列特征，数值型的则保持不变。X_train变成一维numpy数组<br>导入决策树分类器模块：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">from sklearn.tree import DecisionTreeClassifier</div><div class="line">dtc = DecisionTreeClassifier() <span class="comment">#默认初始化</span></div><div class="line">dtc.fit(X_train, y_train)  <span class="comment">#模型训练</span></div><div class="line">y_predict = dtc.predict(X_test) <span class="comment">#预测</span></div></pre></td></tr></table></figure></p>
+<p>模型性能评测：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">from sklearn.metrics import classification_report</div><div class="line"><span class="built_in">print</span>(dtc.score(X_test, y_test))</div><div class="line"><span class="built_in">print</span>(classification_report(y_predict, y_test, target_names = [<span class="string">'died'</span>, <span class="string">'survived'</span>]))</div></pre></td></tr></table></figure></p>
+<p>显示：<br>0.781155015198</p>
+<ul>
+<li>precision    recall  f1-score   support*</li>
+</ul>
+<p><em>died           0.91      0.78      0.84       236</em><br><em>survived       0.58      0.80      0.67        93</em></p>
+<p><em>avg / total    0.81      0.78      0.79       329</em></p>
+<h2 id="来自机器学习实战"><a href="#来自机器学习实战" class="headerlink" title="来自机器学习实战"></a>来自<em>机器学习实战</em></h2><p><strong>熵</strong>被定义为信息的期望值，如果待分类的事务可能划分在多个分类之中，则符号Xi的信息定义为<img src="http://chart.googleapis.com/chart?cht=tx&chl=\Large l(x_i)=-log_2p(x_i)" style="border:none;">,p(xi)是选择该分类的概率，为了计算<strong>熵</strong>，我们需要计算所有类别所有可能值包含的信息期望值，通过下面的公式得到<img src="http://chart.googleapis.com/chart?cht=tx&chl=\Large H=-\sum_{i=1}^{n}p(x_i)log_2p(x_i)" style="border:none;">，我们使用所有类标签的发生频率计算类别出现的概率，每次选择一个获取<strong>最大信息增益</strong>的特征作为分类点来划分数据，直到数据集中的所有数据属于同一分类。决策树模型就是这样<strong>递归</strong>搭建起来的，当然也有可能出现过度匹配的情况，这时我们要裁减决策树，合并相邻的无法产生大量信息增益的叶节点。<br><strong>基尼不纯度</strong>简单来说就是从一个数据集中随机选取子项，度量其被错误的分类到其他分组的概率。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/11/kNN-分类/" rel="next" title="kNN(分类)">
+                <i class="fa fa-chevron-left"></i> kNN(分类)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/13/集成(Ensemble)分类模型/" rel="prev" title="集成(Ensemble)分类模型">
+                集成(Ensemble)分类模型 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="jimmydug" />
+          <p class="site-author-name" itemprop="name">jimmydug</p>
+           
+              <p class="site-description motion-element" itemprop="description">Want Success Entremely!!!</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">Artikel</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">Tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#决策树分类模型"><span class="nav-number">1.</span> <span class="nav-text">决策树分类模型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#搭建泰坦尼克号生还人群决策树模型"><span class="nav-number">1.1.</span> <span class="nav-text">搭建泰坦尼克号生还人群决策树模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#来自机器学习实战"><span class="nav-number">1.2.</span> <span class="nav-text">来自机器学习实战</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">jimmydug</span>
+</div>
+
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

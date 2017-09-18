@@ -1,0 +1,663 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="支持向量机(回归)本节介绍的支持向量机(回归)也同样是从训练数据集中选取一部分更加有效的支持向量，只是这少部分的训练样本所提供的并不是类别目标，而是具体的预测数值。本次依然以线性回归预测中的波士顿房价为数据集，用支持向量机回归模型进行预测.(from sklearn.svm import SVR)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="回归之支持向量机">
+<meta property="og:url" content="http://yoursite.com/2017/09/14/回归之支持向量机/index.html">
+<meta property="og:site_name" content="jimmydug's blog">
+<meta property="og:description" content="支持向量机(回归)本节介绍的支持向量机(回归)也同样是从训练数据集中选取一部分更加有效的支持向量，只是这少部分的训练样本所提供的并不是类别目标，而是具体的预测数值。本次依然以线性回归预测中的波士顿房价为数据集，用支持向量机回归模型进行预测.(from sklearn.svm import SVR)">
+<meta property="og:updated_time" content="2017-09-15T03:22:35.266Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="回归之支持向量机">
+<meta name="twitter:description" content="支持向量机(回归)本节介绍的支持向量机(回归)也同样是从训练数据集中选取一部分更加有效的支持向量，只是这少部分的训练样本所提供的并不是类别目标，而是具体的预测数值。本次依然以线性回归预测中的波士顿房价为数据集，用支持向量机回归模型进行预测.(from sklearn.svm import SVR)">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":true},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/09/14/回归之支持向量机/"/>
+
+
+
+
+
+  <title> 回归之支持向量机 | jimmydug's blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">jimmydug's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Love Life&Coding</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/14/回归之支持向量机/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="jimmydug">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="jimmydug's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                回归之支持向量机
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Veröffentlicht am</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-09-14T12:14:10+08:00">
+                2017-09-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="支持向量机-回归"><a href="#支持向量机-回归" class="headerlink" title="支持向量机(回归)"></a>支持向量机(回归)</h1><p>本节介绍的<strong>支持向量机(回归)</strong>也同样是从训练数据集中选取一部分更加有效的支持向量，只是这少部分的训练样本所提供的并不是类别目标，而是具体的预测数值。<br>本次依然以<em>线性回归预测</em>中的波士顿房价为数据集，用支持向量机回归模型进行预测.(from sklearn.svm import SVR)<br><a id="more"></a><br><strong>核函数</strong>的作用：核函数是一种非常有用的特征映射技巧，将原有的特征映射到更高维的空间，从而尽可能达到新的高维空间上线性可分的程度。<br>支持向量机的一大特点：线性不可分？映射到更高维空间上从而线性可分。<br>1.数据预处理，和线性回归预测中程序一致<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">from sklearn.datasets import load_boston</div><div class="line">boston = load_boston()</div><div class="line">from sklearn.cross_validation import train_test_split</div><div class="line">X = boston.data</div><div class="line">y = boston.target</div><div class="line">X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=33)</div><div class="line">from sklearn.preprocessing import StandardScaler</div><div class="line">ss_X = StandardScaler()</div><div class="line">ss_y = StandardScaler()</div><div class="line">X_train = ss_X.fit_transform(X_train)</div><div class="line">X_test = ss_X.transform(X_test)</div><div class="line">y_train = ss_y.fit_transform(y_train) <span class="comment"># 注意预测目标也要标准化处理</span></div><div class="line">y_test = ss_y.transform(y_test)</div></pre></td></tr></table></figure></p>
+<p>2.分别使用线性核函数，多项式核函数，径向基核函数配置的支持向量机回归模型<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">from sklearn.svm import SVR</div><div class="line">linear_svr = SVR(kernel=<span class="string">'linear'</span>)</div><div class="line">linear_svr.fit(X_train, y_train)</div><div class="line">linear_svr_y_predict = linear_svr.predict(X_test)</div><div class="line">poly_svr = SVR(kernel=<span class="string">'poly'</span>)</div><div class="line">poly_svr.fit(X_train, y_train)</div><div class="line">poly_svr_y_predict = poly_svr.predict(X_test)</div><div class="line">rbf_svr = SVR(kernel=<span class="string">'rbf'</span>)</div><div class="line">rbf_svr.fit(X_train, y_train)</div><div class="line">rbf_svr_y_predict = rbf_svr.predict(X_test)</div></pre></td></tr></table></figure></p>
+<p>3.# 使用R-squared、MSE和MAE指标对三种配置的支持向量机（回归）模型在相同测试集上进行性能评估<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 线性核函数</span></div><div class="line">from sklearn.metrics import r2_score, mean_absolute_error, mean_squared_error</div><div class="line"><span class="built_in">print</span>(<span class="string">'R-squared value of linear SVR is'</span>, linear_svr.score(X_test, y_test))</div><div class="line"><span class="built_in">print</span>(<span class="string">'The mean squared error of linear SVR is'</span>, mean_squared_error(ss_y.inverse_transform(y_test), ss_y.inverse_transform(linear_svr_y_predict)))</div><div class="line"><span class="built_in">print</span>(<span class="string">'The mean absoluate error of linear SVR is'</span>, mean_absolute_error(ss_y.inverse_transform(y_test), ss_y.inverse_transform(linear_svr_y_predict)))</div></pre></td></tr></table></figure></p>
+<p><em>R-squared value of linear SVR is 0.65171709743</em><br><em>The mean squared error of linear SVR is 27.0063071393</em><br><em>The mean absoluate error of linear SVR is 3.42667291687</em><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 多项式核函数</span></div><div class="line"><span class="built_in">print</span>(<span class="string">'R-squared value of Poly SVR is'</span>, poly_svr.score(X_test, y_test))</div><div class="line"><span class="built_in">print</span>(<span class="string">'The mean squared error of Poly SVR is'</span>, mean_squared_error(ss_y.inverse_transform(y_test), ss_y.inverse_transform(poly_svr_y_predict)))</div><div class="line"><span class="built_in">print</span>(<span class="string">'The mean absoluate error of Poly SVR is'</span>, mean_absolute_error(ss_y.inverse_transform(y_test), ss_y.inverse_transform(poly_svr_y_predict)))</div></pre></td></tr></table></figure></p>
+<p><em>R-squared value of Poly SVR is 0.404454058003</em><br><em>The mean squared error of Poly SVR is 46.179403314</em><br><em>The mean absoluate error of Poly SVR is 3.75205926674</em><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 径向基核函数</span></div><div class="line"><span class="built_in">print</span>(<span class="string">'R-squared value of RBF SVR is'</span>, rbf_svr.score(X_test, y_test))</div><div class="line"><span class="built_in">print</span>(<span class="string">'The mean squared error of RBF SVR is'</span>, mean_squared_error(ss_y.inverse_transform(y_test), ss_y.inverse_transform(rbf_svr_y_predict)))</div><div class="line"><span class="built_in">print</span>(<span class="string">'The mean absoluate error of RBF SVR is'</span>, mean_absolute_error(ss_y.inverse_transform(y_test), ss_y.inverse_transform(rbf_svr_y_predict)))</div></pre></td></tr></table></figure></p>
+<p><em>R-squared value of RBF SVR is 0.756406891227</em><br><em>The mean squared error of RBF SVR is 18.8885250008</em><br><em>The mean absoluate error of RBF SVR is 2.60756329798</em><br><strong>注意：在该数据集下使用径向基核函数(Radial basis function)下模型的性能最佳！</strong><br>4.感觉这样直接调包有点太没牌面了，哪天要把算法写一遍。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/14/线性回归预测/" rel="next" title="线性回归预测">
+                <i class="fa fa-chevron-left"></i> 线性回归预测
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/15/K近邻之回归(KNR)/" rel="prev" title="K近邻之回归(KNR)">
+                K近邻之回归(KNR) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="jimmydug" />
+          <p class="site-author-name" itemprop="name">jimmydug</p>
+           
+              <p class="site-description motion-element" itemprop="description">Want Success Entremely!!!</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">Artikel</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">Tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#支持向量机-回归"><span class="nav-number">1.</span> <span class="nav-text">支持向量机(回归)</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">jimmydug</span>
+</div>
+
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

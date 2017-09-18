@@ -1,0 +1,676 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="线性回归器在用于分类的线性模型中，为了便于将原本在实数域上的计算结果映射到（0，1）区间，引入了逻辑斯蒂函数，而在线性回归问题上，由于预测目标直接是实数域上的数值，因此优化目标即是最最小化预测结果与真实值之间的差异。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="线性回归预测">
+<meta property="og:url" content="http://yoursite.com/2017/09/14/线性回归预测/index.html">
+<meta property="og:site_name" content="jimmydug's blog">
+<meta property="og:description" content="线性回归器在用于分类的线性模型中，为了便于将原本在实数域上的计算结果映射到（0，1）区间，引入了逻辑斯蒂函数，而在线性回归问题上，由于预测目标直接是实数域上的数值，因此优化目标即是最最小化预测结果与真实值之间的差异。">
+<meta property="og:image" content="http://chart.googleapis.com/chart?cht=tx&chl=\Large argmin_{w,b}L(w, b)=argmin_{w,b}\sum_{k=1}^m(f(w,x_k,b)-y^k)^2">
+<meta property="og:image" content="http://chart.googleapis.com/chart?cht=tx&chl=\Large MAE = \frac{\sum_{i=1}^m|y^i-y|}{m}">
+<meta property="og:image" content="http://chart.googleapis.com/chart?cht=tx&chl=\Large MSE = \frac{\sum_{i=1}^m(y^i-y)^2}{m}">
+<meta property="og:image" content="http://chart.googleapis.com/chart?cht=tx&chl=\Large SST = \sum_{i=1}^m(y^i-y^-)^2}">
+<meta property="og:image" content="http://chart.googleapis.com/chart?cht=tx&chl=\Large SSE=\sum_{i=1}^m(y^i-y^\^)2">
+<meta property="og:image" content="http://chart.googleapis.com/chart?cht=tx&chl=\Large R^2 = 1-\frac{SSE}{SST}">
+<meta property="og:image" content="http://chart.googleapis.com/chart?cht=tx&chl=\Large y^-">
+<meta property="og:image" content="http://chart.googleapis.com/chart?cht=tx&chl=\Large y^\^">
+<meta property="og:updated_time" content="2017-09-18T01:02:14.728Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="线性回归预测">
+<meta name="twitter:description" content="线性回归器在用于分类的线性模型中，为了便于将原本在实数域上的计算结果映射到（0，1）区间，引入了逻辑斯蒂函数，而在线性回归问题上，由于预测目标直接是实数域上的数值，因此优化目标即是最最小化预测结果与真实值之间的差异。">
+<meta name="twitter:image" content="http://chart.googleapis.com/chart?cht=tx&chl=\Large argmin_{w,b}L(w, b)=argmin_{w,b}\sum_{k=1}^m(f(w,x_k,b)-y^k)^2">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":true},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/09/14/线性回归预测/"/>
+
+
+
+
+
+  <title> 线性回归预测 | jimmydug's blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">jimmydug's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Love Life&Coding</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/14/线性回归预测/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="jimmydug">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="jimmydug's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                线性回归预测
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Veröffentlicht am</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-09-14T09:23:39+08:00">
+                2017-09-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="线性回归器"><a href="#线性回归器" class="headerlink" title="线性回归器"></a>线性回归器</h1><p>在用于分类的线性模型中，为了便于将原本在<strong>实数域</strong>上的计算结果映射到<strong>（0，1）</strong>区间，引入了<strong>逻辑斯蒂函数</strong>，而在线性回归问题上，由于预测目标直接是实数域上的数值，因此优化目标即是最<strong>最小化预测结果与真实值之间的差异</strong>。<br><a id="more"></a><br>当有m个用于训练的特征向量X和对应的回归目标y时，我们希望线性回归模型可以<strong>最小二乘</strong>(Generalized Least Squares)预测的<strong>损失函数</strong>L(w, b),线性回归器的常见优化目标式为：<img src="http://chart.googleapis.com/chart?cht=tx&chl=\Large argmin_{w,b}L(w, b)=argmin_{w,b}\sum_{k=1}^m(f(w,x_k,b)-y^k)^2" style="border:none;">,同样系数w和截距b是模型要从训练学习的参数。</p>
+<h2 id="使用线性回归模型-LinearRegression-和随机梯度下降回归模型-SGDRegressor-对波士顿地区房价预测"><a href="#使用线性回归模型-LinearRegression-和随机梯度下降回归模型-SGDRegressor-对波士顿地区房价预测" class="headerlink" title="使用线性回归模型(LinearRegression)和随机梯度下降回归模型(SGDRegressor)对波士顿地区房价预测"></a>使用线性回归模型(LinearRegression)和随机梯度下降回归模型(SGDRegressor)对波士顿地区房价预测</h2><p>1.获取数据<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">from sklearn.datasets import load_boston</div><div class="line">boston = load_boston()</div><div class="line"><span class="built_in">print</span>(boston.DESCR)</div></pre></td></tr></table></figure></p>
+<p>打印数据描述可知数据集有506条数据，13个特征和1个目标值，无缺失值。<br>2.切割数据集<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">from sklearn.cross_validation import train_test_split</div><div class="line">X = boston.data</div><div class="line">y = boston.target</div><div class="line">X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=33)</div></pre></td></tr></table></figure></p>
+<p>3.查看回归目标值之间的差异<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">print</span>(<span class="string">"The max target value is"</span>, boston.target.max())</div><div class="line"><span class="built_in">print</span>(<span class="string">"The min target value is"</span>, boston.target.min())</div><div class="line"><span class="built_in">print</span>(<span class="string">"The average target value is"</span>, boston.target.mean())</div></pre></td></tr></table></figure></p>
+<p><em>The max target value is 50.0</em><br><em>The min target value is 5.0</em><br><em>The average target value is 22.5328063241</em><br>4.标准化<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">from sklearn.preprocessing import StandardScaler</div><div class="line">ss_X = StandardScaler()</div><div class="line">ss_y = StandardScaler()</div><div class="line">X_train = ss_X.fit_transform(X_train)</div><div class="line">X_test = ss_X.transform(X_test)</div><div class="line">y_train = ss_y.fit_transform(y_train)</div><div class="line">y_test = ss_y.transform(y_test)</div></pre></td></tr></table></figure></p>
+<p>不同于分类，这里我们发现回归目标值间差异也很大，所以要对特征值和回归目标值都进行标准化处理。(原来的数据可由ss_y.inverse_transform(y_test)方法得到)<br>5.使用线性回归模型(LinearRegression)<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">from sklearn.linear_model import LinearRegression</div><div class="line">lr = LinearRegression()</div><div class="line">lr.fit(X_train, y_train)</div><div class="line">lr_y_predict = lr.predict(X_test)</div></pre></td></tr></table></figure></p>
+<p>6.使用随机梯度下降回归模型(SGDRegressor)<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">from sklearn.linear_model import SGDRegressor</div><div class="line">sgdr = SGDRegressor()</div><div class="line">sgdr.fit(X_train, y_train)</div><div class="line">sgdr_y_predict = sgdr.predict(X_test)</div></pre></td></tr></table></figure></p>
+<p>回归预测中，我们希望衡量预测值和真实值之间的差距，其中最直观的评价指标包括：<br>1.平均绝对误差(Mean Absolute Error,MAE),<img src="http://chart.googleapis.com/chart?cht=tx&chl=\Large MAE = \frac{\sum_{i=1}^m|y^i-y|}{m}" style="border:none;"><br>2.均方误差(Mean Squared Error,MSE),<img src="http://chart.googleapis.com/chart?cht=tx&chl=\Large MSE = \frac{\sum_{i=1}^m(y^i-y)^2}{m}" style="border:none;"><br>显然，差值的绝对值和平方，都会随着不同的预测问题而变化巨大，欠缺在不同问题中的可比性，因此回归问题中还有一种叫做<strong>R-squared</strong>的评价方式，其既考量了回归值和真实值的差异，同时也兼顾了问题本身真实值的变动。<img src="http://chart.googleapis.com/chart?cht=tx&chl=\Large SST = \sum_{i=1}^m(y^i-y^-)^2}" style="border:none;"><img src="http://chart.googleapis.com/chart?cht=tx&chl=\Large SSE=\sum_{i=1}^m(y^i-y^\^)2" style="border:none;">，<img src="http://chart.googleapis.com/chart?cht=tx&chl=\Large R^2 = 1-\frac{SSE}{SST}" style="border:none;">,其中<img src="http://chart.googleapis.com/chart?cht=tx&chl=\Large y^-" style="border:none;">是真实数据的<strong>平均值</strong>，<img src="http://chart.googleapis.com/chart?cht=tx&chl=\Large y^\^" style="border:none;">是模型的<strong>预测值</strong>。显然R2值越大越好，y减去y尖是残差，是回归模型不能解释的部分。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">from sklearn.metrics import r2_score, mean_squared_error, mean_absolute_error</div><div class="line"><span class="comment"># 使用模型自带的评价函数</span></div><div class="line"><span class="built_in">print</span>(<span class="string">'The value of default measurement of LinearRegression is'</span>, lr.score(X_test, y_test))</div><div class="line"><span class="comment"># 使用r2_score模块，并输出评估结果</span></div><div class="line"><span class="built_in">print</span>(<span class="string">'The value of R-squared of LinearRegression is'</span>, r2_score(y_test, lr_y_predict))</div><div class="line"><span class="comment"># 使用mean_squared_error模块，并输出评估结果</span></div><div class="line"><span class="built_in">print</span>(<span class="string">'The mean squared error of LinearRegression is'</span>, mean_squared_error(ss_y.inverse_transform(y_test), ss_y.inverse_transform(lr_y_predict)))</div><div class="line"><span class="comment"># 使用mean_absolute_error模块，并输出评估结果。</span></div><div class="line"><span class="built_in">print</span>(<span class="string">'The mean absoluate error of LinearRegression is'</span>, mean_absolute_error(ss_y.inverse_transform(y_test), ss_y.inverse_transform(lr_y_predict)))</div></pre></td></tr></table></figure></p>
+<p><em>The value of default measurement of LinearRegression is 0.6763403831</em><br><em>The value of R-squared of LinearRegression is 0.6763403831</em><br><em>The mean squared error of LinearRegression is 25.0969856921</em><br><em>The mean absoluate error of LinearRegression is 3.5261239964</em><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">print</span>(<span class="string">'The value of default measurement of SGDRegressor is'</span>, sgdr.score(X_test, y_test))    </div><div class="line"><span class="built_in">print</span>(<span class="string">'The value of R-squared of SGDRegressor is'</span>, r2_score(y_test, sgdr_y_predict))</div><div class="line"><span class="built_in">print</span>(<span class="string">'The mean squared error of SGDRegressor is'</span>, mean_squared_error(ss_y.inverse_transform(y_test), ss_y.inverse_transform(sgdr_y_predict)))</div><div class="line"><span class="built_in">print</span>(<span class="string">'The mean absoluate error of SGDRegressor is'</span>, mean_absolute_error(ss_y.inverse_transform(y_test), ss_y.inverse_transform(sgdr_y_predict)))</div></pre></td></tr></table></figure></p>
+<p><em>The value of default measurement of SGDRegressor is 0.655745693209</em><br><em>The value of R-squared of SGDRegressor is 0.655745693209</em><br><em>The mean squared error of SGDRegressor is 26.6939246073</em><br><em>The mean absoluate error of SGDRegressor is 3.56453311958</em><br>由上可得出<strong>回归模型</strong>自带的评估函数就是指<strong>R-Squared</strong>，俩种调用方式本质上是一样的，同时，在计算MAE，和MSE时要用.inverse_transform()求得标准化之前的数据，而计算R2时则不用，看R2的定义公式即可知。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/13/集成(Ensemble)分类模型/" rel="next" title="集成(Ensemble)分类模型">
+                <i class="fa fa-chevron-left"></i> 集成(Ensemble)分类模型
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/14/回归之支持向量机/" rel="prev" title="回归之支持向量机">
+                回归之支持向量机 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="jimmydug" />
+          <p class="site-author-name" itemprop="name">jimmydug</p>
+           
+              <p class="site-description motion-element" itemprop="description">Want Success Entremely!!!</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">Artikel</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">Tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#线性回归器"><span class="nav-number">1.</span> <span class="nav-text">线性回归器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#使用线性回归模型-LinearRegression-和随机梯度下降回归模型-SGDRegressor-对波士顿地区房价预测"><span class="nav-number">1.1.</span> <span class="nav-text">使用线性回归模型(LinearRegression)和随机梯度下降回归模型(SGDRegressor)对波士顿地区房价预测</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">jimmydug</span>
+</div>
+
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

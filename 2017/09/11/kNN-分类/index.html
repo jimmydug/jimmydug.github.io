@@ -1,0 +1,672 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="kNN(分类)kNN(k nearest neighborhood),简单的说就是对每一个待分类的数据，在已分类的数据集中找出k个特征空间中距离最近的样本作为参考，从这k个参考样本的标签集中选择出现频率最高的那一个作为分类结果，可见kNN分类算法中没有训练模型的过程，也没有要学习的参数，且每一次使用模型进行分类时都要与已分类数据集中的所有数据进行计算,当数据集很大时，极其占用资源且耗时，k近邻算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="kNN(分类)">
+<meta property="og:url" content="http://yoursite.com/2017/09/11/kNN-分类/index.html">
+<meta property="og:site_name" content="jimmydug's blog">
+<meta property="og:description" content="kNN(分类)kNN(k nearest neighborhood),简单的说就是对每一个待分类的数据，在已分类的数据集中找出k个特征空间中距离最近的样本作为参考，从这k个参考样本的标签集中选择出现频率最高的那一个作为分类结果，可见kNN分类算法中没有训练模型的过程，也没有要学习的参数，且每一次使用模型进行分类时都要与已分类数据集中的所有数据进行计算,当数据集很大时，极其占用资源且耗时，k近邻算法">
+<meta property="og:image" content="http://chart.googleapis.com/chart?cht=tx&chl=\Large \sqrt{(A-C)^2 %2b (B-D)^2}">
+<meta property="og:image" content="http://chart.googleapis.com/chart?cht=tx&chl=\Large x_n = \frac{x_n-x_{min}}{x_{max} - x_{min}}">
+<meta property="og:image" content="http://chart.googleapis.com/chart?cht=tx&chl=\Large x_{min},{x_{max}">
+<meta property="og:updated_time" content="2017-09-11T07:21:08.280Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="kNN(分类)">
+<meta name="twitter:description" content="kNN(分类)kNN(k nearest neighborhood),简单的说就是对每一个待分类的数据，在已分类的数据集中找出k个特征空间中距离最近的样本作为参考，从这k个参考样本的标签集中选择出现频率最高的那一个作为分类结果，可见kNN分类算法中没有训练模型的过程，也没有要学习的参数，且每一次使用模型进行分类时都要与已分类数据集中的所有数据进行计算,当数据集很大时，极其占用资源且耗时，k近邻算法">
+<meta name="twitter:image" content="http://chart.googleapis.com/chart?cht=tx&chl=\Large \sqrt{(A-C)^2 %2b (B-D)^2}">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":true},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/09/11/kNN-分类/"/>
+
+
+
+
+
+  <title> kNN(分类) | jimmydug's blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">jimmydug's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Love Life&Coding</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/11/kNN-分类/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="jimmydug">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="jimmydug's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                kNN(分类)
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Veröffentlicht am</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-09-11T13:23:42+08:00">
+                2017-09-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="kNN-分类"><a href="#kNN-分类" class="headerlink" title="kNN(分类)"></a>kNN(分类)</h1><p>kNN(k nearest neighborhood),简单的说就是对每一个待分类的数据，在已分类的数据集中找出k个<strong>特征空间中距离</strong>最近的样本作为参考，从这k个参考样本的标签集中选择出现频率最高的那一个作为分类结果，可见kNN分类算法中没有训练模型的过程，也没有要学习的参数，且每一次使用模型进行分类时都要与已分类数据集中的所有数据进行计算,当数据集很大时，极其占用资源且耗时，k近邻算法的另一个缺陷是他无法给出任何数据的基础结构信息，我们也不知道平均实例样本和典型实例样本有什么特征，此外k的取值不同也会对模型的性能产生一定的影响。<br><a id="more"></a></p>
+<h2 id="利用K近邻算法对生物物种进行分类"><a href="#利用K近邻算法对生物物种进行分类" class="headerlink" title="利用K近邻算法对生物物种进行分类"></a>利用K近邻算法对生物物种进行分类</h2><p>从sklearn.datasets导入iris数据加载器并读取数据存入变量iris<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">from sklearn.datasets import load_iris</div><div class="line">iris = load_iris()</div></pre></td></tr></table></figure></p>
+<p>查验数据规模<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">iris.data.shape</div><div class="line">&lt;&lt;&lt;(150, 4)</div><div class="line"><span class="built_in">type</span>(iris)</div><div class="line">&lt;class <span class="string">'sklearn.datasets.base.Bunch'</span>&gt;</div></pre></td></tr></table></figure></p>
+<p>通过<strong>print(iris.DESCR)</strong>查看数据说明可知数据集共有150个数据，特征维度4，分类labels为3，无缺失值等其他更详细的信息(iris.data是一个numpy数组对象，仅包含4个特征维度信息，类别标签在iris.target中，标签名在iris.target_names中)<br>从sklearn.cross_validation里选择导入train_test_split用于数据分割<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">from sklearn.cross_validation import train_test_split</div></pre></td></tr></table></figure></p>
+<p>从使用train_test_split，利用随机种子random_state采样25%的数据作为测试集<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">X_train, X_test, y_train, y_test = train_test_split(iris.data, iris.target, test_size=0.25, random_state=33)</div></pre></td></tr></table></figure></p>
+<p>从sklearn.preprocessing里导入数据标准化模块对训练和测试的特征数据进行标准化<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">from sklearn.preprocessing import StandardScaler</div><div class="line">ss=StandardScaler()</div><div class="line">X_train = ss.fit_transform(X_train)</div><div class="line">X_test = ss.transform(X_test)</div></pre></td></tr></table></figure></p>
+<p>从sklearn.neighbors里导入KNeighborsClassifier即K近邻分类器,进行训练并预测，预测结果存在y_predict中<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">from sklearn.neighbors import KNeighborsClassifier</div><div class="line">knc = KNeighborsClassifier()</div><div class="line">knc.fit(X_train, y_train)</div><div class="line">&lt;&lt;&lt;KNeighborsClassifier(algorithm=<span class="string">'auto'</span>, leaf_size=30, metric=<span class="string">'minkowski'</span>,</div><div class="line">           metric_params=None, n_jobs=1, n_neighbors=5, p=2,</div><div class="line">           weights=<span class="string">'uniform'</span>)</div><div class="line">y_predict = knc.predict(X_test)</div></pre></td></tr></table></figure></p>
+<p>使用模型自带的评估函数进行准确性测评<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">print</span>(<span class="string">'The accuracy of K-Nearest Neighbor Classifier is'</span>, knc.score(X_test, y_test))</div><div class="line">&lt;&lt;&lt;The accuracy of K-Nearest Neighbor Classifier is 0.894736842105</div></pre></td></tr></table></figure></p>
+<p>依然使用sklearn.metrics里面的classification_report模块对预测结果做更加详细的分析<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">from sklearn.metrics import classification_report</div><div class="line"><span class="built_in">print</span>(classification_report(y_test, y_predict, target_names=iris.target_names))</div><div class="line">&lt;&lt;&lt;             precision    recall  f1-score   support</div><div class="line">      </div><div class="line">           setosa       1.00      1.00      1.00         8</div><div class="line">       versicolor       0.73      1.00      0.85        11</div><div class="line">        virginica       1.00      0.79      0.88        19</div><div class="line">      </div><div class="line">       avg / total       0.92      0.89      0.90       38</div></pre></td></tr></table></figure></p>
+<p>看上去效果不错，但是可以通过修改K值提高模型的预测能力，上面的代码中我没有设置K值，默认为5，当把K改为1时只需要knc = KNeighborsClassifier(n_neighbors=1)，再进行预测会发现模型性能提高了(这不是说明K值越小越好哦)。</p>
+<h2 id="关于特征空间距离计算"><a href="#关于特征空间距离计算" class="headerlink" title="关于特征空间距离计算"></a>关于特征空间距离计算</h2><p>在K近邻分类模型中最重要的一步就是关于俩个向量特征空间距离的计算，一般使用<strong>欧式距离</strong>，即点(A, B)和点(C, D)之间的距离为<img src="http://chart.googleapis.com/chart?cht=tx&chl=\Large \sqrt{(A-C)^2 %2b (B-D)^2}" style="border:none;">，此外，各维度的数据取值范围不一样，有的普遍取值很大，如每年的航程公里数，有的普遍很小，如每年去医院的次数，所以要对各维度数据作<strong>归一化</strong>处理，sklearn中直接用<em>StandardScaler</em>模块处理，但在<em>机器学习实战</em>一书中使用方法为<img src="http://chart.googleapis.com/chart?cht=tx&chl=\Large x_n = \frac{x_n-x_{min}}{x_{max} - x_{min}}" style="border:none;">其中<img src="http://chart.googleapis.com/chart?cht=tx&chl=\Large x_{min},{x_{max}" style="border:none;">分别是<strong>每列</strong>中的最小值和最大值。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/11/朴素贝叶斯NaiveBayes/" rel="next" title="朴素贝叶斯NaiveBayes">
+                <i class="fa fa-chevron-left"></i> 朴素贝叶斯NaiveBayes
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/12/决策树分类/" rel="prev" title="决策树分类">
+                决策树分类 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="jimmydug" />
+          <p class="site-author-name" itemprop="name">jimmydug</p>
+           
+              <p class="site-description motion-element" itemprop="description">Want Success Entremely!!!</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">Artikel</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">Tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#kNN-分类"><span class="nav-number">1.</span> <span class="nav-text">kNN(分类)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#利用K近邻算法对生物物种进行分类"><span class="nav-number">1.1.</span> <span class="nav-text">利用K近邻算法对生物物种进行分类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关于特征空间距离计算"><span class="nav-number">1.2.</span> <span class="nav-text">关于特征空间距离计算</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">jimmydug</span>
+</div>
+
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

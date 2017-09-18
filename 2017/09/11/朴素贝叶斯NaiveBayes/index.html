@@ -1,0 +1,675 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="NaiveBayes&amp;emsp;&amp;emsp;与之前介绍的俩个基于线性假设的模型(线性分类器和支持向量机分类器)不一样，朴素贝叶斯分类器的理论基础是贝叶斯理论。朴素贝叶斯分类器会单独考量每一维度特征被分类的条件概率，进而综合这些概率并对该特征向量做出分类预测，所以该模型的前提假设是各个维度上的特征被分类的条件概率之间是相互独立的，也就是指各维度特征间没有很强的相关性。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="朴素贝叶斯NaiveBayes">
+<meta property="og:url" content="http://yoursite.com/2017/09/11/朴素贝叶斯NaiveBayes/index.html">
+<meta property="og:site_name" content="jimmydug's blog">
+<meta property="og:description" content="NaiveBayes&amp;emsp;&amp;emsp;与之前介绍的俩个基于线性假设的模型(线性分类器和支持向量机分类器)不一样，朴素贝叶斯分类器的理论基础是贝叶斯理论。朴素贝叶斯分类器会单独考量每一维度特征被分类的条件概率，进而综合这些概率并对该特征向量做出分类预测，所以该模型的前提假设是各个维度上的特征被分类的条件概率之间是相互独立的，也就是指各维度特征间没有很强的相关性。">
+<meta property="og:image" content="http://chart.googleapis.com/chart?cht=tx&chl=\Large P(c_i|x)=\frac{P(x|c_i)*P(c_i)}{P(x)}">
+<meta property="og:image" content="http://chart.googleapis.com/chart?cht=tx&chl=\Large P((x_1,x_2,\cdots,x_n)|y)=P(x_1|y)P(x_2|(x_1,y))P(x_3|(x_1,x2,y))\cdots P(x_n|(x1,x2\cdots x_n,y))">
+<meta property="og:image" content="http://chart.googleapis.com/chart?cht=tx&chl=\Large P((x_1,x_2,\cdots,x_n)|y)=P(x_1|y)P(x_2|y)P(x_3|y)\cdots P(x_n|y)">
+<meta property="og:updated_time" content="2017-09-11T09:59:20.757Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="朴素贝叶斯NaiveBayes">
+<meta name="twitter:description" content="NaiveBayes&amp;emsp;&amp;emsp;与之前介绍的俩个基于线性假设的模型(线性分类器和支持向量机分类器)不一样，朴素贝叶斯分类器的理论基础是贝叶斯理论。朴素贝叶斯分类器会单独考量每一维度特征被分类的条件概率，进而综合这些概率并对该特征向量做出分类预测，所以该模型的前提假设是各个维度上的特征被分类的条件概率之间是相互独立的，也就是指各维度特征间没有很强的相关性。">
+<meta name="twitter:image" content="http://chart.googleapis.com/chart?cht=tx&chl=\Large P(c_i|x)=\frac{P(x|c_i)*P(c_i)}{P(x)}">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":true},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/09/11/朴素贝叶斯NaiveBayes/"/>
+
+
+
+
+
+  <title> 朴素贝叶斯NaiveBayes | jimmydug's blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">jimmydug's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Love Life&Coding</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/11/朴素贝叶斯NaiveBayes/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="jimmydug">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="jimmydug's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                朴素贝叶斯NaiveBayes
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Veröffentlicht am</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-09-11T08:48:43+08:00">
+                2017-09-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="NaiveBayes"><a href="#NaiveBayes" class="headerlink" title="NaiveBayes"></a>NaiveBayes</h1><p>&emsp;&emsp;与之前介绍的俩个基于<strong>线性假设</strong>的模型(<em>线性分类器和支持向量机分类器</em>)不一样，朴素贝叶斯分类器的理论基础是贝叶斯理论。朴素贝叶斯分类器会单独考量每一维度特征被分类的条件概率，进而综合这些概率并对该特征向量做出分类预测，所以该模型的前提假设是<strong>各个维度上的特征被分类的条件概率之间是相互独立的</strong>，也就是指各维度特征间没有很强的相关性。<br><a id="more"></a><br>&emsp;&emsp;朴素贝叶斯模型在<strong>文本分类</strong>的任务上应用广泛，包括互联网新闻的分类，垃圾邮件的筛选等。下面将使用经典的<strong>20</strong>类新闻样本作为样例数据演示朴素贝叶斯分类模型(sklearn包中提供了获取数据的API)<br>获取数据<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">从sklearn.datasets里导入新闻数据抓取器fetch_20newsgroups</div><div class="line">from sklearn.datasets import fetch_20newsgroups</div><div class="line">需要即时从互联网下载数据</div><div class="line">news = fetch_20newsgroups(subset=<span class="string">'all'</span>)</div></pre></td></tr></table></figure></p>
+<p>查验数据规模和细节,以第一个新闻数据为例<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">print</span>(len(news.data))</div><div class="line"><span class="built_in">print</span>(news.data[0])</div></pre></td></tr></table></figure></p>
+<p><em>18846</em><br><em>From: Mamatha Devineni Ratnam <a href="&#x6d;&#x61;&#105;&#108;&#x74;&#x6f;&#58;&#109;&#114;&#x34;&#55;&#43;&#x40;&#97;&#x6e;&#x64;&#x72;&#101;&#x77;&#x2e;&#99;&#109;&#x75;&#46;&#x65;&#x64;&#x75;">&#109;&#114;&#x34;&#55;&#43;&#x40;&#97;&#x6e;&#x64;&#x72;&#101;&#x77;&#x2e;&#99;&#109;&#x75;&#46;&#x65;&#x64;&#x75;</a></em><br><em>Subject: Pens fans reactions</em><br><em>Organization: Post Office, Carnegie Mellon, Pittsburgh, PA</em><br><em>Lines: 12</em><br><em>NNTP-Posting-Host: po4.andrew.cmu.edu</em></p>
+<p><em>I am sure some bashers of Pens fans are pretty confused about the lack</em><br><em>of any kind of posts about the recent Pens massacre of the Devils. Actually,</em><br><em>I am  bit puzzled too and a bit relieved. However, I am going to put an end</em><br><em>to non-PIttsburghers’ relief with a bit of praise for the Pens. Man, they</em><br><em>are killing those Devils worse than I thought. Jagr just showed you why</em><br><em>he is much better than his regular season stats. He is also a lot</em><br><em>fo fun to watch in the playoffs. Bowman should let JAgr have a lot of</em><br><em>fun in the next couple of games since the Pens are going to beat the pulp out</em> <em>of Jersey anyway. I was very disappointed not to see the Islanders lose the</em> <em>final</em><br><em>regular season game.          PENS RULE!!!</em><br>随机采样25%的数据样本作为测试集<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">from sklearn.cross_validation import train_test_split</div><div class="line">X_train, X_test, y_train, y_test = train_test_split(news.data, news.target, test_size=0.25, random_state=33)</div></pre></td></tr></table></figure></p>
+<p>从sklearn.feature_extraction.text里导入<strong>文本特征向量转化</strong>模块<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">from sklearn.feature_extraction.text import CountVectorizer</div></pre></td></tr></table></figure></p>
+<p>训练，测试新闻文本数据<strong>特征向量化</strong><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">vec = CountVectorizer()</div><div class="line">X_train = vec.fit_transform(X_train)</div><div class="line">X_test = vec.transform(X_test)</div></pre></td></tr></table></figure></p>
+<p>从sklearn.naive_bayes里导入朴素贝叶斯模型(多项式）,默认配置初始化并训练模型<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">from sklearn.naive_bayes import MultinomialNB</div><div class="line">mnb = MultinomialNB()</div><div class="line">mnb.fit(X_train, y_train)</div></pre></td></tr></table></figure></p>
+<p>对测试样本进行类别预测，结果存储在变量y_predict中<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">y_predict = mnb.predict(X_test)</div></pre></td></tr></table></figure></p>
+<p>从sklearn.metrics导入classification_report用于详细的分类性能报告<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">from sklearn.metrics import classification_report</div><div class="line"><span class="built_in">print</span>(<span class="string">'The accuracy of Naive Bayes Classifier is'</span>, mnb.score(X_test, y_test)) <span class="comment">#准确性</span></div><div class="line"><span class="built_in">print</span>(classification_report(y_test, y_predict, target_names=news.target_names))</div></pre></td></tr></table></figure></p>
+<p>显示结果：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">The accuracy of Naive Bayes Classifier is 0.839770797963</div><div class="line">                   			precision    recall  f1-score   support</div><div class="line">           	alt.atheism       0.86      0.86      0.86       201</div><div class="line">           comp.graphics       0.59      0.86      0.70       250</div><div class="line"> comp.os.ms-windows.misc       0.89      0.10      0.17       248</div><div class="line">comp.sys.ibm.pc.hardware       0.60      0.88      0.72       240</div><div class="line">   comp.sys.mac.hardware       0.93      0.78      0.85       242</div><div class="line">          comp.windows.x       0.82      0.84      0.83       263</div><div class="line">            misc.forsale       0.91      0.70      0.79       257</div><div class="line">               rec.autos       0.89      0.89      0.89       238</div><div class="line">         rec.motorcycles       0.98      0.92      0.95       276</div><div class="line">      rec.sport.baseball       0.98      0.91      0.95       251</div><div class="line">        rec.sport.hockey       0.93      0.99      0.96       233</div><div class="line">               sci.crypt       0.86      0.98      0.91       238</div><div class="line">         sci.electronics       0.85      0.88      0.86       249</div><div class="line">                 sci.med       0.92      0.94      0.93       245</div><div class="line">               sci.space       0.89      0.96      0.92       221</div><div class="line">  soc.religion.christian       0.78      0.96      0.86       232</div><div class="line">      talk.politics.guns       0.88      0.96      0.92       251</div><div class="line">   talk.politics.mideast       0.90      0.98      0.94       231</div><div class="line">      talk.politics.misc       0.79      0.89      0.84       188</div><div class="line">      talk.religion.misc       0.93      0.44      0.60       158</div><div class="line"></div><div class="line">             avg / total       0.86      0.84      0.82      4712</div></pre></td></tr></table></figure></p>
+<p>可以看出朴素贝叶斯分类器对4712条新闻文本测试样本分类的准确性为83.977%，平均精确率，召回率和F1指标分别为0.86，0.84，0.82.</p>
+<p>&emsp;&emsp;朴素贝叶斯模型由于其较强的特征条件独立假设，使得模型预测所需要估计的参数规模从幂指数量级向线性量级减少，速度大大提高，但是受这种假设限制，模型训练时无法将各个特征间的联系考量在内，使得模型在其他特征关联性较强的分类任务上表现不佳。</p>
+<h1 id="基于概率论的分类方法：朴素贝叶斯"><a href="#基于概率论的分类方法：朴素贝叶斯" class="headerlink" title="基于概率论的分类方法：朴素贝叶斯"></a>基于概率论的分类方法：朴素贝叶斯</h1><p>之前的线性分类器需要给出“该数据实例属于哪一类”的明确答案，不过分类器有时会产生错误结果，这时可以要求分类器给出一个最优的类别猜测结果，同时给出这个猜测的概率估计值。贝叶斯理论决策的核心思想是<strong>选择具有最高概率的决策</strong>，贝叶斯公式为:<img src="http://chart.googleapis.com/chart?cht=tx&chl=\Large P(c_i|x)=\frac{P(x|c_i)*P(c_i)}{P(x)}" style="border:none;">,其中Ci为可能的分类结果，x为n维特征向量，贝叶斯理论思想就是选择使P(Ci|x)最大的那个Ci，右边的式子中P(x)可视为常数，P(Ci)的值也容易求出,<img src="http://chart.googleapis.com/chart?cht=tx&chl=\Large P((x_1,x_2,\cdots,x_n)|y)=P(x_1|y)P(x_2|(x_1,y))P(x_3|(x_1,x2,y))\cdots P(x_n|(x1,x2\cdots x_n,y))" style="border:none;">,显然这样的公式求取最大值很难，于是提出假设<strong>特征之间相互独立</strong>，这就是<strong>朴素</strong>的含义，朴素贝叶斯分类器的另一个假设是<strong>每一个特征同等重要</strong>，这样上式就可以化简为<img src="http://chart.googleapis.com/chart?cht=tx&chl=\Large P((x_1,x_2,\cdots,x_n)|y)=P(x_1|y)P(x_2|y)P(x_3|y)\cdots P(x_n|y)" style="border:none;">,大大简化了问题。</p>
+<h3 id="利用朴素贝叶斯进行文本分类的原理"><a href="#利用朴素贝叶斯进行文本分类的原理" class="headerlink" title="利用朴素贝叶斯进行文本分类的原理"></a>利用朴素贝叶斯进行文本分类的原理</h3><p>首先要构造出一个<em>词汇表</em>，表中单词一般比较重要，与分类的目标密切相关，然后输入待分类的文本，首先创建一个和词汇表等长的向量，若输入文本中出现了词汇表中的单词则对应向量元素置1，否则置0(这里要提一下朴素贝叶斯模型有<strong>伯努利</strong>和<strong>多项式</strong>俩种，前者不考虑词在文本中出现的频次，只考虑出不出现，后者则考虑频次，上面的实例中为后者)，这样就完成了输入文本的特征向量化。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/10/K-means聚类/" rel="next" title="K-means聚类">
+                <i class="fa fa-chevron-left"></i> K-means聚类
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/11/kNN-分类/" rel="prev" title="kNN(分类)">
+                kNN(分类) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="jimmydug" />
+          <p class="site-author-name" itemprop="name">jimmydug</p>
+           
+              <p class="site-description motion-element" itemprop="description">Want Success Entremely!!!</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">Artikel</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">Tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#NaiveBayes"><span class="nav-number">1.</span> <span class="nav-text">NaiveBayes</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#基于概率论的分类方法：朴素贝叶斯"><span class="nav-number">2.</span> <span class="nav-text">基于概率论的分类方法：朴素贝叶斯</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#利用朴素贝叶斯进行文本分类的原理"><span class="nav-number">2.0.1.</span> <span class="nav-text">利用朴素贝叶斯进行文本分类的原理</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">jimmydug</span>
+</div>
+
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

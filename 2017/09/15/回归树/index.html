@@ -1,0 +1,668 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="回归树回归树在选择不同特征作为分裂节点的策略上和决策树类似，不同之处在于，回归树叶节点的数据类型是连续型而不是离散型，但是严格来说，回归树又不能称为“回归算法”，因为回归树的叶节点返回的是“一团”训练数据的均值，并不是具体的、连续的预测值。数据集依然使用的是sklearn自带的波士顿房价数据，用其搭建回归树模型。
+获取数据1234from sklearn.datasets import load_">
+<meta property="og:type" content="article">
+<meta property="og:title" content="回归树">
+<meta property="og:url" content="http://yoursite.com/2017/09/15/回归树/index.html">
+<meta property="og:site_name" content="jimmydug's blog">
+<meta property="og:description" content="回归树回归树在选择不同特征作为分裂节点的策略上和决策树类似，不同之处在于，回归树叶节点的数据类型是连续型而不是离散型，但是严格来说，回归树又不能称为“回归算法”，因为回归树的叶节点返回的是“一团”训练数据的均值，并不是具体的、连续的预测值。数据集依然使用的是sklearn自带的波士顿房价数据，用其搭建回归树模型。
+获取数据1234from sklearn.datasets import load_">
+<meta property="og:updated_time" content="2017-09-17T07:03:43.292Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="回归树">
+<meta name="twitter:description" content="回归树回归树在选择不同特征作为分裂节点的策略上和决策树类似，不同之处在于，回归树叶节点的数据类型是连续型而不是离散型，但是严格来说，回归树又不能称为“回归算法”，因为回归树的叶节点返回的是“一团”训练数据的均值，并不是具体的、连续的预测值。数据集依然使用的是sklearn自带的波士顿房价数据，用其搭建回归树模型。
+获取数据1234from sklearn.datasets import load_">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":true},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/09/15/回归树/"/>
+
+
+
+
+
+  <title> 回归树 | jimmydug's blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">jimmydug's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Love Life&Coding</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/15/回归树/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="jimmydug">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="jimmydug's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                回归树
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Veröffentlicht am</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-09-15T15:04:00+08:00">
+                2017-09-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="回归树"><a href="#回归树" class="headerlink" title="回归树"></a>回归树</h1><p>回归树在选择不同特征作为分裂节点的策略上和决策树类似，不同之处在于，回归树叶节点的数据类型是<strong>连续型</strong>而不是离散型，但是严格来说，回归树又不能称为“回归算法”，因为回归树的叶节点返回的是“一团”训练数据的<strong>均值</strong>，并不是具体的、连续的预测值。<br>数据集依然使用的是sklearn自带的波士顿房价数据，用其搭建回归树模型。</p>
+<h2 id="获取数据"><a href="#获取数据" class="headerlink" title="获取数据"></a>获取数据</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">from sklearn.datasets import load_boston</div><div class="line">boston = load_boston()</div><div class="line">X = boston.data</div><div class="line">y = boston.target</div></pre></td></tr></table></figure>
+<h2 id="分割，标准化数据"><a href="#分割，标准化数据" class="headerlink" title="分割，标准化数据"></a>分割，标准化数据</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">from sklearn.cross_validation import train_test_split</div><div class="line">X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=33)</div><div class="line">from sklearn.preprocessing import StandardScaler</div><div class="line">ss_X = StandardScaler()</div><div class="line">ss_y = StandardScaler()</div><div class="line">X_train = ss_X.fit_transform(X_train)</div><div class="line">X_test = ss_X.transform(X_test)</div><div class="line">y_train = ss_y.fit_transform(y_train)</div><div class="line">y_test = ss_y.transform(y_test)</div></pre></td></tr></table></figure>
+<h2 id="导入，训练回归树并进行预测"><a href="#导入，训练回归树并进行预测" class="headerlink" title="导入，训练回归树并进行预测"></a>导入，训练回归树并进行预测</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">from sklearn.tree import DecisionTreeRegressor</div><div class="line">dtr = DecisionTreeRegressor()</div><div class="line">dtr.fit(X_train, y_train)</div><div class="line">dtr_y_predict = dtr.predict(X_test)</div></pre></td></tr></table></figure>
+<h2 id="R-squared、MSE、MAE指标在测试集上性能评估"><a href="#R-squared、MSE、MAE指标在测试集上性能评估" class="headerlink" title="R-squared、MSE、MAE指标在测试集上性能评估"></a>R-squared、MSE、MAE指标在测试集上性能评估</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">from sklearn.metrics import r2_score, mean_squared_error, mean_absolute_error</div><div class="line"><span class="built_in">print</span>(<span class="string">'R-squared value of DecisionTreeRegressor:'</span>, dtr.score(X_test, y_test))</div><div class="line"><span class="built_in">print</span>(<span class="string">'The mean squared error of DecisionTreeRegressor:'</span>, mean_squared_error(ss_y.inverse_transform(y_test), ss_y.inverse_transform(dtr_y_predict)))</div><div class="line"><span class="built_in">print</span>(<span class="string">'The mean absoluate error of DecisionTreeRegressor:'</span>, mean_absolute_error(ss_y.inverse_transform(y_test), ss_y.inverse_transform(dtr_y_predict)))</div></pre></td></tr></table></figure>
+<p><em>R-squared value of DecisionTreeRegressor: 0.680511610661</em><br><em>The mean squared error of DecisionTreeRegressor: 24.7735433071</em><br><em>The mean absoluate error of DecisionTreeRegressor: 3.15748031496</em></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>无论是决策树还是回归树，这类树模型有以下优点：<br>1.树模型可以解决<strong>非线性特征</strong>的问题，例子中，回归树模型性能好于之前的线性回归和支持向量机，说明数据集中特征与目标值之间存在一定的非线性关系。<br>2.树模型不要求对特征标准化和统一量化，即数值型和类别型特征都可以直接被应用在树模型的构建和预测过程中。<strong>（真的不用标准化吗？</strong><br>3.树模型可以直观地输出决策过程，使得预测结果具有可解释性。</p>
+<p>树模型的缺陷：<br>1.因为树模型可以解决复杂的非线性拟合问题，但也容易因模型搭建过于复杂而丧失对新数据预测的精度(泛化能力)。<br>2.树模型从上到下的预测流程会因为数据细微的更改而发生较大的结构变化，因此预测稳定性较差。<br>3.NP难问题，即在有限时间内无法找到最优解，因此我们使用类似贪婪算法的解法找到一些次优解，所以经常借助集成模型在多个次优解中寻觅更高的模型性能。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/15/K近邻之回归(KNR)/" rel="next" title="K近邻之回归(KNR)">
+                <i class="fa fa-chevron-left"></i> K近邻之回归(KNR)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/17/Python之==和is/" rel="prev" title="Python之==和is">
+                Python之==和is <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="jimmydug" />
+          <p class="site-author-name" itemprop="name">jimmydug</p>
+           
+              <p class="site-description motion-element" itemprop="description">Want Success Entremely!!!</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">Artikel</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">Tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#回归树"><span class="nav-number">1.</span> <span class="nav-text">回归树</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#获取数据"><span class="nav-number">1.1.</span> <span class="nav-text">获取数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分割，标准化数据"><span class="nav-number">1.2.</span> <span class="nav-text">分割，标准化数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#导入，训练回归树并进行预测"><span class="nav-number">1.3.</span> <span class="nav-text">导入，训练回归树并进行预测</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#R-squared、MSE、MAE指标在测试集上性能评估"><span class="nav-number">1.4.</span> <span class="nav-text">R-squared、MSE、MAE指标在测试集上性能评估</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">1.5.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">jimmydug</span>
+</div>
+
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

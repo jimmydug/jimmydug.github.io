@@ -1,11 +1,93 @@
-<!DOCTYPE html>
-<html lang=zh>
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
 <head>
-    <meta charset="utf-8">
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
     
-    <title>K-means聚类 | jimmydug&#39;s blog</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="数据聚类：K-means算法（K均值）K均值算法的主要步骤：
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="数据聚类：K-means算法（K均值）K均值算法的主要步骤：
 1.随机设置K个特征空间内的点作为初始的聚类中心。
 2.对于每个数据样例的特征向量，从K个聚类中心里找到距离最近的一个，并把该数据标记为从属这个聚类中心。
 3.根据这些数据新分配的类簇，重新对K个聚类中心位置进行计算。
@@ -27,236 +109,231 @@
 2.对于每个数据样例的特征向量，从K个聚类中心里找到距离最近的一个，并把该数据标记为从属这个聚类中心。
 3.根据这些数据新分配的类簇，重新对K个聚类中心位置进行计算。
 4.如果K个聚类中心位置发生变化，则回到2继续循环，否则迭代停止。">
-    
-
-    
-        <link rel="alternate" href="/" title="jimmydug&#39;s blog" type="application/atom+xml" />
-    
-
-    
-
-    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/libs/open-sans/styles.css">
-    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
-
-    <link rel="stylesheet" href="/css/style.css">
-
-    <script src="/libs/jquery/2.1.3/jquery.min.js"></script>
-    
-    
-        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
-    
-    
-        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
-    
-    
-    
-    
 
 
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":true},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/09/10/K-means聚类/"/>
+
+
+
+
+
+  <title> K-means聚类 | jimmydug's blog </title>
 </head>
 
-<body>
-    <div id="container">
-        <header id="header">
-    <div id="header-main" class="header-inner">
-        <div class="outer">
-            <a href="/" id="logo">
-                <i class="logo"></i>
-                <span class="site-title">jimmydug&#39;s blog</span>
-            </a>
-            <nav id="main-nav">
-                
-                    <a class="main-nav-link" href="/.">Home</a>
-                
-                    <a class="main-nav-link" href="/archives">Archives</a>
-                
-                    <a class="main-nav-link" href="/categories">Categories</a>
-                
-                    <a class="main-nav-link" href="/tags">Tags</a>
-                
-                    <a class="main-nav-link" href="/about">About</a>
-                
-            </nav>
-            
-                
-                <nav id="sub-nav">
-                    <div class="profile" id="profile-nav">
-                        <a id="profile-anchor" href="javascript:;">
-                            <img class="avatar" src="/css/images/gd.jpg" />
-                            <i class="fa fa-caret-down"></i>
-                        </a>
-                    </div>
-                </nav>
-            
-            <div id="search-form-wrap">
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
 
-    <form class="search-form">
-        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
-        <button type="submit" class="search-form-submit"></button>
-    </form>
-    <div class="ins-search">
-    <div class="ins-search-mask"></div>
-    <div class="ins-search-container">
-        <div class="ins-input-wrapper">
-            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
-            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
-        </div>
-        <div class="ins-section-wrapper">
-            <div class="ins-section-container"></div>
-        </div>
-    </div>
-</div>
-<script>
-(function (window) {
-    var INSIGHT_CONFIG = {
-        TRANSLATION: {
-            POSTS: '文章',
-            PAGES: '页面',
-            CATEGORIES: '分类',
-            TAGS: '标签',
-            UNTITLED: '(未命名)',
-        },
-        ROOT_URL: '/',
-        CONTENT_URL: '/content.json',
-    };
-    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
-})(window);
-</script>
-<script src="/js/insight.js"></script>
+  
 
-</div>
-        </div>
-    </div>
-    <div id="main-nav-mobile" class="header-sub header-inner">
-        <table class="menu outer">
-            <tr>
-                
-                    <td><a class="main-nav-link" href="/.">Home</a></td>
-                
-                    <td><a class="main-nav-link" href="/archives">Archives</a></td>
-                
-                    <td><a class="main-nav-link" href="/categories">Categories</a></td>
-                
-                    <td><a class="main-nav-link" href="/tags">Tags</a></td>
-                
-                    <td><a class="main-nav-link" href="/about">About</a></td>
-                
-                <td>
-                    
-    <div class="search-form">
-        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
-    </div>
 
-                </td>
-            </tr>
-        </table>
-    </div>
-</header>
 
-        <div class="outer">
-            
-                
 
-<aside id="profile">
-    <div class="inner profile-inner">
-        <div class="base-info profile-block">
-            <img id="avatar" src="/css/images/gd.jpg" />
-            <h2 id="name">jimmydug</h2>
-            <h3 id="title">Machine Learning Python Scrapy</h3>
-            <span id="location"><i class="fa fa-map-marker"></i>hefei, China</span>
-            <a id="follow" target="_blank" href="https://github.com/jimmydug/">关注我</a>
-        </div>
-        <div class="article-info profile-block">
-            <div class="article-info-block">
-                10
-                <span>文章</span>
-            </div>
-            <div class="article-info-block">
-                7
-                <span>标签</span>
-            </div>
-        </div>
-        
-        <div class="profile-block social-links">
-            <table>
-                <tr>
-                    
-                    
-                    <td>
-                        <a href="http://github.com/jimmydug/" target="_blank" title="github" class=tooltip>
-                            <i class="fa fa-github"></i>
-                        </a>
-                    </td>
-                    
-                    <td>
-                        <a href="/" target="_blank" title="twitter" class=tooltip>
-                            <i class="fa fa-twitter"></i>
-                        </a>
-                    </td>
-                    
-                    <td>
-                        <a href="/" target="_blank" title="facebook" class=tooltip>
-                            <i class="fa fa-facebook"></i>
-                        </a>
-                    </td>
-                    
-                    <td>
-                        <a href="/" target="_blank" title="dribbble" class=tooltip>
-                            <i class="fa fa-dribbble"></i>
-                        </a>
-                    </td>
-                    
-                    <td>
-                        <a href="/" target="_blank" title="rss" class=tooltip>
-                            <i class="fa fa-rss"></i>
-                        </a>
-                    </td>
-                    
-                </tr>
-            </table>
-        </div>
-        <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=38018586&auto=1&height=32">
-        </iframe>
-        
-    </div>
-</aside>
 
-            
-            <section id="main"><article id="post-K-means聚类" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
+
+
+
+
+
+
+
+
+
+  
+  
     
-        <h1 class="article-title" itemprop="name">
-            K-means聚类
-        </h1>
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
     
 
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/09/10/K-means聚类/">
-            <time datetime="2017-09-10T10:52:33.000Z" itemprop="datePublished">2017-09-10</time>
-        </a>
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">jimmydug's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
     </div>
+      
+        <p class="site-subtitle">Love Life&Coding</p>
+      
+  </div>
 
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
 
-                        
-                        
-                    </div>
-                
-            </header>
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
         
-        
-        <div class="article-entry" itemprop="articleBody">
-        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
             
-            <h1 id="数据聚类："><a href="#数据聚类：" class="headerlink" title="数据聚类："></a>数据聚类：</h1><h2 id="K-means算法（K均值）"><a href="#K-means算法（K均值）" class="headerlink" title="K-means算法（K均值）"></a>K-means算法（K均值）</h2><p>K均值算法的主要步骤：</p>
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/10/K-means聚类/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="jimmydug">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="jimmydug's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                K-means聚类
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Veröffentlicht am</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-09-10T18:52:33+08:00">
+                2017-09-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="数据聚类："><a href="#数据聚类：" class="headerlink" title="数据聚类："></a>数据聚类：</h1><h2 id="K-means算法（K均值）"><a href="#K-means算法（K均值）" class="headerlink" title="K-means算法（K均值）"></a>K-means算法（K均值）</h2><p>K均值算法的主要步骤：</p>
 <pre><code>1.随机设置K个特征空间内的点作为初始的聚类中心。
 2.对于每个数据样例的特征向量，从K个聚类中心里找到距离最近的一个，并把该数据标记为从属这个聚类中心。
 3.根据这些数据新分配的类簇，重新对K个聚类中心位置进行计算。
@@ -267,325 +344,336 @@
 <p>对于没有标注类别的数据，使用轮廓系数（Silhouette Coefficient），同时兼顾了簇内的凝聚度（Cohesion）和簇之间的分离度（Separation），这里不写出具体计算公式了<br>利用轮廓系数评价在不同类簇数量K下结果的K-means聚类实例：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div></pre></td><td class="code"><pre><div class="line">import numpy as np</div><div class="line">import matplotlib.pyplot as plt</div><div class="line">import pandas as pd</div><div class="line">from sklearn.cluster import KMeans</div><div class="line"><span class="comment"># 导入轮廓系数函数</span></div><div class="line">from sklearn.metrics import silhouette_score</div><div class="line"><span class="comment"># 创建一个窗口并且分割为3*2=6个子图，当前在1号子图作图</span></div><div class="line">plt.subplot(3,2,1)</div><div class="line">x1 = np.array([1,2,3,1,5,6,5,5,6,7,8,9,7,9])</div><div class="line">x2 = np.array([1,3,2,2,8,6,7,6,7,1,2,1,1,3])</div><div class="line"><span class="comment"># 14个直角坐标系平面上的初始数据点，zip()函数作用会生出zip对象，需要list(zip())：[(a0, b0), (a1, b1),(a2, b2)],内tuple，外list</span></div><div class="line">X = np.array(list(zip(x1, x2))).reshape(len(x1), 2)</div><div class="line"><span class="comment"># 目的就是将这14个点聚成K个类簇</span></div><div class="line">X</div><div class="line">&lt;&lt;&lt; array([[1, 1],</div><div class="line">   	[2, 3],</div><div class="line">   	[3, 2],</div><div class="line">  	[1, 2],</div><div class="line"><span class="comment"># 在1号子图做出原始数据点阵的分布</span></div><div class="line">plt.xlim([0, 10])</div><div class="line">plt.ylim([0, 10])</div><div class="line">plt.title(<span class="string">'Instance'</span>)</div><div class="line"><span class="comment"># scater()函数用来绘制散点图</span></div><div class="line">plt.scatter(x1, x2)</div><div class="line"><span class="comment"># 定义点的颜色和形状</span></div><div class="line">colors = [<span class="string">'b'</span>, <span class="string">'g'</span>, <span class="string">'r'</span>, <span class="string">'c'</span>, <span class="string">'m'</span>, <span class="string">'y'</span>, <span class="string">'k'</span>, <span class="string">'b'</span>]</div><div class="line">markers = [<span class="string">'o'</span>, <span class="string">'s'</span>, <span class="string">'D'</span>, <span class="string">'v'</span>, <span class="string">'^'</span>, <span class="string">'p'</span>, <span class="string">'*'</span>, <span class="string">'+'</span>]</div><div class="line"><span class="comment"># 不同的聚类中心个数</span></div><div class="line">clusters = [2, 3, 4, 5, 8]</div><div class="line">subplot_counter = 1</div><div class="line"><span class="comment"># 每个聚类中心K值对应的轮廓系数</span></div><div class="line">sc_scores = []</div><div class="line"><span class="keyword">for</span> t <span class="keyword">in</span> clusters:</div><div class="line">	subplot_counter += 1</div><div class="line"><span class="comment"># 在不同子图内作图</span></div><div class="line">	plt.subplot(3, 2, subplot_counter)</div><div class="line">	kmeans_model = KMeans(n_clusters=t).fit(X)</div><div class="line">	<span class="keyword">for</span> i,l <span class="keyword">in</span> enumerate(kmeans_model.labels_):</div><div class="line"><span class="comment"># 带你们看看i,l的值(K=3)左边是枚举后的索引，右边是每个点被打上的label</span></div><div class="line"><span class="comment">#	i j</span></div><div class="line"><span class="comment">#	0 1</span></div><div class="line"><span class="comment">#	1 1</span></div><div class="line"><span class="comment">#	2 1</span></div><div class="line">		plt.plot(x1[i], x2[i], color=colors[l], marker=markers[l], ls = <span class="string">'None'</span>)</div><div class="line">	plt.xlim([0, 10])</div><div class="line">	plt.ylim([0, 10])</div><div class="line"><span class="comment"># 计算轮廓系数</span></div><div class="line">	sc_score = silhouette_score(X, kmeans_model.labels_, metric=<span class="string">'euclidean'</span>)</div><div class="line">	sc_scores.append(sc_score)</div><div class="line"><span class="comment"># 绘制轮廓系数与不同类簇数量的直观显示图</span></div><div class="line">	plt.title(<span class="string">'K=%s, silhouette cofficient=%0.03f'</span> %(t, sc_score))</div><div class="line"><span class="comment"># 另外创建一个窗口绘制轮廓系数与不同类簇数量的关系曲线图</span></div><div class="line">plt.figure()</div><div class="line"><span class="comment"># 画图，传入x,y轴的俩个列表,第3个参数为曲线的颜色和线形</span></div><div class="line">plt.plot(clusters, sc_scores, <span class="string">'*-'</span>)</div><div class="line"><span class="comment"># 设置轴标</span></div><div class="line">plt.xlabel(<span class="string">'Numbers of Clusters'</span>)</div><div class="line">plt.ylabel(<span class="string">'Silhouette Coefficient Score'</span>)	</div><div class="line"><span class="comment"># 显示所有窗口</span></div><div class="line">plt.show()</div></pre></td></tr></table></figure></p>
 <p>&emsp;&emsp;K均值算法有2个缺点，一是容易收敛到局部最优解，这是受到初始中心点位置的影响，可以多次设置初始中心点不同位置来改善，二是需要预先设定簇的数量(这个可以像上面一样多设几个K值来比较，记住有俩种方法比较哦)<br>&emsp;&emsp;介绍一种“肘部”观察法粗略估计类簇的合理个数,肘部观察法的原理是聚类中心数K从1开始增大时，各数据点离其中心点的距离平方和将减小，且下降速度先增大后减小(即出现一个拐点),一般这个拐点数就是合理的聚类中心数。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line">import numpy as np</div><div class="line">from sklearn.cluster import KMeans</div><div class="line"><span class="comment"># 这个是啥</span></div><div class="line">from scipy.spatial.distance import cdist</div><div class="line">import matplotlib.pyplot as plt</div><div class="line">cluster1 = np.random.uniform(0.5, 1.5, (2, 10))</div><div class="line">cluster2 = np.random.uniform(5.5, 6.5, (2, 10))</div><div class="line">cluster3 = np.random.uniform(3.0, 4.0, (2, 10))</div><div class="line">&gt;&gt;&gt; cluster1</div><div class="line">	array([[ 1.03314051,  1.03985783,  1.10361846,  0.67811508,  0.5498399 ,</div><div class="line">     		 1.24802795,  0.86710746,  1.13982963,  1.39469541,  0.68231248],</div><div class="line">   		   [ 0.74132302,  0.59433527,  1.2077444 ,  1.39111467,  1.06372197,</div><div class="line">             0.61534148,  0.70850745,  0.52107887,  1.00069837,  1.46818705]])</div><div class="line"><span class="comment"># hstack是啥方法</span></div><div class="line">X = np.hstack((cluster1, cluster2, cluster3)).T</div><div class="line">&gt;&gt;&gt; X</div><div class="line">	array([[ 1.03314051,  0.74132302],</div><div class="line">   		   [ 1.03985783,  0.59433527],</div><div class="line">           [ 1.10361846,  1.2077444 ],</div><div class="line">   		   [ 0.67811508,  1.39111467],</div><div class="line">plt.scatter(X[:, 0], X[:, 1])</div><div class="line">plt.xlabel(<span class="string">'x1'</span>)</div><div class="line">plt.ylabel(<span class="string">'x2'</span>)</div><div class="line">plt.show()</div><div class="line">meandistortions = []</div><div class="line"><span class="keyword">for</span> k <span class="keyword">in</span> range(1, 10):</div><div class="line">	kmeans = KMeans(n_clusters=k)</div><div class="line">	kmeans.fit(X)</div><div class="line">	meandistortions.append(</div><div class="line">		sum(np.min(cdist(X, kmeans.cluster_centers_, <span class="string">'euclidean'</span>), axis=1))/X.shape[0])</div><div class="line">plt.plot(range(1, 10), meandistortions, <span class="string">'bx-'</span>)</div><div class="line">plt.xlabel(<span class="string">'k'</span>)</div><div class="line">plt.ylabel(<span class="string">'Average Dispersion'</span>)</div><div class="line">plt.title(<span class="string">'Selecting k with Elbow Method'</span>)</div><div class="line">plt.show()</div></pre></td></tr></table></figure></p>
 
+      
+    </div>
+
+    <div>
+      
         
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/04/TensorFlow学习笔记/" rel="next" title="TensorFlow学习笔记">
+                <i class="fa fa-chevron-left"></i> TensorFlow学习笔记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/11/朴素贝叶斯NaiveBayes/" rel="prev" title="朴素贝叶斯NaiveBayes">
+                朴素贝叶斯NaiveBayes <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
         </div>
-        <footer class="article-footer">
-            <div class="share-container">
+      
+
+      
+      
+    </footer>
+  </article>
 
 
 
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="jimmydug" />
+          <p class="site-author-name" itemprop="name">jimmydug</p>
+           
+              <p class="site-description motion-element" itemprop="description">Want Success Entremely!!!</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">Artikel</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">Tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#数据聚类："><span class="nav-number">1.</span> <span class="nav-text">数据聚类：</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#K-means算法（K均值）"><span class="nav-number">1.1.</span> <span class="nav-text">K-means算法（K均值）</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">jimmydug</span>
 </div>
 
-    <a data-url="http://yoursite.com/2017/09/10/K-means聚类/" data-id="cj7emxmw3000a0srn3hnq38vt" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
 
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
 
-            if ($('#' + id).length) {
-                box = $('#' + id);
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
 
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
 
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-        <a href="http://yoursite.com/2017/09/10/K-means聚类/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="http://yoursite.com/2017/09/10/K-means聚类/">评论</a>
-    
-
-        </footer>
-    </div>
-    
         
-<nav id="article-nav">
-    
-    
-        <a href="/2017/09/04/TensorFlow学习笔记/" id="article-nav-older" class="article-nav-link-wrap">
-            <strong class="article-nav-caption">下一篇</strong>
-            <div class="article-nav-title">TensorFlow学习笔记</div>
-        </a>
-    
-</nav>
 
-
-    
-</article>
-
-
-    
-    
-        <section id="comments">
-    <div id="disqus_thread">
-        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-    </div>
-</section>
-    
-
-</section>
-            
-                
-<aside id="sidebar">
-   
         
-    <div class="widget-wrap">
-        <h3 class="widget-title">最新文章</h3>
-        <div class="widget">
-            <ul id="recent-post" class="">
-                
-                    <li>
-                        
-                        <div class="item-thumbnail">
-                            <a href="/2017/09/10/K-means聚类/" class="thumbnail">
-    
-    
-        <span class="thumbnail-image thumbnail-none"></span>
-    
-</a>
-
-                        </div>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"></p>
-                            <p class="item-title"><a href="/2017/09/10/K-means聚类/" class="title">K-means聚类</a></p>
-                            <p class="item-date"><time datetime="2017-09-10T10:52:33.000Z" itemprop="datePublished">2017-09-10</time></p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        <div class="item-thumbnail">
-                            <a href="/2017/09/04/TensorFlow学习笔记/" class="thumbnail">
-    
-    
-        <span class="thumbnail-image thumbnail-none"></span>
-    
-</a>
-
-                        </div>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"></p>
-                            <p class="item-title"><a href="/2017/09/04/TensorFlow学习笔记/" class="title">TensorFlow学习笔记</a></p>
-                            <p class="item-date"><time datetime="2017-09-04T11:38:12.000Z" itemprop="datePublished">2017-09-04</time></p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        <div class="item-thumbnail">
-                            <a href="/2017/09/04/Scrapy学习日记/" class="thumbnail">
-    
-    
-        <span class="thumbnail-image thumbnail-none"></span>
-    
-</a>
-
-                        </div>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"></p>
-                            <p class="item-title"><a href="/2017/09/04/Scrapy学习日记/" class="title">Scrapy学习日记</a></p>
-                            <p class="item-date"><time datetime="2017-09-04T04:18:22.000Z" itemprop="datePublished">2017-09-04</time></p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        <div class="item-thumbnail">
-                            <a href="/2017/08/27/向量机初步/" class="thumbnail">
-    
-    
-        <span class="thumbnail-image thumbnail-none"></span>
-    
-</a>
-
-                        </div>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"></p>
-                            <p class="item-title"><a href="/2017/08/27/向量机初步/" class="title">向量机初步</a></p>
-                            <p class="item-date"><time datetime="2017-08-27T07:18:57.000Z" itemprop="datePublished">2017-08-27</time></p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        <div class="item-thumbnail">
-                            <a href="/2017/08/24/线性分类器/" class="thumbnail">
-    
-    
-        <span class="thumbnail-image thumbnail-none"></span>
-    
-</a>
-
-                        </div>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"></p>
-                            <p class="item-title"><a href="/2017/08/24/线性分类器/" class="title">线性分类器</a></p>
-                            <p class="item-date"><time datetime="2017-08-24T08:48:26.000Z" itemprop="datePublished">2017-08-24</time></p>
-                        </div>
-                    </li>
-                
-            </ul>
-        </div>
-    </div>
+      </div>
+    </footer>
 
     
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
         
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
     
-        
-    <div class="widget-wrap">
-        <h3 class="widget-title">归档</h3>
-        <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">4</span></li></ul>
-        </div>
-    </div>
-
     
-        
-    <div class="widget-wrap">
-        <h3 class="widget-title">标签</h3>
-        <div class="widget">
-            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Markdown/">Markdown</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySql/">MySql</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Scrapy/">Scrapy</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TensorFlow/">TensorFlow</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vim/">Vim</a><span class="tag-list-count">1</span></li></ul>
-        </div>
-    </div>
+  </div>
 
-    
-        
-    <div class="widget-wrap">
-        <h3 class="widget-title">标签云</h3>
-        <div class="widget tagcloud">
-            <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/Markdown/" style="font-size: 10px;">Markdown</a> <a href="/tags/MySql/" style="font-size: 10px;">MySql</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/Scrapy/" style="font-size: 10px;">Scrapy</a> <a href="/tags/TensorFlow/" style="font-size: 10px;">TensorFlow</a> <a href="/tags/Vim/" style="font-size: 10px;">Vim</a>
-        </div>
-    </div>
+  
 
-    
-        
-    <div class="widget-wrap widget-list">
-        <h3 class="widget-title">链接</h3>
-        <div class="widget">
-            <ul>
-                
-                    <li>
-                        <a href="http://hexo.io">Hexo</a>
-                    </li>
-                
-            </ul>
-        </div>
-    </div>
-
-
-    
-    <div id="toTop" class="fa fa-angle-up"></div>
-</aside>
-
-            
-            
-        </div>
-        <footer id="footer">
-    <div class="outer">
-        <div id="footer-info" class="inner">
-            &copy; 2017 jimmydug<br>
-            Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>
-        </div>
-    </div>
-</footer>
-        
-    
-    <script>
-    var disqus_config = function () {
-        
-            this.page.url = 'http://yoursite.com/2017/09/10/K-means聚类/';
-        
-        this.page.identifier = 'K-means聚类';
-    };
-    (function() { 
-        var d = document, s = d.createElement('script');  
-        s.src = '//' + 'hexo-theme-icarus' + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
 </script>
 
 
 
 
-    
-        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
-    
-    
-        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
-    
-    
 
 
 
-<!-- Custom Scripts -->
-<script src="/js/main.js"></script>
 
-    </div>
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
 </body>
 </html>

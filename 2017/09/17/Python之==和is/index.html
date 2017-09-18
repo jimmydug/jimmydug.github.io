@@ -1,0 +1,670 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Python," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="‘==’和’is’中的门道在Python中，比较俩个对象(变量)是否相等时，少不了要用到is和==操作，但其实二者有相当大的区别，这里我们详细探究一下。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python之==和is">
+<meta property="og:url" content="http://yoursite.com/2017/09/17/Python之==和is/index.html">
+<meta property="og:site_name" content="jimmydug's blog">
+<meta property="og:description" content="‘==’和’is’中的门道在Python中，比较俩个对象(变量)是否相等时，少不了要用到is和==操作，但其实二者有相当大的区别，这里我们详细探究一下。">
+<meta property="og:updated_time" content="2017-09-17T02:28:26.703Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python之==和is">
+<meta name="twitter:description" content="‘==’和’is’中的门道在Python中，比较俩个对象(变量)是否相等时，少不了要用到is和==操作，但其实二者有相当大的区别，这里我们详细探究一下。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":true},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/09/17/Python之==和is/"/>
+
+
+
+
+
+  <title> Python之==和is | jimmydug's blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">jimmydug's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Love Life&Coding</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/17/Python之==和is/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="jimmydug">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="jimmydug's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Python之==和is
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Veröffentlicht am</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-09-17T08:40:31+08:00">
+                2017-09-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="‘-’和’is’中的门道"><a href="#‘-’和’is’中的门道" class="headerlink" title="‘==’和’is’中的门道"></a>‘==’和’is’中的门道</h1><p>在Python中，比较俩个对象(变量)是否相等时，少不了要用到<strong>is</strong>和<strong><br>==</strong>操作，但其实二者有相当大的区别，这里我们详细探究一下。<br><a id="more"></a><br>“==”和”is”的区别可以类比于<strong>equal</strong>和<strong>identical</strong>，前者比较的是俩个对象中的<strong>值</strong>是否相等，后者比较的是俩个对象的<strong>内存存储空间</strong>是否相同，显然，如果俩个对象内存存储空间相同，那么其值也一定相等，即如果<strong>is</strong>返回True，那么<strong>==</strong>也一定为True，反之不然。附上一句，<strong>a&ensp;is&ensp;b</strong>等价于<strong>id(a)&ensp;==&ensp;id(b)</strong>。<br>再举个例子，俩个姓名一样，但不一定指向同一个人，但俩张身份证(identity)一样，那么一定指向同一个确定的人！<br>Talk is cheap,show me the code!<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; a = [1, 2, 3]</div><div class="line">&gt;&gt;&gt; b = a</div><div class="line">&gt;&gt;&gt; c = [1, 2, 3]</div><div class="line">&gt;&gt;&gt; a == b</div><div class="line">True</div><div class="line">&gt;&gt;&gt; a is b</div><div class="line">True</div><div class="line">&gt;&gt;&gt; c == a</div><div class="line">True</div><div class="line">&gt;&gt;&gt; c is a</div><div class="line">False</div></pre></td></tr></table></figure></p>
+<p>上例中，a和b指向了同一个对象，故”is”和”==”都返回True，而a和c并不指向同一个对象但其值相等故”is”不成立而”==”成立，其实”==”是否成立最终取决于对象的<strong>__eq__()</strong>方法，俩个对象在进行”==”比较时实际上在调用其内部的<strong>__eq__()</strong>方法。如下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; class Foo(object):</div><div class="line">		def __eq__(self, other):</div><div class="line">			<span class="built_in">return</span> True</div><div class="line">&gt;&gt;&gt; f = Foo()</div><div class="line">&gt;&gt;&gt; f == 5</div><div class="line">True</div><div class="line">&gt;&gt;&gt; f == None</div><div class="line">True</div><div class="line">&gt;&gt;&gt; f is 5</div><div class="line">False</div></pre></td></tr></table></figure></p>
+<p>上例中，定义了Foo类的__eq__()方法恒返回True，所以Foo类的实例化对象f在与任何对象进行”==”比较时都会返回True，当然”is”操作就不会成立了。<br>在整数上(特别是-5到256之间)进行”is”和”==”操作的结果可能会有点小奇怪，我们来试一下<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; a = 100</div><div class="line">&gt;&gt;&gt; b = 100</div><div class="line">&gt;&gt;&gt; a is b</div><div class="line">True</div><div class="line">&gt;&gt;&gt; id(a) == id(b)</div><div class="line">True </div><div class="line">&gt;&gt;&gt; c = 257</div><div class="line">&gt;&gt;&gt; d = 257 </div><div class="line">&gt;&gt;&gt; c is d</div><div class="line">False</div></pre></td></tr></table></figure></p>
+<p>为什么小于等于256的数和大于256的数会有这样的差别呢，其实这是因为Python中的<strong>小整数缓存机制</strong>，即对于<strong>-5到256</strong>之间的整数Python维护了一个<strong>缓存表</strong>，这里面的数字(整数)将指向同一个<strong>内存空间</strong>，其他的数字将去另外申请空间。下面来自己求一下这个缓存表范围：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; cached = []</div><div class="line">&gt;&gt;&gt; <span class="keyword">for</span> i <span class="keyword">in</span> range(-10, 260):</div><div class="line">...     a = i + 0</div><div class="line">...     b = i + 0</div><div class="line">...     <span class="keyword">if</span> a is not b:</div><div class="line">...         cached.append(i)</div><div class="line">&gt;&gt;&gt; cached</div><div class="line">[-10, -9, -8, -7, -6, 257, 258, 259]</div></pre></td></tr></table></figure></p>
+<p>可知这个缓存表范围为-5到256，注意，这里的<strong>+0</strong>是不可少的，我们去掉<strong>+0</strong>看看：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; cached</div><div class="line">[]</div></pre></td></tr></table></figure></p>
+<p>为什么呢，可能有点小疑惑，我们再改造一下看看<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; cached = []</div><div class="line">&gt;&gt;&gt; <span class="keyword">for</span> i <span class="keyword">in</span> range(-10, 0):</div><div class="line">...     a = i</div><div class="line">...     b = i</div><div class="line">...     <span class="built_in">print</span>(id(i), id(a), id(b))</div><div class="line">...</div><div class="line">40414000 40414000 40414000</div><div class="line">40413744 40413744 40413744</div><div class="line">40414000 40414000 40414000</div><div class="line">40413744 40413744 40413744</div><div class="line">40414000 40414000 40414000</div><div class="line">1621080336 1621080336 1621080336</div><div class="line">1621080368 1621080368 1621080368</div><div class="line">1621080400 1621080400 1621080400</div><div class="line">1621080432 1621080432 1621080432</div><div class="line">1621080464 1621080464 1621080464</div></pre></td></tr></table></figure></p>
+<p>思考一下，原因可知，当<strong>i</strong>在-5到256之间时，i直接指向缓存表空间，a,b在<strong>+0运算</strong>或不加0后也指向相同的缓存表空间，三者之间<strong>is</strong>成立，当<strong>i</strong>不在-5到256之间时，不<strong>+0</strong>情况下，会先创建一个内存空间(不在缓存表内)存放i中的值，i指向这个内存空间，然后a和b也都指向这个空间，故a&ensp;is&ensp;b成立，当<strong>+0</strong>后运算会分别为a，b申请另外不同的内存空间，由a，b各自指向，此时a&ensp;is&ensp;b不成立。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"># Python</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/15/回归树/" rel="next" title="回归树">
+                <i class="fa fa-chevron-left"></i> 回归树
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/17/Python中list常见操作/" rel="prev" title="Python中list常见操作">
+                Python中list常见操作 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="jimmydug" />
+          <p class="site-author-name" itemprop="name">jimmydug</p>
+           
+              <p class="site-description motion-element" itemprop="description">Want Success Entremely!!!</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">Artikel</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">Tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#‘-’和’is’中的门道"><span class="nav-number">1.</span> <span class="nav-text">‘==’和’is’中的门道</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">jimmydug</span>
+</div>
+
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

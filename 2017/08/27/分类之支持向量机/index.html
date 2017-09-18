@@ -1,0 +1,660 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="基于线性假设下支持向量机模型处理二分类问题(来自python机器学习及实践)&amp;emsp;&amp;emsp;对于之前的Logistic回归模型，参数的确定要遍历数据集中所有数据，所有的训练样本都对参数有影响，而支持向量机模型中使用的是可以用来真正帮助我们决策的数据点，即支持向量，即那些离分隔超平面最近的那些点，其余的数据点将被丢弃。支持向量的选取采用序列最小优化算法(SMO),这个算法实在看不懂。。。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="分类之支持向量机">
+<meta property="og:url" content="http://yoursite.com/2017/08/27/分类之支持向量机/index.html">
+<meta property="og:site_name" content="jimmydug's blog">
+<meta property="og:description" content="基于线性假设下支持向量机模型处理二分类问题(来自python机器学习及实践)&amp;emsp;&amp;emsp;对于之前的Logistic回归模型，参数的确定要遍历数据集中所有数据，所有的训练样本都对参数有影响，而支持向量机模型中使用的是可以用来真正帮助我们决策的数据点，即支持向量，即那些离分隔超平面最近的那些点，其余的数据点将被丢弃。支持向量的选取采用序列最小优化算法(SMO),这个算法实在看不懂。。。">
+<meta property="og:updated_time" content="2017-09-14T04:12:42.673Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="分类之支持向量机">
+<meta name="twitter:description" content="基于线性假设下支持向量机模型处理二分类问题(来自python机器学习及实践)&amp;emsp;&amp;emsp;对于之前的Logistic回归模型，参数的确定要遍历数据集中所有数据，所有的训练样本都对参数有影响，而支持向量机模型中使用的是可以用来真正帮助我们决策的数据点，即支持向量，即那些离分隔超平面最近的那些点，其余的数据点将被丢弃。支持向量的选取采用序列最小优化算法(SMO),这个算法实在看不懂。。。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":true},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/08/27/分类之支持向量机/"/>
+
+
+
+
+
+  <title> 分类之支持向量机 | jimmydug's blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">jimmydug's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Love Life&Coding</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/27/分类之支持向量机/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="jimmydug">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="jimmydug's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                分类之支持向量机
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Veröffentlicht am</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-08-27T15:18:57+08:00">
+                2017-08-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="基于线性假设下支持向量机模型处理二分类问题-来自python机器学习及实践"><a href="#基于线性假设下支持向量机模型处理二分类问题-来自python机器学习及实践" class="headerlink" title="基于线性假设下支持向量机模型处理二分类问题(来自python机器学习及实践)"></a>基于线性假设下支持向量机模型处理二分类问题(来自python机器学习及实践)</h2><p>&emsp;&emsp;对于之前的Logistic回归模型，参数的确定要遍历数据集中所有数据，所有的训练样本都对参数有影响，而支持向量机模型中使用的是可以用来真正帮助我们决策的数据点，即支持向量，即那些离分隔超平面最近的那些点，其余的数据点将被丢弃。支持向量的选取采用<strong>序列最小优化算法</strong>(SMO),这个算法实在看不懂。。。<br><a id="more"></a></p>
+<h3 id="手写体数据读取代码样例"><a href="#手写体数据读取代码样例" class="headerlink" title="手写体数据读取代码样例"></a>手写体数据读取代码样例</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 导入手写体数字加载器</span></div><div class="line">from sklearn.datasets import load_digits</div><div class="line"><span class="comment"># 从通过数据加载器获得手写体数字的数码图像数据并储存在digits变量中</span></div><div class="line">digits = load_digits()</div><div class="line"><span class="comment">#1797条数据，为8*8=64的像素矩阵</span></div><div class="line">digits.data.shape</div><div class="line">&lt;&lt;&lt;(1797, 64)</div><div class="line"><span class="comment"># 分割数据集</span></div><div class="line">from sklearn.cross_validation import train_test_split</div><div class="line">X_train, X_test, y_train, y_test = train_test_split(digits.data, digits.target, test_size=0.25, random_state=33)</div><div class="line"><span class="comment"># 导入数据标准化模块</span></div><div class="line">from sklearn.preprocessing import StandardScaler</div><div class="line"><span class="comment"># 导入线性支持向量机分类器</span></div><div class="line">from sklearn.svm import LinearSVC</div><div class="line">ss = StandardScaler()</div><div class="line">X_train = ss.fit_transform(X_train)</div><div class="line">X_test = ss.transform(X_test)</div><div class="line"><span class="comment"># 初始化</span></div><div class="line">lsvc = LinearSVC()</div><div class="line"><span class="comment"># 训练模型</span></div><div class="line">lsvc.fit(X_train, y_train)</div><div class="line">&lt;&lt;&lt;LinearSVC(C=1.0, class_weight=None, dual=True, fit_intercept=True,</div><div class="line"> intercept_scaling=1, loss=<span class="string">'squared_hinge'</span>, max_iter=1000,</div><div class="line"> multi_class=<span class="string">'ovr'</span>, penalty=<span class="string">'l2'</span>, random_state=None, tol=0.0001,</div><div class="line"> verbose=0)</div><div class="line"><span class="comment"># 进行预测</span></div><div class="line">y_predict = lsvc.predict(X_test)</div><div class="line"><span class="comment"># 使用模型自带的评估函数进行准确性测评 </span></div><div class="line"><span class="built_in">print</span> (<span class="string">'The Accuracy of Linear SVC is'</span>, lsvc.score(X_test, y_test))</div><div class="line">&lt;&lt;&lt;The Accuracy of Linear SVC is 0.953333333333</div><div class="line"><span class="comment"># classification_report模块对预测结果做更加详细的分析</span></div><div class="line">from sklearn.metrics import classification_report</div><div class="line"><span class="built_in">print</span>(classification_report(y_test, y_predict, target_names=digits.target_names.astype(str)))</div><div class="line">     precision    recall  f1-score   support</div><div class="line">  0       0.92      1.00      0.96        35</div><div class="line">  1       0.96      0.98      0.97        54</div><div class="line">  2       0.98      1.00      0.99        44</div><div class="line">  3       0.93      0.93      0.93        46</div><div class="line">  4       0.97      1.00      0.99        35</div><div class="line">  5       0.94      0.94      0.94        48</div><div class="line">  6       0.96      0.98      0.97        51</div><div class="line">  7       0.92      1.00      0.96        35</div><div class="line">  8       0.98      0.84      0.91        58</div><div class="line">  9       0.95      0.91      0.93        44</div><div class="line">avg / total       0.95      0.95      0.95       450</div></pre></td></tr></table></figure>
+<h2 id="来自机器学习实战"><a href="#来自机器学习实战" class="headerlink" title="来自机器学习实战"></a>来自机器学习实战</h2><p>&emsp;&emsp;SVM本身是一个二类分类器，对于多类问题应用SVM需要对代码做一些修改，机器学习上的例子太难了就没贴上来了。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/24/线性分类器/" rel="next" title="线性分类器">
+                <i class="fa fa-chevron-left"></i> 线性分类器
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/04/Scrapy学习日记/" rel="prev" title="Scrapy学习日记">
+                Scrapy学习日记 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="jimmydug" />
+          <p class="site-author-name" itemprop="name">jimmydug</p>
+           
+              <p class="site-description motion-element" itemprop="description">Want Success Entremely!!!</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">Artikel</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">Tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#基于线性假设下支持向量机模型处理二分类问题-来自python机器学习及实践"><span class="nav-number">1.</span> <span class="nav-text">基于线性假设下支持向量机模型处理二分类问题(来自python机器学习及实践)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#手写体数据读取代码样例"><span class="nav-number">1.1.</span> <span class="nav-text">手写体数据读取代码样例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#来自机器学习实战"><span class="nav-number">2.</span> <span class="nav-text">来自机器学习实战</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">jimmydug</span>
+</div>
+
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

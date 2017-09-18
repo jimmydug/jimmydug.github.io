@@ -1,0 +1,670 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="集成(Ensemble)分类模型简单来说，集成分类模型就是综合考量多个分类器的预测结果，从而做出决策，这种考量方式一般分为俩种：1.利用相同的训练数据同时搭建多个独立的分类模型，然后通过投票方式，以少数服从多数的原则作出最终的分类决策，代表为随机森林分类器(Random Forset Classifier)，即在相同的训练数据上同时搭建多棵决策树，之前提到一棵标准的决策树会根据每维特征对预测结果的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="集成(Ensemble)分类模型">
+<meta property="og:url" content="http://yoursite.com/2017/09/13/集成(Ensemble)分类模型/index.html">
+<meta property="og:site_name" content="jimmydug's blog">
+<meta property="og:description" content="集成(Ensemble)分类模型简单来说，集成分类模型就是综合考量多个分类器的预测结果，从而做出决策，这种考量方式一般分为俩种：1.利用相同的训练数据同时搭建多个独立的分类模型，然后通过投票方式，以少数服从多数的原则作出最终的分类决策，代表为随机森林分类器(Random Forset Classifier)，即在相同的训练数据上同时搭建多棵决策树，之前提到一棵标准的决策树会根据每维特征对预测结果的">
+<meta property="og:updated_time" content="2017-09-13T02:15:56.887Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="集成(Ensemble)分类模型">
+<meta name="twitter:description" content="集成(Ensemble)分类模型简单来说，集成分类模型就是综合考量多个分类器的预测结果，从而做出决策，这种考量方式一般分为俩种：1.利用相同的训练数据同时搭建多个独立的分类模型，然后通过投票方式，以少数服从多数的原则作出最终的分类决策，代表为随机森林分类器(Random Forset Classifier)，即在相同的训练数据上同时搭建多棵决策树，之前提到一棵标准的决策树会根据每维特征对预测结果的">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":true},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/09/13/集成(Ensemble)分类模型/"/>
+
+
+
+
+
+  <title> 集成(Ensemble)分类模型 | jimmydug's blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">jimmydug's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Love Life&Coding</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/13/集成(Ensemble)分类模型/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="jimmydug">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="jimmydug's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                集成(Ensemble)分类模型
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Veröffentlicht am</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-09-13T08:30:29+08:00">
+                2017-09-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="集成-Ensemble-分类模型"><a href="#集成-Ensemble-分类模型" class="headerlink" title="集成(Ensemble)分类模型"></a>集成(Ensemble)分类模型</h1><p>简单来说，集成分类模型就是综合考量多个分类器的预测结果，从而做出决策，这种<strong>考量</strong>方式一般分为俩种：<br>1.利用相同的训练数据同时搭建多个独立的分类模型，然后通过投票方式，以少数服从多数的原则作出最终的分类决策，代表为<strong>随机森林分类器</strong>(Random Forset Classifier)，即在相同的训练数据上同时搭建多棵<strong>决策树</strong>，之前提到一棵标准的决策树会根据每维特征对预测结果的影响程度进行排序，进而决定不同特征从上至下构建分裂节点的顺序，这样一来所有的决策树都会遵守这一原则而完全一致，因此在随机森林分类器构建过程中，每一棵决策树都会放弃这一固定的排序算法，转而<strong>随机选取特征</strong>。<br><a id="more"></a><br>2.另一种是按照一定次序搭建多个分类模型，模型彼此间存在依赖关系，一般而言，每一个后续模型的加入都需要对现有集成模型的综合性能有所贡献，进而不断提高更新后的集成模型的性能，并最终期望借助整合多个分类能力较弱的分类器，搭建出更强分类能力的模型，代表的有<strong>梯度提升决策树</strong>(Gradient Tree Boosting)，这里每一棵决策树在生成的过程中都会尽可能降低整体集成模型在训练集上的拟合误差。<br>注意：RFC和GTB都属于集成分类模型！</p>
+<h2 id="单一决策树、随机森林分类器、梯度提升决策树对比-titanic数据集"><a href="#单一决策树、随机森林分类器、梯度提升决策树对比-titanic数据集" class="headerlink" title="单一决策树、随机森林分类器、梯度提升决策树对比(titanic数据集)"></a>单一决策树、随机森林分类器、梯度提升决策树对比(titanic数据集)</h2><p>前面的数据预处理部分和<em>决策树</em>一文中相同，这里就直接贴代码<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">import pandas as pd</div><div class="line">titanic = pd.read_csv(<span class="string">'http://biostat.mc.vanderbilt.edu/wiki/pub/Main/DataSets/titanic.txt'</span>) <span class="comment">#获取数据集</span></div><div class="line">X = titanic[[<span class="string">'pclass'</span>, <span class="string">'age'</span>, <span class="string">'sex'</span>]]</div><div class="line">y = titanic[<span class="string">'survived'</span>]</div><div class="line">X[<span class="string">'age'</span>].fillna(X[<span class="string">'age'</span>].mean(), inplace=True) <span class="comment">#对于年龄缺失值，使用全体平均年龄代替</span></div><div class="line">from sklearn.cross_validation import train_test_split  <span class="comment"># 切割数据集</span></div><div class="line">X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state = 33)</div><div class="line">from sklearn.feature_extraction import DictVectorizer 对类别型(非数值型)特征进行转化，成为特征向量</div><div class="line">vec = DictVectorizer(sparse=False)</div><div class="line">X_train = vec.fit_transform(X_train.to_dict(orient=<span class="string">'record'</span>))</div><div class="line">X_test = vec.transform(X_test.to_dict(orient=<span class="string">'record'</span>))</div></pre></td></tr></table></figure></p>
+<p>使用<strong>单一决策树</strong>进行模型训练以及预测分析<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">from sklearn.tree import DecisionTreeClassifier <span class="comment"># 从tree中导入</span></div><div class="line">dtc = DecisionTreeClassifier()</div><div class="line">dtc.fit(X_train, y_train)</div><div class="line">dtc_y_pred = dtc.predict(X_test)</div></pre></td></tr></table></figure></p>
+<p>使用<strong>随机森林</strong>分类器进行集成模型的训练以及预测分析<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">from sklearn.ensemble import RandomForestClassifier <span class="comment"># 从ensemble中导入</span></div><div class="line">rfc = RandomForestClassifier()</div><div class="line">rfc.fit(X_train, y_train)</div><div class="line">rfc_y_pred = rfc.predict(X_test)</div></pre></td></tr></table></figure></p>
+<p>使用<strong>梯度提升</strong>决策树进行集成模型的训练以及预测分析<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">from sklearn.ensemble import GradientBoostingClassifier <span class="comment"># 从ensemble中导入</span></div><div class="line">gbc = GradientBoostingClassifier()</div><div class="line">gbc.fit(X_train, y_train)</div><div class="line">gbc_y_pred = gbc.predict(X_test)</div></pre></td></tr></table></figure></p>
+<p>单一决策树模型的性能表现<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">from sklearn.metrics import classification_report</div><div class="line"><span class="built_in">print</span>(dtc.score(X_test, y_test)) <span class="comment">#分类准确性</span></div><div class="line"><span class="built_in">print</span>(classification_report(dtc_y_pred, y_test)) <span class="comment">#精确率，召回率，f1指标</span></div></pre></td></tr></table></figure></p>
+<p><em>0.781155015198</em><br>    <em>precision recall f1-score support</em></p>
+<p> <em>0          0.91   0.78   0.84   236</em><br> <em>1          0.58   0.80   0.67   93</em><br> <em>avg/total  0.81   0.78   0.79   329</em><br>随机森林分类器模型的性能表现<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">print</span>(rfc.score(X_test, y_test))</div><div class="line"><span class="built_in">print</span>(classification_report(rfc_y_pred, y_test))</div></pre></td></tr></table></figure></p>
+<p><em>0.784194528875</em><br>    <em>precision  recall f1-score support</em></p>
+<p> <em>0          0.92   0.77   0.84    239</em><br> <em>1          0.57   0.81   0.67    90</em><br> <em>avg/total  0.82   0.78   0.79    329</em><br>梯度提升分类器模型的性能表现<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">print</span>(gbc.score(X_test, y_test))</div><div class="line"><span class="built_in">print</span>(classification_report(gbc_y_pred, y_test))</div></pre></td></tr></table></figure></p>
+<p><em>0.790273556231</em><br>    <em>precision  recall f1-score support</em></p>
+<p> <em>0         0.92   0.78   0.84    239</em><br> <em>1         0.58   0.82   0.68    90</em><br> <em>avg/total 0.83   0.79   0.80    329</em><br>ps：这里classification_report()函数中pred放前面还是test放前面结果应该是不一样的，前面的例子是test放前，这里是pred放前，有必要查一下参数用法！！！<br>实验对比发现，在使用相同的数据集且默认模型配置情况下，性能方面:<strong>梯度提升&gt;随机森林&gt;单一决策树</strong>。</p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>相比于单一的学习模型，集成模型可以整合多种模型，或者多次就一种类型的模型进行建模，在训练过程中要耗费更多的时间，但是往往具有更高的表现性能和更好的稳定性。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/12/决策树分类/" rel="next" title="决策树分类">
+                <i class="fa fa-chevron-left"></i> 决策树分类
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/14/线性回归预测/" rel="prev" title="线性回归预测">
+                线性回归预测 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="jimmydug" />
+          <p class="site-author-name" itemprop="name">jimmydug</p>
+           
+              <p class="site-description motion-element" itemprop="description">Want Success Entremely!!!</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">Artikel</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">Tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#集成-Ensemble-分类模型"><span class="nav-number">1.</span> <span class="nav-text">集成(Ensemble)分类模型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#单一决策树、随机森林分类器、梯度提升决策树对比-titanic数据集"><span class="nav-number">1.1.</span> <span class="nav-text">单一决策树、随机森林分类器、梯度提升决策树对比(titanic数据集)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#总结"><span class="nav-number">1.1.0.1.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">jimmydug</span>
+</div>
+
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>
