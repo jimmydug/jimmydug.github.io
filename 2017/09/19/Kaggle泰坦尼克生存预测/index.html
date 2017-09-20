@@ -71,7 +71,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Python," />
+  <meta name="keywords" content="Kaggle," />
 
 
 
@@ -87,25 +87,16 @@
 
 
 
-<meta name="description" content="enumerate用法a = enumerate([])
-import numpy as np
-a = np.array(([1,5,10,100],[5,7,1,8],[9,2,4,5])) /接受一个元组参数array([[  1,   5,  10, 100],       [  5,   7,   1,   8],       [  9,   2,   4,   5]])
-a.min()返">
+<meta name="description" content="Kaggle泰坦尼克生存预测import pandas as pdf = open(‘train.csv’, encoding=’utf-8’)data = pd.read_csv(f)data.head()data.info()X = data[[‘Pclass’,’Sex’,’Age’,’Fare’]]Y = data[‘Survived’]X.info()X[‘Age’].fillna(X[">
 <meta property="og:type" content="article">
-<meta property="og:title" content="python学习小结">
-<meta property="og:url" content="http://yoursite.com/2017/04/01/python学习小结/index.html">
+<meta property="og:title" content="Kaggle泰坦尼克生存预测">
+<meta property="og:url" content="http://yoursite.com/2017/09/19/Kaggle泰坦尼克生存预测/index.html">
 <meta property="og:site_name" content="jimmydug's blog">
-<meta property="og:description" content="enumerate用法a = enumerate([])
-import numpy as np
-a = np.array(([1,5,10,100],[5,7,1,8],[9,2,4,5])) /接受一个元组参数array([[  1,   5,  10, 100],       [  5,   7,   1,   8],       [  9,   2,   4,   5]])
-a.min()返">
-<meta property="og:updated_time" content="2017-09-10T09:59:37.013Z">
+<meta property="og:description" content="Kaggle泰坦尼克生存预测import pandas as pdf = open(‘train.csv’, encoding=’utf-8’)data = pd.read_csv(f)data.head()data.info()X = data[[‘Pclass’,’Sex’,’Age’,’Fare’]]Y = data[‘Survived’]X.info()X[‘Age’].fillna(X[">
+<meta property="og:updated_time" content="2017-09-19T04:32:42.474Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="python学习小结">
-<meta name="twitter:description" content="enumerate用法a = enumerate([])
-import numpy as np
-a = np.array(([1,5,10,100],[5,7,1,8],[9,2,4,5])) /接受一个元组参数array([[  1,   5,  10, 100],       [  5,   7,   1,   8],       [  9,   2,   4,   5]])
-a.min()返">
+<meta name="twitter:title" content="Kaggle泰坦尼克生存预测">
+<meta name="twitter:description" content="Kaggle泰坦尼克生存预测import pandas as pdf = open(‘train.csv’, encoding=’utf-8’)data = pd.read_csv(f)data.head()data.info()X = data[[‘Pclass’,’Sex’,’Age’,’Fare’]]Y = data[‘Survived’]X.info()X[‘Age’].fillna(X[">
 
 
 
@@ -133,13 +124,13 @@ a.min()返">
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/04/01/python学习小结/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/09/19/Kaggle泰坦尼克生存预测/"/>
 
 
 
 
 
-  <title> python学习小结 | jimmydug's blog </title>
+  <title> Kaggle泰坦尼克生存预测 | jimmydug's blog </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
@@ -258,7 +249,7 @@ a.min()返">
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/04/01/python学习小结/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/19/Kaggle泰坦尼克生存预测/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="jimmydug">
@@ -279,7 +270,7 @@ a.min()返">
             
             
               
-                python学习小结
+                Kaggle泰坦尼克生存预测
               
             
           </h1>
@@ -294,8 +285,8 @@ a.min()返">
               
                 <span class="post-meta-item-text">Posté le</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-04-01T10:46:15+08:00">
-                2017-04-01
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-09-19T12:29:38+08:00">
+                2017-09-19
               </time>
             
 
@@ -330,14 +321,7 @@ a.min()返">
       
 
       
-        <h2 id="enumerate用法"><a href="#enumerate用法" class="headerlink" title="enumerate用法"></a>enumerate用法</h2><pre><code>a = enumerate([])
-</code></pre><p>import numpy as np</p>
-<p>a = np.array(([1,5,10,100],[5,7,1,8],[9,2,4,5])) /接受一个元组参数<br>array([[  1,   5,  10, 100],<br>       [  5,   7,   1,   8],<br>       [  9,   2,   4,   5]])</p>
-<p>a.min()返回矩阵中最小的一个值<br>a.min(0)返回每列中最小的值，是一个1×n一维数组<br>a.min(1)返回每行中最小的值，1×n一维数组</p>
-<p>max()函数同理</p>
-<p>a.shape     #返回一个元组(hang,gao)<br>a.shape[0]   返回行数<br>a.shape[1]   返回列数</p>
-<p>对于m<em>n矩阵a, a.sum(axis=0)为列相加，形成1</em>n<br>             a.sum(axis=1)为行相加，形成1*m</p>
-<p>对于1*n矩阵，例如a[7,4,2,3],a.argsort()返回元素从小到大排列的索引值元组</p>
+        <h1 id="Kaggle泰坦尼克生存预测"><a href="#Kaggle泰坦尼克生存预测" class="headerlink" title="Kaggle泰坦尼克生存预测"></a>Kaggle泰坦尼克生存预测</h1><p>import pandas as pd<br>f = open(‘train.csv’, encoding=’utf-8’)<br>data = pd.read_csv(f)<br>data.head()<br>data.info()<br>X = data[[‘Pclass’,’Sex’,’Age’,’Fare’]]<br>Y = data[‘Survived’]<br>X.info()<br>X[‘Age’].fillna(X[‘Age’].mean(), inplace=True)<br>X.info()<br>from sklearn.feature_extraction import DictVectorizer<br>vec = DictVectorizer(sparse=False)<br>X.info()<br>X = vec.fit_transform(X.to_dict(orient=’record’))<br>vec.feature<em>names</em><br>from sklearn.tree import DecisionTreeClassifier<br>dtc = DecisionTreeClassifier()<br>dtc.fit(X, Y)<br>t = open(‘test.csv’, encoding=’utf-8’)<br>test = pd.read_csv(t)<br>test.head()<br>test[‘Age’].fillna(test[‘Age’].mean(), inplace=True)<br>test[‘Fare’].fillna(test[‘Fare’].mean(), inplace=True)<br>X_test = test[[‘Pclass’, ‘Sex’, ‘Age’, ‘Fare’]]<br>X_test.info()<br>X_test = vec.fit_transform(X_test.to_dict(orient=’record’))<br>Y_predict = dtc.predict(X_test)<br>with open(‘results.csv’,’w’) as f:<br>    f.write(‘PassengerId,Survived\n’)<br>    for i in range(418):<br>        f.write(str(test[‘PassengerId’][i])+”,”+str(Y_predict[i])+’\n’)<br>    f.write(‘Etc.’)</p>
 
       
     </div>
@@ -361,7 +345,7 @@ a.min()返">
       
         <div class="post-tags">
           
-            <a href="/tags/Python/" rel="tag"># Python</a>
+            <a href="/tags/Kaggle/" rel="tag"># Kaggle</a>
           
         </div>
       
@@ -374,8 +358,8 @@ a.min()返">
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/03/31/MySql速学速回/" rel="next" title="MySql速学速回">
-                <i class="fa fa-chevron-left"></i> MySql速学速回
+              <a href="/2017/09/19/Python中i+=x和i=i+x等价吗/" rel="next" title="Python中i+=x和i=i+x等价吗">
+                <i class="fa fa-chevron-left"></i> Python中i+=x和i=i+x等价吗
               </a>
             
           </div>
@@ -384,8 +368,8 @@ a.min()返">
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/08/24/线性分类器/" rel="prev" title="线性分类器">
-                线性分类器 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/09/19/Python文件操作和os模块/" rel="prev" title="Python文件操作和os模块">
+                Python文件操作和os模块 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -506,7 +490,7 @@ a.min()返">
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#enumerate用法"><span class="nav-number">1.</span> <span class="nav-text">enumerate用法</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Kaggle泰坦尼克生存预测"><span class="nav-number">1.</span> <span class="nav-text">Kaggle泰坦尼克生存预测</span></a></li></ol></div>
             
 
           </div>

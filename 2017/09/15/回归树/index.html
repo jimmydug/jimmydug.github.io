@@ -87,19 +87,16 @@
 
 
 
-<meta name="description" content="回归树回归树在选择不同特征作为分裂节点的策略上和决策树类似，不同之处在于，回归树叶节点的数据类型是连续型而不是离散型，但是严格来说，回归树又不能称为“回归算法”，因为回归树的叶节点返回的是“一团”训练数据的均值，并不是具体的、连续的预测值。数据集依然使用的是sklearn自带的波士顿房价数据，用其搭建回归树模型。
-获取数据1234from sklearn.datasets import load_">
+<meta name="description" content="回归树回归树在选择不同特征作为分裂节点的策略上和决策树类似，不同之处在于，回归树叶节点的数据类型是连续型而不是离散型，但是严格来说，回归树又不能称为“回归算法”，因为回归树的叶节点返回的是“一团”训练数据的均值，并不是具体的、连续的预测值。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="回归树">
 <meta property="og:url" content="http://yoursite.com/2017/09/15/回归树/index.html">
 <meta property="og:site_name" content="jimmydug's blog">
-<meta property="og:description" content="回归树回归树在选择不同特征作为分裂节点的策略上和决策树类似，不同之处在于，回归树叶节点的数据类型是连续型而不是离散型，但是严格来说，回归树又不能称为“回归算法”，因为回归树的叶节点返回的是“一团”训练数据的均值，并不是具体的、连续的预测值。数据集依然使用的是sklearn自带的波士顿房价数据，用其搭建回归树模型。
-获取数据1234from sklearn.datasets import load_">
-<meta property="og:updated_time" content="2017-09-17T07:03:43.292Z">
+<meta property="og:description" content="回归树回归树在选择不同特征作为分裂节点的策略上和决策树类似，不同之处在于，回归树叶节点的数据类型是连续型而不是离散型，但是严格来说，回归树又不能称为“回归算法”，因为回归树的叶节点返回的是“一团”训练数据的均值，并不是具体的、连续的预测值。">
+<meta property="og:updated_time" content="2017-09-18T01:08:59.712Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="回归树">
-<meta name="twitter:description" content="回归树回归树在选择不同特征作为分裂节点的策略上和决策树类似，不同之处在于，回归树叶节点的数据类型是连续型而不是离散型，但是严格来说，回归树又不能称为“回归算法”，因为回归树的叶节点返回的是“一团”训练数据的均值，并不是具体的、连续的预测值。数据集依然使用的是sklearn自带的波士顿房价数据，用其搭建回归树模型。
-获取数据1234from sklearn.datasets import load_">
+<meta name="twitter:description" content="回归树回归树在选择不同特征作为分裂节点的策略上和决策树类似，不同之处在于，回归树叶节点的数据类型是连续型而不是离散型，但是严格来说，回归树又不能称为“回归算法”，因为回归树的叶节点返回的是“一团”训练数据的均值，并不是具体的、连续的预测值。">
 
 
 
@@ -199,7 +196,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
-            Startseite
+            Accueil
           </a>
         </li>
       
@@ -209,7 +206,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
-            Archiv
+            Archives
           </a>
         </li>
       
@@ -286,7 +283,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">Posté le</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-09-15T15:04:00+08:00">
                 2017-09-15
@@ -324,7 +321,7 @@
       
 
       
-        <h1 id="回归树"><a href="#回归树" class="headerlink" title="回归树"></a>回归树</h1><p>回归树在选择不同特征作为分裂节点的策略上和决策树类似，不同之处在于，回归树叶节点的数据类型是<strong>连续型</strong>而不是离散型，但是严格来说，回归树又不能称为“回归算法”，因为回归树的叶节点返回的是“一团”训练数据的<strong>均值</strong>，并不是具体的、连续的预测值。<br>数据集依然使用的是sklearn自带的波士顿房价数据，用其搭建回归树模型。</p>
+        <h1 id="回归树"><a href="#回归树" class="headerlink" title="回归树"></a>回归树</h1><p>回归树在选择不同特征作为分裂节点的策略上和决策树类似，不同之处在于，回归树叶节点的数据类型是<strong>连续型</strong>而不是离散型，但是严格来说，回归树又不能称为“回归算法”，因为回归树的叶节点返回的是“一团”训练数据的<strong>均值</strong>，并不是具体的、连续的预测值。<br><a id="more"></a><br>数据集依然使用的是sklearn自带的波士顿房价数据，用其搭建回归树模型。</p>
 <h2 id="获取数据"><a href="#获取数据" class="headerlink" title="获取数据"></a>获取数据</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">from sklearn.datasets import load_boston</div><div class="line">boston = load_boston()</div><div class="line">X = boston.data</div><div class="line">y = boston.target</div></pre></td></tr></table></figure>
 <h2 id="分割，标准化数据"><a href="#分割，标准化数据" class="headerlink" title="分割，标准化数据"></a>分割，标准化数据</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">from sklearn.cross_validation import train_test_split</div><div class="line">X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=33)</div><div class="line">from sklearn.preprocessing import StandardScaler</div><div class="line">ss_X = StandardScaler()</div><div class="line">ss_y = StandardScaler()</div><div class="line">X_train = ss_X.fit_transform(X_train)</div><div class="line">X_test = ss_X.transform(X_test)</div><div class="line">y_train = ss_y.fit_transform(y_train)</div><div class="line">y_test = ss_y.transform(y_test)</div></pre></td></tr></table></figure>
 <h2 id="导入，训练回归树并进行预测"><a href="#导入，训练回归树并进行预测" class="headerlink" title="导入，训练回归树并进行预测"></a>导入，训练回归树并进行预测</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">from sklearn.tree import DecisionTreeRegressor</div><div class="line">dtr = DecisionTreeRegressor()</div><div class="line">dtr.fit(X_train, y_train)</div><div class="line">dtr_y_predict = dtr.predict(X_test)</div></pre></td></tr></table></figure>
@@ -423,10 +420,10 @@
       
         <ul class="sidebar-nav motion-element">
           <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            Inhaltsverzeichnis
+            Table Des Matières
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
-            Übersicht
+            Ensemble
           </li>
         </ul>
       
@@ -446,8 +443,8 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">21</span>
-                <span class="site-state-item-name">Artikel</span>
+                <span class="site-state-item-count">26</span>
+                <span class="site-state-item-name">articles</span>
               </a>
             </div>
           
@@ -459,8 +456,8 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">7</span>
-                <span class="site-state-item-name">Tags</span>
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">tags</span>
               </a>
             </div>
           
@@ -526,11 +523,11 @@
 
 
 <div class="powered-by">
-  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
 </div>
 
 <div class="theme-info">
-  Theme -
+  Thème -
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
     NexT.Muse
   </a>
