@@ -1,0 +1,688 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Python MongoDB database," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="Python中使用MongoDB在使用Python的过程中我们免不了要保存各种在网页上爬取下来的数据，将他们保存为csv，txt文件是一个好主意，但是将数据存入数据库是一个更好的选择，公司企业里也是通过数据库达到数据管理，共享，维护的功能。这篇文章介绍的数据库是MongoDB，它是一种NoSQL数据库，即非关系型数据库，要来解释什么是非关系型，又要来探讨一下什么是关系型数据库(MySQL为典型)。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python中使用MongoDB">
+<meta property="og:url" content="http://yoursite.com/2017/09/20/Python中使用MongoDB/index.html">
+<meta property="og:site_name" content="jimmydug's blog">
+<meta property="og:description" content="Python中使用MongoDB在使用Python的过程中我们免不了要保存各种在网页上爬取下来的数据，将他们保存为csv，txt文件是一个好主意，但是将数据存入数据库是一个更好的选择，公司企业里也是通过数据库达到数据管理，共享，维护的功能。这篇文章介绍的数据库是MongoDB，它是一种NoSQL数据库，即非关系型数据库，要来解释什么是非关系型，又要来探讨一下什么是关系型数据库(MySQL为典型)。">
+<meta property="og:updated_time" content="2017-09-22T05:02:26.201Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python中使用MongoDB">
+<meta name="twitter:description" content="Python中使用MongoDB在使用Python的过程中我们免不了要保存各种在网页上爬取下来的数据，将他们保存为csv，txt文件是一个好主意，但是将数据存入数据库是一个更好的选择，公司企业里也是通过数据库达到数据管理，共享，维护的功能。这篇文章介绍的数据库是MongoDB，它是一种NoSQL数据库，即非关系型数据库，要来解释什么是非关系型，又要来探讨一下什么是关系型数据库(MySQL为典型)。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":true},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/09/20/Python中使用MongoDB/"/>
+
+
+
+
+
+  <title> Python中使用MongoDB | jimmydug's blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">jimmydug's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Love Life&Coding</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/20/Python中使用MongoDB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="jimmydug">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="jimmydug's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Python中使用MongoDB
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-09-20T14:03:37+08:00">
+                2017-09-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Python中使用MongoDB"><a href="#Python中使用MongoDB" class="headerlink" title="Python中使用MongoDB"></a>Python中使用MongoDB</h1><p>在使用Python的过程中我们免不了要保存各种在网页上爬取下来的数据，将他们保存为csv，txt文件是一个好主意，但是将数据存入数据库是一个更好的选择，公司企业里也是通过数据库达到数据管理，共享，维护的功能。<br>这篇文章介绍的数据库是<strong>MongoDB</strong>，它是一种NoSQL数据库，即<strong>非关系型</strong>数据库，要来解释什么是非关系型，又要来探讨一下什么是关系型数据库(MySQL为典型)。<br><a id="more"></a></p>
+<h2 id="什么是SQL和NoSQL"><a href="#什么是SQL和NoSQL" class="headerlink" title="什么是SQL和NoSQL"></a>什么是SQL和NoSQL</h2><p>以MySQL为典型的SQL数据库有以下特点：<br>1.模型是关系型的<br>2.数据被存放在表中<br>3.适用于每条记录都是相同类型并且有相同属性(在每张表中)<br>4.存储规范要预定义结构(先规定存储的属性值类型，int，varchar等)</p>
+<p>以MongoDB为代表的NoSQL数据库有以下特点：<br>1.模型是非关系型的<br>1.支持多种标准查询类型，如matching(),comparison(),正则表达式等<br>2.可以存储几乎任何类型的数据，且每条记录的结构都可以不同<br>3.添加带有新属性的数据时，不会影响其他记录<br>4.在pymongo下使用mongodb，db和collection(类似于MySQL中的DATABASE和TABLE)都不需要事先创建，<strong>使用即创建</strong>。</p>
+<h2 id="Python中使用MongoDB-1"><a href="#Python中使用MongoDB-1" class="headerlink" title="Python中使用MongoDB"></a>Python中使用MongoDB</h2><p>这里默认在已经安装好软件的情况下，使用MongoDB，在cmd命令行中输入：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">mongod  <span class="comment"># 启动服务器进程</span></div><div class="line">mongo   <span class="comment"># 建立本地连接</span></div></pre></td></tr></table></figure></p>
+<h3 id="Python下建立连接"><a href="#Python下建立连接" class="headerlink" title="Python下建立连接"></a>Python下建立连接</h3><p>上面是在cmd命令行下使用MongoDB，而在Python环境下使用则需要先安装pymongo库<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">import pymongo</div><div class="line">client = pymongo.MongoClient(host=<span class="string">'localhost'</span>, port=27017)</div><div class="line"><span class="comment"># client = pymongo.MongoClient('mongodb://localhost:27017/')</span></div></pre></td></tr></table></figure></p>
+<p>这样就在Python环境下建立一个连接，提供了俩种不同的写法，是等效的</p>
+<h3 id="指定collection"><a href="#指定collection" class="headerlink" title="指定collection"></a>指定collection</h3><p>MongoDB中同MySQL一样，分为一个个的数据库(dbs)，且每个数据库下分为一个个collection(同MySQL中的table)，但是与MySQL不同的是：MongoDB中的db和collection都<strong>不需要事先创建，也不需要预先定义结构，指定即创建，插入的记录结构也不作要求</strong><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 指明数据库</span></div><div class="line">db =client.test      <span class="comment"># 等同 db = client['test']</span></div><div class="line"><span class="comment"># 指明使用的collection</span></div><div class="line">collection = db.staff   <span class="comment"># 等同collection['staff']</span></div></pre></td></tr></table></figure></p>
+<h3 id="插入数据insert-以dict形式）"><a href="#插入数据insert-以dict形式）" class="headerlink" title="插入数据insert(以dict形式）"></a>插入数据insert(以dict形式）</h3><p>插入一条数据<strong>.insert_one({})</strong><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; person1 = &#123;</div><div class="line">		<span class="string">'id'</span> ： <span class="string">'6324'</span></div><div class="line">		<span class="string">'name'</span> : <span class="string">'Tom'</span></div><div class="line">		<span class="string">'age'</span> : 24</div><div class="line">		<span class="string">'sex'</span> : <span class="string">'male'</span> </div><div class="line">	&#125;</div><div class="line">&gt;&gt;&gt; result = collection.inser_one(person1)</div><div class="line">&gt;&gt;&gt; <span class="built_in">print</span>(result)</div><div class="line">&gt;&gt;&gt; result.insert_id</div><div class="line">&lt;pymongo.results.InsertOneResult object at 0x10d68b558&gt;</div><div class="line">5932ab0f15c2606f0c1cf6c5</div></pre></td></tr></table></figure></p>
+<p>插入一条记录返回一个InsertOneResult对象，我们可以调用其<strong>inserted_id</strong>属性获取_id(<strong>唯一标识</strong>)。</p>
+<p>一次插入多条数据<strong>.insert_many([{},{},{}])</strong><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; person2 = &#123;</div><div class="line">		<span class="string">'id'</span> ： <span class="string">'5287'</span></div><div class="line">		<span class="string">'name'</span> : <span class="string">'curry'</span></div><div class="line">		<span class="string">'age'</span> : 28</div><div class="line">	&#125;</div><div class="line">&gt;&gt;&gt; person3 = &#123;</div><div class="line">		<span class="string">'id'</span> ： <span class="string">'9026'</span></div><div class="line">		<span class="string">'name'</span> : <span class="string">'kobe'</span></div><div class="line">		<span class="string">'age'</span> : 39</div><div class="line">		<span class="string">'sex'</span> : <span class="string">'male'</span></div><div class="line">		<span class="string">'kids_num'</span> : 3 </div><div class="line">	&#125;</div><div class="line">&gt;&gt;&gt; person4 = &#123;</div><div class="line">		<span class="string">'phone'</span> ： <span class="string">'12345'</span></div><div class="line">		<span class="string">'name'</span> : <span class="string">'Tina'</span></div><div class="line">		<span class="string">'age'</span> : <span class="string">'no'</span></div><div class="line">		<span class="string">'gender'</span> : <span class="string">'female'</span> </div><div class="line">	&#125;</div><div class="line">&gt;&gt;&gt; results = collection.inset_many([person2, person3, person4])</div><div class="line">&gt;&gt;&gt; <span class="built_in">print</span>(results)</div><div class="line">&gt;&gt;&gt; results.inserted_ids</div><div class="line">&lt;pymongo.results.InsertManyResult object at 0x101dea558&gt;</div><div class="line">[ObjectId(<span class="string">'5932abf415c2607083d3b2ac'</span>), ObjectId(<span class="string">'5932abf415c2607083d3b2ad'</span>)]</div></pre></td></tr></table></figure></p>
+<p>返回的类型是InsertManyResult，调用<strong>inserted_ids</strong>属性可以获取插入数据的_id列表</p>
+<h3 id="查询find（查询结果不存在返回None）"><a href="#查询find（查询结果不存在返回None）" class="headerlink" title="查询find（查询结果不存在返回None）"></a>查询find（查询结果不存在返回None）</h3><p>查询单个结果<strong>.find_one({})</strong>，dict不需要完整<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; result = collection.find_one(&#123;<span class="string">'name'</span>: <span class="string">'kobe'</span>&#125;)</div><div class="line">&gt;&gt;&gt; <span class="built_in">print</span>(<span class="built_in">type</span>(result))</div><div class="line">&gt;&gt;&gt; <span class="built_in">print</span>(result)</div><div class="line">&lt;class<span class="string">'dict'</span>&gt;</div><div class="line">&#123;<span class="string">'_id'</span>: ObjectId(<span class="string">'5932a80115c2606a59e8a049'</span>), <span class="string">'id'</span>: <span class="string">'9026'</span>, <span class="string">'name'</span>: <span class="string">'kobe'</span>, <span class="string">'age'</span>: 39, <span class="string">'sex'</span>: <span class="string">'male'</span>, <span class="string">'kids_num'</span> : 3&#125;</div></pre></td></tr></table></figure></p>
+<p>find_one返回一个<strong>字典</strong>，与我们插入时的记录不同，现在多了一个<strong>_id</strong></p>
+<p>查询多个结果<strong>.find({})</strong>，不加参数返回全部记录<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; collection.find()</div><div class="line">&gt;&gt;&gt; results = collection.find(&#123;<span class="string">'sex'</span> : <span class="string">'male'</span>&#125;)</div><div class="line">&gt;&gt;&gt; <span class="built_in">print</span>(results)</div><div class="line">&gt;&gt;&gt; <span class="keyword">for</span> i <span class="keyword">in</span> results:</div><div class="line">		pass</div><div class="line">&lt;pymongo.cursor.Cursor object at 0x1032d5128&gt;</div></pre></td></tr></table></figure></p>
+<p>返回结果是<strong>Cursor</strong>类型，相当于一个生成器，我们需要遍历取到所有的结果，每一个结果都是字典类型<br>各种查询条件：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">&#123;<span class="string">'age'</span> : &#123;<span class="string">'$gt'</span> : 25&#125;&#125;</div><div class="line">&#123;<span class="string">'age'</span> : &#123;<span class="string">'$gte'</span> : 25&#125;&#125;</div><div class="line">&#123;<span class="string">'age'</span> : &#123;<span class="string">'$lt'</span> : 25&#125;&#125;</div><div class="line">&#123;<span class="string">'age'</span> : &#123;<span class="string">'$lte'</span> : 25&#125;&#125;</div><div class="line">&#123;<span class="string">'age'</span> : &#123;<span class="string">'$ne'</span> : 25&#125;&#125;</div><div class="line">&#123;<span class="string">'age'</span> : &#123;<span class="string">'$in'</span> : [25,35]&#125;&#125;  <span class="comment"># 在25-35内</span></div><div class="line">&#123;<span class="string">'age'</span> : &#123;<span class="string">'$nin'</span> : [25,35]&#125;&#125;</div><div class="line">&#123;<span class="string">'age'</span> : &#123;<span class="string">'$type'</span> : <span class="string">'int'</span>&#125;&#125;</div><div class="line">&#123;<span class="string">'age'</span> : &#123;<span class="string">'$mod'</span> : [5,0]&#125;&#125;   <span class="comment"># 模5余0</span></div><div class="line">&#123;<span class="string">'name'</span> : &#123;<span class="string">'$regex'</span> : <span class="string">'^D.*'</span>&#125;&#125;   <span class="comment"># 正则，以D开头</span></div><div class="line">&#123;<span class="string">'name'</span> : &#123;<span class="string">'$exists'</span> : <span class="string">'True'</span>&#125;&#125;   <span class="comment"># 属性存在</span></div></pre></td></tr></table></figure></p>
+<h3 id="统计count"><a href="#统计count" class="headerlink" title="统计count()"></a>统计count()</h3><p>统计所有记录：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; count = collection.find().count()</div><div class="line">&gt;&gt;&gt; <span class="built_in">print</span>(count)</div></pre></td></tr></table></figure></p>
+<p>根据条件统计：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; count = collection.find(&#123;<span class="string">'age'</span>: 20&#125;).count()</div><div class="line">&gt;&gt;&gt; <span class="built_in">print</span>(count)</div></pre></td></tr></table></figure></p>
+<h3 id="排序sort"><a href="#排序sort" class="headerlink" title="排序sort"></a>排序sort</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 指定属性和升降序即可</span></div><div class="line">&gt;&gt;&gt; results = collection.find().sort(<span class="string">'name'</span>, pymongo.ASCENDING)  <span class="comment"># 升序</span></div><div class="line">&gt;&gt;&gt; <span class="built_in">print</span>([result[<span class="string">'name'</span>] <span class="keyword">for</span> result <span class="keyword">in</span> results])</div><div class="line">[<span class="string">'Tina'</span>, <span class="string">'Tom'</span>, <span class="string">'curry'</span>, <span class="string">'kobe'</span>]</div></pre></td></tr></table></figure>
+<h3 id="偏移skip"><a href="#偏移skip" class="headerlink" title="偏移skip"></a>偏移skip</h3><p>在查询时用于选取部分查询结果<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; results = collection.find().sort(<span class="string">'name'</span>, pymongo.ASCENDING).skip(2) <span class="comment"># 忽略前俩条数据</span></div><div class="line">&gt;&gt;&gt; <span class="built_in">print</span>([result[<span class="string">'name'</span>] <span class="keyword">for</span> result <span class="keyword">in</span> results])</div><div class="line">[<span class="string">'curry'</span>, <span class="string">'kobe'</span>]</div></pre></td></tr></table></figure></p>
+<p>另外还可以用limit()方法指定要取的结果个数，如.skip(2).limit(1)，那就只返回[‘curry’]</p>
+<h3 id="更新update"><a href="#更新update" class="headerlink" title="更新update"></a>更新update</h3><p>修改一个<strong>.updata_one()</strong><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; condition = &#123;<span class="string">'name'</span>: <span class="string">'kobe'</span>&#125;   <span class="comment"># 条件</span></div><div class="line">&gt;&gt;&gt; student = collection.find_one(condition) <span class="comment"># 选择第1条符合条件的数据待更新</span></div><div class="line">&gt;&gt;&gt; student[<span class="string">'age'</span>] = 18  <span class="comment"># 修改数据</span></div><div class="line">&gt;&gt;&gt; result = collection.update_one(condition, &#123;<span class="string">'$set'</span>: student&#125;) <span class="comment"># 填入条件，待更新数据参数</span></div><div class="line">&gt;&gt;&gt; <span class="built_in">print</span>(result)  <span class="comment"># 返回结果是UpdateResult类型</span></div><div class="line">&lt;pymongo.results.UpdateResult object at 0x10d17b678&gt; </div><div class="line"><span class="comment"># 匹配数据数和影响数据数</span></div><div class="line">&gt;&gt;&gt; <span class="built_in">print</span>(result.matched_count, result.modified_count) </div><div class="line">1 0  </div><div class="line"></div><div class="line">&gt;&gt;&gt; condition = &#123;<span class="string">'age'</span>: &#123;<span class="string">'$gt'</span>: 22&#125;&#125;</div><div class="line">&gt;&gt;&gt; result = collection.update_one(condition, &#123;<span class="string">'$inc'</span>: &#123;<span class="string">'age'</span>: 1&#125;&#125;)  <span class="comment"># 第一条符合条件的数据年龄加1</span></div><div class="line">&gt;&gt;&gt; <span class="built_in">print</span>(result.matched_count, result.modified_count)</div><div class="line">1 1</div></pre></td></tr></table></figure></p>
+<p>修改多个<strong>update_many()</strong><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; condition = &#123;<span class="string">'age'</span>: &#123;<span class="string">'$gt'</span>: 10&#125;&#125;</div><div class="line">&gt;&gt;&gt; result = collection.update_many(condition, &#123;<span class="string">'$inc'</span>: &#123;<span class="string">'age'</span>: 1&#125;&#125;)</div><div class="line">&gt;&gt;&gt; <span class="built_in">print</span>(result.matched_count, result.modified_count)</div><div class="line">4 4</div></pre></td></tr></table></figure></p>
+<h3 id="删除delete"><a href="#删除delete" class="headerlink" title="删除delete"></a>删除delete</h3><p>1.remove({条件})，符合条件的数据会被删除：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; result = collection.remove(&#123;<span class="string">'name'</span>: <span class="string">'kobe'</span>&#125;)</div><div class="line">&gt;&gt;&gt; <span class="built_in">print</span>(result)</div><div class="line">&#123;<span class="string">'ok'</span>: 1, <span class="string">'n'</span>: 1&#125; <span class="comment"># ok表示操作成功，n表示影响的数据条数</span></div></pre></td></tr></table></figure></p>
+<p>2.<strong>delete_one({条件})和delete_many({条件})</strong>：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 删除第一条符合条件的记录</span></div><div class="line">&gt;&gt;&gt; result = collection.delete_one(&#123;<span class="string">'name'</span>: <span class="string">'curry'</span>&#125;)</div><div class="line">&gt;&gt;&gt; <span class="built_in">print</span>(result)</div><div class="line">&gt;&gt;&gt; <span class="built_in">print</span>(result.deleted_count)</div><div class="line">&lt;pymongo.results.DeleteResult object at 0x10e6ba4c8&gt;</div><div class="line">1</div><div class="line"></div><div class="line"><span class="comment"># 删除所有符合条件的数据</span></div><div class="line">&gt;&gt;&gt; result = collection.delete_many(&#123;<span class="string">'age'</span>: &#123;<span class="string">'$lt'</span>: 25&#125;&#125;)</div><div class="line">&gt;&gt;&gt; <span class="built_in">print</span>(result.deleted_count)</div><div class="line">4</div></pre></td></tr></table></figure></p>
+<p>返回结果是DeleteResult类型，可以调用<strong>deleted_count</strong>属性获取删除的记录数。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python-MongoDB-database/" rel="tag"># Python MongoDB database</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/20/Python迭代器、迭代对象、生成器/" rel="next" title="Python迭代器、迭代对象、生成器">
+                <i class="fa fa-chevron-left"></i> Python迭代器、迭代对象、生成器
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/21/Pandas可视化一/" rel="prev" title="Pandas可视化一">
+                Pandas可视化一 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="jimmydug" />
+          <p class="site-author-name" itemprop="name">jimmydug</p>
+           
+              <p class="site-description motion-element" itemprop="description">Want Success Entremely!!!</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">34</span>
+                <span class="site-state-item-name">posts</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Python中使用MongoDB"><span class="nav-number">1.</span> <span class="nav-text">Python中使用MongoDB</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是SQL和NoSQL"><span class="nav-number">1.1.</span> <span class="nav-text">什么是SQL和NoSQL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Python中使用MongoDB-1"><span class="nav-number">1.2.</span> <span class="nav-text">Python中使用MongoDB</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Python下建立连接"><span class="nav-number">1.2.1.</span> <span class="nav-text">Python下建立连接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#指定collection"><span class="nav-number">1.2.2.</span> <span class="nav-text">指定collection</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#插入数据insert-以dict形式）"><span class="nav-number">1.2.3.</span> <span class="nav-text">插入数据insert(以dict形式）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查询find（查询结果不存在返回None）"><span class="nav-number">1.2.4.</span> <span class="nav-text">查询find（查询结果不存在返回None）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#统计count"><span class="nav-number">1.2.5.</span> <span class="nav-text">统计count()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#排序sort"><span class="nav-number">1.2.6.</span> <span class="nav-text">排序sort</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#偏移skip"><span class="nav-number">1.2.7.</span> <span class="nav-text">偏移skip</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#更新update"><span class="nav-number">1.2.8.</span> <span class="nav-text">更新update</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#删除delete"><span class="nav-number">1.2.9.</span> <span class="nav-text">删除delete</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">jimmydug</span>
+</div>
+
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

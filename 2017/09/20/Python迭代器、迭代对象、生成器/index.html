@@ -95,7 +95,7 @@
 <meta property="og:description" content="Python迭代器、迭代对象、生成器这篇文章将用来介绍一下Python中容器(container)、可迭代对象(iterable)、迭代器(iterator)、生成器(generator)的概念以及他们的相互关系。">
 <meta property="og:image" content="http://yoursite.com/images/iterator.png">
 <meta property="og:image" content="http://yoursite.com/images/iterable.png">
-<meta property="og:updated_time" content="2017-09-20T05:35:35.349Z">
+<meta property="og:updated_time" content="2017-09-20T05:37:30.730Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python迭代器、迭代对象、生成器">
 <meta name="twitter:description" content="Python迭代器、迭代对象、生成器这篇文章将用来介绍一下Python中容器(container)、可迭代对象(iterable)、迭代器(iterator)、生成器(generator)的概念以及他们的相互关系。">
@@ -199,7 +199,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
-            Startseite
+            Home
           </a>
         </li>
       
@@ -209,7 +209,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
-            Archiv
+            Archives
           </a>
         </li>
       
@@ -286,7 +286,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">Posted on</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-09-20T08:57:43+08:00">
                 2017-09-20
@@ -324,7 +324,7 @@
       
 
       
-        <h1 id="Python迭代器、迭代对象、生成器"><a href="#Python迭代器、迭代对象、生成器" class="headerlink" title="Python迭代器、迭代对象、生成器"></a>Python迭代器、迭代对象、生成器</h1><p>这篇文章将用来介绍一下Python中<strong>容器</strong>(<em>container</em>)、<strong>可迭代对象</strong>(<em>iterable</em>)、<strong>迭代器</strong>(<em>iterator</em>)、<strong>生成器</strong>(<em>generator</em>)的概念以及他们的相互关系。<br><img src="images/iterator.png" alt="图片"><br><a id="more"></a></p>
+        <h1 id="Python迭代器、迭代对象、生成器"><a href="#Python迭代器、迭代对象、生成器" class="headerlink" title="Python迭代器、迭代对象、生成器"></a>Python迭代器、迭代对象、生成器</h1><p>这篇文章将用来介绍一下Python中<strong>容器</strong>(<em>container</em>)、<strong>可迭代对象</strong>(<em>iterable</em>)、<strong>迭代器</strong>(<em>iterator</em>)、<strong>生成器</strong>(<em>generator</em>)的概念以及他们的相互关系。<br><img src="/images/iterator.png" alt="图片"><br><a id="more"></a></p>
 <h2 id="容器"><a href="#容器" class="headerlink" title="容器"></a>容器</h2><p>简单的说，容器是一种可以把多个元素组织在一起的数据结构，容器中元素可以被逐个迭代获取，可以用<strong>in</strong>、<strong>not&ensp;in</strong>关键字判断元素是否在容器中。常见的容器有<strong>list，dict，set，tuple，str</strong>。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; <span class="keyword">for</span> i <span class="keyword">in</span> <span class="string">'ab'</span>:</div><div class="line">	<span class="built_in">print</span>(i)</div><div class="line">a</div><div class="line">b</div><div class="line">&gt;&gt;&gt; <span class="string">'ab'</span> <span class="keyword">in</span> <span class="string">'abc'</span> 	<span class="comment"># substring</span></div><div class="line">True</div><div class="line">&gt;&gt;&gt; <span class="string">'ac'</span> <span class="keyword">in</span> <span class="string">'abc'</span></div><div class="line">False</div><div class="line">&gt;&gt;&gt; assert 1 <span class="keyword">in</span> [1, 2, 3]</div><div class="line">&gt;&gt;&gt; assert 2 <span class="keyword">in</span> &#123;1: <span class="string">'one'</span>, 2: <span class="string">'two'</span>&#125;</div></pre></td></tr></table></figure></p>
 <h2 id="可迭代对象-iterable"><a href="#可迭代对象-iterable" class="headerlink" title="可迭代对象(iterable)"></a>可迭代对象(iterable)</h2><p>上面提到的这些容器都是可迭代对象，还有打开状态下的files，sockets等也是可迭代对象，凡是可以返回一个<strong>迭代器</strong>的对象都可称为可迭代对象。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; x = [1, 2, 3]</div><div class="line">&gt;&gt;&gt; y = iter(x)</div><div class="line">&gt;&gt;&gt; z = iter(x)</div><div class="line">&gt;&gt;&gt; next(y)</div><div class="line">1</div><div class="line">&gt;&gt;&gt; next(y)</div><div class="line">2</div><div class="line">&gt;&gt;&gt; next(z)</div><div class="line">1</div><div class="line">&gt;&gt;&gt; <span class="built_in">type</span>(x)</div><div class="line">&lt;class <span class="string">'list'</span>&gt;</div><div class="line">&gt;&gt;&gt; <span class="built_in">type</span>(y)</div><div class="line">&lt;class <span class="string">'list_iterator'</span>&gt;</div></pre></td></tr></table></figure></p>
 <p>这里x是一个可迭代对象，可迭代对象和容器一样是一种通俗的叫法，并不是指某种具体的数据类型，list是可迭代对象，dict是可迭代对象，set也是可迭代对象。 y和 z是两个<strong>独立的迭代器</strong>，迭代器内部持有一个状态，该状态用于记录当前迭代所在的位置，以方便下次迭代的时候获取正确的元素。<br>迭代器有一种具体的迭代器类型，比如list_iterator，set<em>iterator。迭代器实现了**\</em>_iter__<strong>和</strong>__next__<strong>方法，这两个方法对应内置函数</strong>iter()<strong>和</strong>next()**。 __iter__方法返回可迭代对象本身，这使得他既是一个可迭代对象同时也是一个迭代器。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; x = [1, 2, 3]</div><div class="line">&gt;&gt;&gt; <span class="keyword">for</span> i <span class="keyword">in</span> x:</div><div class="line">		...</div><div class="line">&gt;&gt;&gt; hasattr(list,<span class="string">'__iter__'</span>)</div><div class="line">True</div><div class="line">&gt;&gt;&gt; hasattr(list,<span class="string">'__next__'</span>)</div><div class="line">False</div></pre></td></tr></table></figure></p>
@@ -387,6 +387,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2017/09/20/Python中使用MongoDB/" rel="prev" title="Python中使用MongoDB">
+                Python中使用MongoDB <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -434,10 +438,10 @@
       
         <ul class="sidebar-nav motion-element">
           <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            Inhaltsverzeichnis
+            Table of Contents
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
-            Übersicht
+            Overview
           </li>
         </ul>
       
@@ -457,8 +461,8 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">26</span>
-                <span class="site-state-item-name">Artikel</span>
+                <span class="site-state-item-count">34</span>
+                <span class="site-state-item-name">posts</span>
               </a>
             </div>
           
@@ -470,8 +474,8 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">8</span>
-                <span class="site-state-item-name">Tags</span>
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">tags</span>
               </a>
             </div>
           
@@ -537,7 +541,7 @@
 
 
 <div class="powered-by">
-  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
 </div>
 
 <div class="theme-info">

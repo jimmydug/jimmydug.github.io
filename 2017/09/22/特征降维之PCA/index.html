@@ -1,0 +1,678 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="特征降维之PCA特征降维是无监督学习的另一个应用，在图像识别方面，经常会遇到特征维度非常高的训练样本(像素矩阵)时，很难提供数据展现，训练学习模型也很耗时耗力，特征降维不仅重构了有效的低维度特征向量，也为数据展现提供了可能，其中主成分分析(Principal Component Analysis)是应用最广泛的特征降维技术。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="特征降维之PCA">
+<meta property="og:url" content="http://yoursite.com/2017/09/22/特征降维之PCA/index.html">
+<meta property="og:site_name" content="jimmydug's blog">
+<meta property="og:description" content="特征降维之PCA特征降维是无监督学习的另一个应用，在图像识别方面，经常会遇到特征维度非常高的训练样本(像素矩阵)时，很难提供数据展现，训练学习模型也很耗时耗力，特征降维不仅重构了有效的低维度特征向量，也为数据展现提供了可能，其中主成分分析(Principal Component Analysis)是应用最广泛的特征降维技术。">
+<meta property="og:image" content="http://yoursite.com/images/pca_2_1.png">
+<meta property="og:image" content="http://yoursite.com/images/pca_2_2.png">
+<meta property="og:image" content="http://yoursite.com/images/pca1.png">
+<meta property="og:image" content="http://yoursite.com/images/pca3.png">
+<meta property="og:updated_time" content="2017-09-22T04:14:26.199Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="特征降维之PCA">
+<meta name="twitter:description" content="特征降维之PCA特征降维是无监督学习的另一个应用，在图像识别方面，经常会遇到特征维度非常高的训练样本(像素矩阵)时，很难提供数据展现，训练学习模型也很耗时耗力，特征降维不仅重构了有效的低维度特征向量，也为数据展现提供了可能，其中主成分分析(Principal Component Analysis)是应用最广泛的特征降维技术。">
+<meta name="twitter:image" content="http://yoursite.com/images/pca_2_1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":true},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/09/22/特征降维之PCA/"/>
+
+
+
+
+
+  <title> 特征降维之PCA | jimmydug's blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">jimmydug's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Love Life&Coding</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/22/特征降维之PCA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="jimmydug">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="jimmydug's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                特征降维之PCA
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-09-22T09:45:28+08:00">
+                2017-09-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="特征降维之PCA"><a href="#特征降维之PCA" class="headerlink" title="特征降维之PCA"></a>特征降维之PCA</h1><p>特征降维是<em>无监督学习</em>的另一个应用，在图像识别方面，经常会遇到特征维度非常高的训练样本(像素矩阵)时，很难提供数据展现，训练学习模型也很耗时耗力，特征降维不仅<strong>重构</strong>了有效的低维度特征向量，也为数据展现提供了可能，其中<strong>主成分分析(Principal Component Analysis)</strong>是应用最广泛的特征降维技术。<a id="more"></a><br>PCA简单来说，是一种<strong>特征选择(重构)</strong>手段，将原来的特征空间做了映射，使得新的映射后特征空间数据彼此<strong>正交</strong>，尽可能保留下具备区分性的低维度数据特征。<strong>特征不需要标准化处理！！</strong>，因为是重构。<br>下面以手写体数字识别(sklearn集成数据集)为例：</p>
+<h2 id="获取训练，测试样本"><a href="#获取训练，测试样本" class="headerlink" title="获取训练，测试样本"></a>获取训练，测试样本</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; from sklearn.datasets import load_digits</div><div class="line">&gt;&gt;&gt; digits = load_digits()</div><div class="line">&gt;&gt;&gt; digits.data.shape</div><div class="line">(1797, 64)</div><div class="line">&gt;&gt;&gt; digits.target.shape</div><div class="line">(1797,)</div><div class="line">&gt;&gt;&gt; from sklearn.cross_validation import train_test_split</div><div class="line">X_train, X_test, y_train, y_test = train_test_split(digits.data, digits.target, test_size=0.25, random_state=33)</div></pre></td></tr></table></figure>
+<h2 id="直接SVM分类"><a href="#直接SVM分类" class="headerlink" title="直接SVM分类"></a>直接SVM分类</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; from sklearn.preprocessing import StandardScaler</div><div class="line">&gt;&gt;&gt; from sklearn.svm import LinearSVC</div><div class="line"><span class="comment"># 标准化数据</span></div><div class="line">&gt;&gt;&gt; ss = StandardScaler()</div><div class="line">&gt;&gt;&gt; X_dire_train = ss.fit_transform(X_train)</div><div class="line">&gt;&gt;&gt; X_dire_train.shape</div><div class="line">(1347, 64)</div><div class="line">&gt;&gt;&gt; X_dire_test = ss.transform(X_test)</div><div class="line"><span class="comment"># 线性核函数初始化</span></div><div class="line">&gt;&gt;&gt; lsvc = LinearSVC()</div><div class="line"><span class="comment"># 训练模型</span></div><div class="line">&gt;&gt;&gt; lsvc.fit(X_dire_train, y_train)</div><div class="line">&gt;&gt;&gt; y_dire_predict = lsvc.predict(X_dire_test)</div></pre></td></tr></table></figure>
+<h2 id="直接SVM模型性能评估"><a href="#直接SVM模型性能评估" class="headerlink" title="直接SVM模型性能评估"></a>直接SVM模型性能评估</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 使用模型自带的评估函数进行准确性测评 </span></div><div class="line">&gt;&gt;&gt; <span class="built_in">print</span>(<span class="string">'The Accuracy of Linear SVC is'</span>, lsvc.score(X_dire_test, y_test))</div><div class="line"><span class="comment"># classification_report模块对预测结果做更加详细的分析</span></div><div class="line">from sklearn.metrics import classification_report</div><div class="line"><span class="built_in">print</span>(classification_report(y_test, y_dire_predict, target_names=digits.target_names.astype(str)))</div></pre></td></tr></table></figure>
+<p>显示：<br><img src="/images/pca_2_1.png" alt=""></p>
+<h2 id="PCA特征降维"><a href="#PCA特征降维" class="headerlink" title="PCA特征降维"></a>PCA特征降维</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; from sklearn.decomposition import PCA</div><div class="line">&gt;&gt;&gt; estimator = PCA(n_components=20)   <span class="comment"># 初始化，64维压缩至20维</span></div><div class="line"><span class="comment"># 利用训练特征决定（fit）20个正交维度的方向，并转化（transform）原训练特征</span></div><div class="line">&gt;&gt;&gt; pca_X_train = estimator.fit_transform(X_train)</div><div class="line">&gt;&gt;&gt; pca_X_train.shape</div><div class="line">(1347, 20)   <span class="comment"># 维度从64变为20</span></div><div class="line"><span class="comment"># 测试特征也按照上述的20个正交维度方向进行转化（transform）</span></div><div class="line">&gt;&gt;&gt; pca_X_test = estimator.transform(X_test)</div></pre></td></tr></table></figure>
+<h2 id="线性核函数的支持向量机分类"><a href="#线性核函数的支持向量机分类" class="headerlink" title="线性核函数的支持向量机分类"></a>线性核函数的支持向量机分类</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">from sklearn.svm import LinearSVC</div><div class="line">pca_svc = LinearSVC()</div><div class="line">pca_svc.fit(pca_X_train, y_train)  <span class="comment"># 训练模型 </span></div><div class="line">y_predict = pca_svc.predict(pca_X_test) <span class="comment"># 进行预测</span></div></pre></td></tr></table></figure>
+<h2 id="模型性能评价"><a href="#模型性能评价" class="headerlink" title="模型性能评价"></a>模型性能评价</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; from sklearn.metrics import classification_report</div><div class="line"><span class="comment"># 自带评价函数</span></div><div class="line">&gt;&gt;&gt; <span class="built_in">print</span>(<span class="string">'The Accuracy of Linear SVC after PCA is'</span>, pca_svc.score(pca_X_test,y_test))</div><div class="line"><span class="comment"># 详细评价精确率，回调率，f1指数</span></div><div class="line">&gt;&gt;&gt; <span class="built_in">print</span>(classification_report(y_test, y_predict, target_names=np.arange(10).astype(str)))</div></pre></td></tr></table></figure>
+<p>显示：<br><img src="/images/pca_2_2.png" alt=""></p>
+<h2 id="另一个网上数据案例"><a href="#另一个网上数据案例" class="headerlink" title="另一个网上数据案例"></a>另一个网上数据案例</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">digits_train = pd.read_csv(<span class="string">'https://archive.ics.uci.edu/ml/machine-learning-databases/optdigits/optdigits.tra'</span>, header=None)</div><div class="line">digits_test = pd.read_csv(<span class="string">'https://archive.ics.uci.edu/ml/machine-learning-databases/optdigits/optdigits.tes'</span>, header=None)</div><div class="line">&gt;&gt;&gt; <span class="built_in">type</span>(digits_train)</div><div class="line">pandas.core.frame.DataFrame</div><div class="line">&gt;&gt;&gt; digits_train.shape  <span class="comment"># 64维，1个target</span></div><div class="line">(3823, 65)</div><div class="line">&gt;&gt;&gt; digits_train.head()   <span class="comment"># 大概查看数据</span></div><div class="line"><span class="comment"># 取前64列</span></div><div class="line">&gt;&gt;&gt; X_train = digits_train[np.arange(64)]</div><div class="line">&gt;&gt;&gt; X_train.shape</div><div class="line">(3823, 64)</div><div class="line"><span class="comment"># 这里是column名为64的列，不是第64行</span></div><div class="line">&gt;&gt;&gt; y_train = digits_train[64]</div><div class="line">&gt;&gt;&gt; y_train.shape</div><div class="line">(3823,)</div><div class="line">&gt;&gt;&gt; X_test = digits_test[np.arange(64)]</div><div class="line">&gt;&gt;&gt; y_test = digits_test[64]</div></pre></td></tr></table></figure>
+<p><img src="/images/pca1.png" alt="" title="digits_train前5行"></p>
+<h2 id="特征降维PCA"><a href="#特征降维PCA" class="headerlink" title="特征降维PCA"></a>特征降维PCA</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">from sklearn.decomposition import PCA</div><div class="line">estimator = PCA(n_components=20)   <span class="comment"># 初始化，64维压缩至20维</span></div><div class="line"><span class="comment"># 利用训练特征决定（fit）20个正交维度的方向，并转化（transform）原训练特征</span></div><div class="line">pca_X_train = estimator.fit_transform(X_train)</div><div class="line"><span class="comment"># 测试特征也按照上述的20个正交维度方向进行转化（transform）</span></div><div class="line">pca_X_test = estimator.transform(X_test)</div></pre></td></tr></table></figure>
+<h2 id="线性核函数的支持向量机分类-1"><a href="#线性核函数的支持向量机分类-1" class="headerlink" title="线性核函数的支持向量机分类"></a>线性核函数的支持向量机分类</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">from sklearn.svm import LinearSVC</div><div class="line">pca_svc = LinearSVC()</div><div class="line">pca_svc.fit(pca_X_train, y_train)  <span class="comment"># 训练模型 </span></div><div class="line">y_predict = pca_svc.predict(pca_X_test) <span class="comment"># 进行预测</span></div></pre></td></tr></table></figure>
+<h2 id="模型性能评价-1"><a href="#模型性能评价-1" class="headerlink" title="模型性能评价"></a>模型性能评价</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; from sklearn.metrics import classification_report</div><div class="line"><span class="comment"># 自带评价函数</span></div><div class="line">&gt;&gt;&gt; <span class="built_in">print</span>(pca_svc.score(pca_X_test,y_test))</div><div class="line">0.923761825264</div><div class="line"><span class="comment"># 详细评价精确率，回调率，f1指数</span></div><div class="line">&gt;&gt;&gt; <span class="built_in">print</span>(classification_report(y_test, y_predict, target_names=np.arange(10).astype(str)))</div></pre></td></tr></table></figure>
+<p><img src="/images/pca3.png" alt=""></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>相比于将样本数据不降维处理直接拿来训练，PCA降维处理后数据的会损失一点预测准确性，因为在降维过程中，尽管规避掉了大量的特征冗余和噪声，但是也会损失一些有用的模式信息，但是维度的大大压缩不仅节省了大量模型训练时间，也降低了模型的训练难度，对于高维样本来说是划算的选择。可以把数据换成sklearn中自带的手写体数据，见<a href="https://jimmydug.github.io/2017/08/27/%E5%88%86%E7%B1%BB%E4%B9%8B%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA/" target="_blank" rel="external">分类之支持向量机</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/21/Pandas可视化二/" rel="next" title="Pandas可视化二">
+                <i class="fa fa-chevron-left"></i> Pandas可视化二
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/22/建立自己的代理池/" rel="prev" title="建立自己的代理池">
+                建立自己的代理池 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="jimmydug" />
+          <p class="site-author-name" itemprop="name">jimmydug</p>
+           
+              <p class="site-description motion-element" itemprop="description">Want Success Entremely!!!</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">34</span>
+                <span class="site-state-item-name">posts</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#特征降维之PCA"><span class="nav-number">1.</span> <span class="nav-text">特征降维之PCA</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#获取训练，测试样本"><span class="nav-number">1.1.</span> <span class="nav-text">获取训练，测试样本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#直接SVM分类"><span class="nav-number">1.2.</span> <span class="nav-text">直接SVM分类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#直接SVM模型性能评估"><span class="nav-number">1.3.</span> <span class="nav-text">直接SVM模型性能评估</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PCA特征降维"><span class="nav-number">1.4.</span> <span class="nav-text">PCA特征降维</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线性核函数的支持向量机分类"><span class="nav-number">1.5.</span> <span class="nav-text">线性核函数的支持向量机分类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模型性能评价"><span class="nav-number">1.6.</span> <span class="nav-text">模型性能评价</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#另一个网上数据案例"><span class="nav-number">1.7.</span> <span class="nav-text">另一个网上数据案例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#特征降维PCA"><span class="nav-number">1.8.</span> <span class="nav-text">特征降维PCA</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线性核函数的支持向量机分类-1"><span class="nav-number">1.9.</span> <span class="nav-text">线性核函数的支持向量机分类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模型性能评价-1"><span class="nav-number">1.10.</span> <span class="nav-text">模型性能评价</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">1.11.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">jimmydug</span>
+</div>
+
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

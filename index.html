@@ -197,7 +197,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
-            Startseite
+            Home
           </a>
         </li>
       
@@ -207,7 +207,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
-            Archiv
+            Archives
           </a>
         </li>
       
@@ -240,6 +240,989 @@
           <div id="content" class="content">
             
   <section id="posts" class="posts-expand">
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/29/协程coroutine/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="jimmydug">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="jimmydug's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/09/29/协程coroutine/" itemprop="url">
+                  协程coroutine
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-09-29T10:09:02+08:00">
+                2017-09-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>但是Python的yield不但可以返回一个值，它还可以接收调用者发出的参数，协程就靠这个实现<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">def gen():</div><div class="line">    value=0</div><div class="line">    <span class="keyword">while</span> True:</div><div class="line">        receive = yield value</div><div class="line">        <span class="keyword">if</span> receive==<span class="string">'e'</span>:</div><div class="line">            <span class="built_in">break</span></div><div class="line">        value = <span class="string">'got: %s'</span> % receive</div><div class="line">&gt;&gt;&gt; g=gen()</div><div class="line">&gt;&gt;&gt; <span class="built_in">print</span>(g.send(None))</div><div class="line">0     </div><div class="line">&gt;&gt;&gt; <span class="built_in">print</span>(g.send(<span class="string">'aaa'</span>))</div><div class="line">got: aaa</div><div class="line">&gt;&gt;&gt; <span class="built_in">print</span>(g.send(3))</div><div class="line">got: 3</div><div class="line">&gt;&gt;&gt; <span class="built_in">print</span>(g.send(<span class="string">'e'</span>))</div><div class="line">Traceback (most recent call last):</div><div class="line">File <span class="string">"h.py"</span>, line 14, <span class="keyword">in</span> &lt;module&gt;</div><div class="line">  <span class="built_in">print</span>(g.send(<span class="string">'e'</span>))</div><div class="line">StopIteration</div></pre></td></tr></table></figure></p>
+<p>函数gen()是一个生成器，因为里面有yield，通过send(None)来启动生成器，且只能用None，启动后gen()函数开始执行，yield value执行完停止，返回0，注意这里没有给receive赋值，当g.send(‘aaa’)时，程序从yield value后面开始继续执行，像前面所说，yield具有接受调用者发出的参数的功能，此时将发来的参数aaa赋给receive，value变为got：aaa，指向yield value，打印出got:aaa，然后停止<br>最后send(‘e’)，时生成器break得到一个stopiteration</p>
+<p>r = c.send(n)，这里c是一个生成器函数，c中的yield有俩个作用，每一次调用send函数时，yield先接受参数发来的n，最后以yield返回一个值结束，这里将返回的值赋给r</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/25/用Python来发邮件/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="jimmydug">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="jimmydug's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/09/25/用Python来发邮件/" itemprop="url">
+                  用Python来发邮件
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-09-25T16:35:04+08:00">
+                2017-09-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/22/requests模拟登录/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="jimmydug">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="jimmydug's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/09/22/requests模拟登录/" itemprop="url">
+                  requests模拟登录
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-09-22T18:12:20+08:00">
+                2017-09-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="requests模拟登录"><a href="#requests模拟登录" class="headerlink" title="requests模拟登录"></a>requests模拟登录</h1><p>许多网站为了防爬虫，限制只有登录的用户才能查看网站的信息，即使我们伪装了请求头，网站服务器检测到没有登录，那他不会提供我们想要的数据而是跳转到登录页面，例如<a href="htts://zhihu.com">知乎</a>就会这么干，这时候就要对我们的爬虫程序进行强化，让他能拥有自动登录功能，正好我们的requests模块内置了这样的功能，现在我们来尝试一下：<br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/09/22/requests模拟登录/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/22/建立自己的代理池/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="jimmydug">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="jimmydug's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/09/22/建立自己的代理池/" itemprop="url">
+                  建立自己的代理池
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-09-22T16:02:38+08:00">
+                2017-09-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="建立自己的爬虫代理池"><a href="#建立自己的爬虫代理池" class="headerlink" title="建立自己的爬虫代理池"></a>建立自己的爬虫代理池</h1><p>写爬虫的时候，往往要对一个网站爬取多次，过于频繁的访问速度，对方的发爬虫机制必定会发现你是爬虫程序而不是正常浏览器访问，于是很可能对方一个403甩你脸上，为了能拿到想要的数据，就需要使用代理IP了，这样你使用多个不同的IP发送请求，对方会认为这是不同的多个用户。<br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/09/22/建立自己的代理池/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/22/特征降维之PCA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="jimmydug">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="jimmydug's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/09/22/特征降维之PCA/" itemprop="url">
+                  特征降维之PCA
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-09-22T09:45:28+08:00">
+                2017-09-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="特征降维之PCA"><a href="#特征降维之PCA" class="headerlink" title="特征降维之PCA"></a>特征降维之PCA</h1><p>特征降维是<em>无监督学习</em>的另一个应用，在图像识别方面，经常会遇到特征维度非常高的训练样本(像素矩阵)时，很难提供数据展现，训练学习模型也很耗时耗力，特征降维不仅<strong>重构</strong>了有效的低维度特征向量，也为数据展现提供了可能，其中<strong>主成分分析(Principal Component Analysis)</strong>是应用最广泛的特征降维技术。
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/09/22/特征降维之PCA/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/21/Pandas可视化二/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="jimmydug">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="jimmydug's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/09/21/Pandas可视化二/" itemprop="url">
+                  Pandas可视化二
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-09-21T10:05:57+08:00">
+                2017-09-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Pandas可视化二"><a href="#Pandas可视化二" class="headerlink" title="Pandas可视化二"></a>Pandas可视化二</h1><p>本篇了解怎么作<strong>条形图</strong>(<em>bar&ensp;chart</em>)和<strong>直方图</strong>(<em>histogram</em>)。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 导入包</span></div><div class="line">import matplotlib</div><div class="line">import matplotlib.pyplot as plt</div><div class="line">import pandas as pd</div><div class="line">import numpy as np</div><div class="line">matplotlib.style.use(<span class="string">'ggplot'</span>)	<span class="comment"># 使用ggplot样式</span></div><div class="line">%matplotlib inline</div><div class="line"><span class="comment"># Series和DataFrame数据</span></div><div class="line"><span class="comment"># (1000,)标准正态分布</span></div><div class="line"><span class="built_in">test</span> = pd.Series(np.random.randn(1000), index=pd.date_range(<span class="string">'1/1/2000'</span>, periods=1000))</div><div class="line"><span class="built_in">test</span> = test.cumsum()</div><div class="line"><span class="comment"># (1000, 4),标准正态分布</span></div><div class="line">df = pd.DataFrame(np.random.randn(1000, 4), index=test.index, columns=list(<span class="string">'ABCD'</span>))</div><div class="line">df = df.cumsum()</div></pre></td></tr></table></figure></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">test.head()</div></pre></td></tr></table></figure>
+<p><img src="/images/pd2_1.png" alt=""><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">df.head()</div></pre></td></tr></table></figure></p>
+<p><img src="/images/pd2_2.png" alt=""></p>
+<h2 id="条形图-bar"><a href="#条形图-bar" class="headerlink" title="条形图(bar)"></a>条形图(bar)</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">plt.figure()</div><div class="line">df.iloc[3].plot(kind=<span class="string">'bar'</span>)   <span class="comment"># 对df中第4行数据作条形图</span></div><div class="line">plt.axhline(0, color=<span class="string">'k'</span>)     <span class="comment"># 在y=0处作一条黑色水平直线</span></div></pre></td></tr></table></figure>
+<p><img src="/images/pd2_3.png" alt=""><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">df2 = pd.DataFrame(np.random.rand(10, 4), columns=list(<span class="string">'ABCD'</span>))   <span class="comment"># (10, 4)</span></div><div class="line">df2.plot.bar()   <span class="comment"># 对整个(10,4)作条形图</span></div></pre></td></tr></table></figure></p>
+<p><img src="/images/pd2_4.png" alt=""><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">df2.plot.bar(stacked=True)</div></pre></td></tr></table></figure></p>
+<p><img src="/images/pd2_5.png" alt="" title="将A,B,C,D数据堆积起来作条形图"><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">df2.plot.barh(stacked=True)   <span class="comment"># barh作水平条形图</span></div></pre></td></tr></table></figure></p>
+<p><img src="/images/pd2_6.png" alt=""></p>
+<h2 id="直方图-hist"><a href="#直方图-hist" class="headerlink" title="直方图(hist)"></a>直方图(hist)</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># (1000, 3)</span></div><div class="line">df4 = pd.DataFrame(&#123;<span class="string">'a'</span> : np.random.randn(1000) + 1, <span class="string">'b'</span> : np.random.randn(1000), <span class="string">'c'</span> : np.random.randn(1000) - 1&#125;)</div><div class="line">df4.head()</div></pre></td></tr></table></figure>
+<p><img src="/images/pd2_7.png" alt=""><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">plt.figure()</div><div class="line">df4.plot.hist(alpha=0.5) 	<span class="comment"># 透明度50%，颜色会混合</span></div></pre></td></tr></table></figure></p>
+<p><img src="/images/pd2_8.png" alt=""><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">plt.figure()</div><div class="line">df4.plot.hist(stacked=True, bins=20) 	<span class="comment"># 堆积直方图，20个区段</span></div></pre></td></tr></table></figure></p>
+<p><img src="/images/pd2_9.png" alt=""><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">plt.figure()</div><div class="line">df4.a.plot.hist(orientation=<span class="string">'horizontal'</span>, cumulative=True)</div></pre></td></tr></table></figure></p>
+<p><img src="/images/pd2_10.png" alt="" title="取出a列作水平横向直方图，默认10个区段"><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">df.A.head()</div></pre></td></tr></table></figure></p>
+<p><img src="/images/pd2_11.png" alt=""><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">df[<span class="string">'A'</span>].diff().head()  <span class="comment"># diff差分，后一个减前一个，第一个为NaN</span></div></pre></td></tr></table></figure></p>
+<p><img src="/images/pd2_12.png" alt=""><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">df[<span class="string">'A'</span>].diff().hist()</div></pre></td></tr></table></figure></p>
+<p><img src="/images/pd2_13.png" alt=""><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">plt.figure()</div><div class="line">df.diff().hist(color=<span class="string">'g'</span>, alpha=0.5, bins=20)</div></pre></td></tr></table></figure></p>
+<p><img src="/images/pd2_14.png" alt="" title="df中4列分别绘制一阶差分的图（绿色，半透明，分20区段）"><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">data = pd.Series(np.random.randn(1000))</div><div class="line">data.hist(by=np.random.randint(0, 4, 1000),figsize=(6, 4))</div></pre></td></tr></table></figure></p>
+<p>1000个数会随机分到4个图中，hist中<strong>by</strong>参数<br><img src="/images/pd2_15.png" alt=""></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/21/Pandas可视化一/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="jimmydug">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="jimmydug's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/09/21/Pandas可视化一/" itemprop="url">
+                  Pandas可视化一
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-09-21T09:27:48+08:00">
+                2017-09-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="Pandas可视化一"><a href="#Pandas可视化一" class="headerlink" title="Pandas可视化一"></a>Pandas可视化一</h1><p>pandas是Python中用来处理数据常用的包，在处理数据的过程中。我们往往需要将数据可视化以得到对数据直观的感受。<br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/09/21/Pandas可视化一/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/20/Python中使用MongoDB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="jimmydug">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="jimmydug's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/09/20/Python中使用MongoDB/" itemprop="url">
+                  Python中使用MongoDB
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-09-20T14:03:37+08:00">
+                2017-09-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="Python中使用MongoDB"><a href="#Python中使用MongoDB" class="headerlink" title="Python中使用MongoDB"></a>Python中使用MongoDB</h1><p>在使用Python的过程中我们免不了要保存各种在网页上爬取下来的数据，将他们保存为csv，txt文件是一个好主意，但是将数据存入数据库是一个更好的选择，公司企业里也是通过数据库达到数据管理，共享，维护的功能。<br>这篇文章介绍的数据库是<strong>MongoDB</strong>，它是一种NoSQL数据库，即<strong>非关系型</strong>数据库，要来解释什么是非关系型，又要来探讨一下什么是关系型数据库(MySQL为典型)。<br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/09/20/Python中使用MongoDB/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
     
       
 
@@ -287,7 +1270,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">Posted on</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-09-20T08:57:43+08:00">
                 2017-09-20
@@ -326,11 +1309,11 @@
 
       
         
-          <h1 id="Python迭代器、迭代对象、生成器"><a href="#Python迭代器、迭代对象、生成器" class="headerlink" title="Python迭代器、迭代对象、生成器"></a>Python迭代器、迭代对象、生成器</h1><p>这篇文章将用来介绍一下Python中<strong>容器</strong>(<em>container</em>)、<strong>可迭代对象</strong>(<em>iterable</em>)、<strong>迭代器</strong>(<em>iterator</em>)、<strong>生成器</strong>(<em>generator</em>)的概念以及他们的相互关系。<br><img src="images/iterator.png" alt="图片"><br>
+          <h1 id="Python迭代器、迭代对象、生成器"><a href="#Python迭代器、迭代对象、生成器" class="headerlink" title="Python迭代器、迭代对象、生成器"></a>Python迭代器、迭代对象、生成器</h1><p>这篇文章将用来介绍一下Python中<strong>容器</strong>(<em>container</em>)、<strong>可迭代对象</strong>(<em>iterable</em>)、<strong>迭代器</strong>(<em>iterator</em>)、<strong>生成器</strong>(<em>generator</em>)的概念以及他们的相互关系。<br><img src="/images/iterator.png" alt="图片"><br>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2017/09/20/Python迭代器、迭代对象、生成器/#more" rel="contents">
-              Weiterlesen &raquo;
+              Read more &raquo;
             </a>
           </div>
           <!--/noindex-->
@@ -409,7 +1392,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">Posted on</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-09-19T15:30:08+08:00">
                 2017-09-19
@@ -448,981 +1431,11 @@
 
       
         
-          
-            <p>import requests<br>import json<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#发送POST请求  </span></div><div class="line"><span class="comment">#r = requests.post("http://httpbin.org/post")  </span></div><div class="line">  </div><div class="line"><span class="comment">#发送其他类型请求  </span></div><div class="line"><span class="comment">#r = requests.put("http://httpbin.org/put")  </span></div><div class="line"><span class="comment">#r = requests.delete("http://httpbin.org/delete")  </span></div><div class="line"><span class="comment">#r = requests.head("http://httpbin.org/get")  </span></div><div class="line"><span class="comment">#r = requests.options("http://httpbin.org/get")  </span></div><div class="line">  </div><div class="line"><span class="comment">#传递参数的GET请求  </span></div><div class="line"><span class="comment">#payload = &#123;'key1': 'value1', 'key2': 'value2'&#125;  </span></div><div class="line"><span class="comment">#r = requests.get("http://httpbin.org/get", params=payload)  </span></div><div class="line"><span class="comment">#print(r.url)  </span></div><div class="line">  </div><div class="line"><span class="comment">#查看相应内容，会自动解码  </span></div><div class="line"><span class="comment">#print(r.text)  </span></div><div class="line">  </div><div class="line"><span class="comment">#查看，指定URL编码  </span></div><div class="line"><span class="comment">#print(r.encoding)  </span></div><div class="line"><span class="comment">#r.encoding = 'ISO-8859-1'  </span></div><div class="line">  </div><div class="line"><span class="comment">#以字节方式访问相应,会自动解码gzip和deflate压缩的数据  </span></div><div class="line"><span class="comment">#print(r.content)  </span></div><div class="line">  </div><div class="line"><span class="comment">#创建图片  </span></div><div class="line"><span class="comment">#from PIL import Image  </span></div><div class="line"><span class="comment">#from io import StringIO  </span></div><div class="line"><span class="comment">#i= Image.open(StringIO.StringIO(r.content))  </span></div><div class="line">  </div><div class="line"><span class="comment">#处理JSON数据  </span></div><div class="line"><span class="comment">#import requests  </span></div><div class="line"><span class="comment">#r=requests.get('https://github.com/timeline.json')  </span></div><div class="line"><span class="comment">#print(r.json())  </span></div><div class="line">  </div><div class="line"><span class="comment">#返回原始相应内容  </span></div><div class="line"><span class="comment">##&gt;&gt;&gt; r = requests.get('https://github.com/timeline.json', stream=True)  </span></div><div class="line"><span class="comment">##&gt;&gt;&gt; r.raw  </span></div><div class="line"><span class="comment">##&lt;requests.packages.urllib3.response.HTTPResponse object at 0x101194810&gt;  </span></div><div class="line"><span class="comment">##&gt;&gt;&gt; r.raw.read(10)  </span></div><div class="line"><span class="comment">##'\x1f\x8b\x08\x00\x00\x00\x00\x00\x00\x03'  </span></div><div class="line">  </div><div class="line"><span class="comment">#保存文本,针对返回原始内容byte  </span></div><div class="line"><span class="comment">##with open(filename, 'wb') as fd:  </span></div><div class="line"><span class="comment">##    for chunk in r.iter_content(chunk_size):  </span></div><div class="line"><span class="comment">##        fd.write(chunk)  </span></div><div class="line">  </div><div class="line"><span class="comment">#添加头部  </span></div><div class="line"><span class="comment">##&gt;&gt;&gt; import json  </span></div><div class="line"><span class="comment">##&gt;&gt;&gt; url = 'https://api.github.com/some/endpoint'  </span></div><div class="line"><span class="comment">##&gt;&gt;&gt; payload = &#123;'some': 'data'&#125;  </span></div><div class="line"><span class="comment">##&gt;&gt;&gt; headers = &#123;'content-type': 'application/json'&#125;  </span></div><div class="line"><span class="comment">##  </span></div><div class="line"><span class="comment">##&gt;&gt;&gt; r = requests.post(url, data=json.dumps(payload), headers=headers)  </span></div><div class="line">  </div><div class="line"><span class="comment">#账号密码登陆  </span></div><div class="line"><span class="comment">#r = requests.get('https://api.github.com/user', auth=('user', 'pass'))  </span></div><div class="line">  </div><div class="line"><span class="comment">#发送表单数据  </span></div><div class="line"><span class="comment">##paylaod=&#123;"key1":"value1","key2":"value2"&#125;  </span></div><div class="line"><span class="comment">##r=requests.post("http://httpbin.org/post",data=paylaod)  </span></div><div class="line"><span class="comment">##print(r.text)  </span></div><div class="line">  </div><div class="line"><span class="comment">#发送string数据  </span></div><div class="line"><span class="comment">##import json  </span></div><div class="line"><span class="comment">##payload=&#123;"key1":"value1","key2":"value2"&#125;  </span></div><div class="line"><span class="comment">##r=requests.post("http://httpbin.org/post",data=json.dumps(payload))  </span></div><div class="line"><span class="comment">##print(r.text)  </span></div><div class="line">  </div><div class="line"><span class="comment">#发送文件  </span></div><div class="line"><span class="comment">##url='http://httpbin.org/post'  </span></div><div class="line"><span class="comment">##files=&#123;'file':open('report.xls','rb')&#125;  </span></div><div class="line"><span class="comment">#显式设置文件名，文件类型，请求头：  </span></div><div class="line"><span class="comment">##files=&#123;'file': ('report.xls', open('report.xls', 'rb'), 'application/vnd.ms-excel', &#123;'Expires': '0'&#125;)&#125;  </span></div><div class="line"><span class="comment">#发送文件形式的字符串  </span></div><div class="line"><span class="comment">##files=&#123;'file': ('report.csv', 'some,data,to,send\nanother,row,to,send\n')&#125;  </span></div><div class="line"><span class="comment">##r=requests.post(url,files=files)  </span></div><div class="line"><span class="comment">##print(r.text)  </span></div><div class="line">  </div><div class="line"><span class="comment">#检测响应码  </span></div><div class="line"><span class="comment">##r=requests.get('http://httpbin.org/get')  </span></div><div class="line"><span class="comment">##print(r.status_code)  </span></div><div class="line"><span class="comment">##print(r.status_code==requests.codes.ok)  </span></div><div class="line"><span class="comment">##bad_r = requests.get('http://httpbin.org/status/404')  </span></div><div class="line"><span class="comment">##print(bad_r.status_code)  </span></div><div class="line"><span class="comment">##bad_r.raise_for_status()  </span></div><div class="line">  </div><div class="line"><span class="comment">#响应头  </span></div><div class="line"><span class="comment">##r=requests.get('http://httpbin.org/get')  </span></div><div class="line"><span class="comment">##print(r.headers)  </span></div><div class="line"><span class="comment">##print(r.headers['date'])  </span></div><div class="line">  </div><div class="line"><span class="comment">#cookies  </span></div><div class="line"><span class="comment">##url='http://example.com/some/cookie/setting/url'  </span></div><div class="line"><span class="comment">##r=requests.get(url)  </span></div><div class="line"><span class="comment">##print(r.cookies['example_cookie_name'])  #报错  </span></div><div class="line">  </div><div class="line"><span class="comment">#发送cookies  </span></div><div class="line"><span class="comment">##url = 'http://httpbin.org/cookies'  </span></div><div class="line"><span class="comment">##cookies = dict(cookies_are='working')  </span></div><div class="line"><span class="comment">##r = requests.get(url, cookies=cookies)  </span></div><div class="line"><span class="comment">##print(r.text)  </span></div><div class="line">  </div><div class="line"><span class="comment">#重定向  </span></div><div class="line"><span class="comment">##r=requests.get('http://github.com')  </span></div><div class="line"><span class="comment">##print(r.url)  </span></div><div class="line"><span class="comment">##print(r.history)  </span></div><div class="line">  </div><div class="line"><span class="comment">#超时处理  </span></div><div class="line"><span class="comment">##requests.get('http://github.com',timeout=1)  </span></div><div class="line">  </div><div class="line"><span class="comment">#跨请求保存cookies  </span></div><div class="line"><span class="comment">##s = requests.Session()  </span></div><div class="line"><span class="comment">##s.get('http://httpbin.org/cookies/set/sessioncookie/123456789')  </span></div><div class="line"><span class="comment">##r = s.get("http://httpbin.org/cookies")  </span></div><div class="line"><span class="comment">##print(r.text)  </span></div><div class="line">  </div><div class="line"><span class="comment">#请求保存缺省数据  </span></div><div class="line"><span class="comment">##s = requests.Session()  </span></div><div class="line"><span class="comment">##s.auth = ('user', 'pass')  </span></div><div class="line"><span class="comment">##s.headers.update(&#123;'x-test': 'true'&#125;)  </span></div><div class="line"><span class="comment">### both 'x-test' and 'x-test2' are sent  </span></div><div class="line"><span class="comment">##r=s.get('http://httpbin.org/headers', headers=&#123;'x-test2': 'true'&#125;)  </span></div><div class="line"><span class="comment">##print(r.text)  </span></div><div class="line">  </div><div class="line"><span class="comment">#简单获取请求头部和返回头部  </span></div><div class="line"><span class="comment">##url='http://www.baidu.com/'  </span></div><div class="line"><span class="comment">##r=requests.get(url)  </span></div><div class="line"><span class="comment">#返回头部  </span></div><div class="line"><span class="comment">##print(r.headers)  </span></div><div class="line"><span class="comment">#请求头部  </span></div><div class="line"><span class="comment">##print(r.request.headers)  </span></div><div class="line">  </div><div class="line"><span class="comment">#设置SSL证书  </span></div><div class="line"><span class="comment">#requests.get('https://kennethreitz.com', cert=('/path/server.crt', '/path/key'))</span></div></pre></td></tr></table></figure></p>
-<p>res.text<br>res.status_code<br>res.request.headers 请求头<br>res.headers        响应头<br>res.encoding<br>res.content # 以字节返回</p>
-<p>res = get()<br>res.encoding = ‘utf-8’<br>res.text<br>res.content和res.text和res.body<br>res.content.decode(‘utf-8’)</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/19/Python文件操作和os模块/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="jimmydug">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="jimmydug's blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/09/19/Python文件操作和os模块/" itemprop="url">
-                  Python文件操作和os模块
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Veröffentlicht am</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-09-19T14:06:04+08:00">
-                2017-09-19
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="Python文件操作和os模块"><a href="#Python文件操作和os模块" class="headerlink" title="Python文件操作和os模块"></a>Python文件操作和os模块</h1><h2 id="文件读写操作"><a href="#文件读写操作" class="headerlink" title="文件读写操作"></a>文件读写操作</h2><p>在使用Python的时候常常和文件打交道，为了避免老是打开文件夹手动操作，小小总结了一下常用的一些文件操作。<br>
+          <h1 id="requests模块详解"><a href="#requests模块详解" class="headerlink" title="requests模块详解"></a>requests模块详解</h1><p>一开始学Python爬虫的时候，当时还处于Py2和Py3交替时期，网上许多资料都还是urllib2，找不到资料，又不会看源码，所以Py3的urllib模块用的就很蛋疼，后来被人安利了<strong>requests</strong>模块，确实很好用，现在完全告别urllib。
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/09/19/Python文件操作和os模块/#more" rel="contents">
-              Weiterlesen &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/19/Kaggle泰坦尼克生存预测/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="jimmydug">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="jimmydug's blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/09/19/Kaggle泰坦尼克生存预测/" itemprop="url">
-                  Kaggle泰坦尼克生存预测
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Veröffentlicht am</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-09-19T12:29:38+08:00">
-                2017-09-19
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="Kaggle泰坦尼克生存预测"><a href="#Kaggle泰坦尼克生存预测" class="headerlink" title="Kaggle泰坦尼克生存预测"></a>Kaggle泰坦尼克生存预测</h1><p>import pandas as pd<br>f = open(‘train.csv’, encoding=’utf-8’)<br>data = pd.read_csv(f)<br>data.head()<br>data.info()<br>X = data[[‘Pclass’,’Sex’,’Age’,’Fare’]]<br>Y = data[‘Survived’]<br>X.info()<br>X[‘Age’].fillna(X[‘Age’].mean(), inplace=True)<br>X.info()<br>from sklearn.feature_extraction import DictVectorizer<br>vec = DictVectorizer(sparse=False)<br>X.info()<br>X = vec.fit_transform(X.to_dict(orient=’record’))<br>vec.feature<em>names</em><br>from sklearn.tree import DecisionTreeClassifier<br>dtc = DecisionTreeClassifier()<br>dtc.fit(X, Y)<br>t = open(‘test.csv’, encoding=’utf-8’)<br>test = pd.read_csv(t)<br>test.head()<br>test[‘Age’].fillna(test[‘Age’].mean(), inplace=True)<br>test[‘Fare’].fillna(test[‘Fare’].mean(), inplace=True)<br>X_test = test[[‘Pclass’, ‘Sex’, ‘Age’, ‘Fare’]]<br>X_test.info()<br>X_test = vec.fit_transform(X_test.to_dict(orient=’record’))<br>Y_predict = dtc.predict(X_test)<br>with open(‘results.csv’,’w’) as f:<br>    f.write(‘PassengerId,Survived\n’)<br>    for i in range(418):<br>        f.write(str(test[‘PassengerId’][i])+”,”+str(Y_predict[i])+’\n’)<br>    f.write(‘Etc.’)</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/19/Python中i+=x和i=i+x等价吗/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="jimmydug">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="jimmydug's blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/09/19/Python中i+=x和i=i+x等价吗/" itemprop="url">
-                  Python中i+=x和i=i+x等价吗
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Veröffentlicht am</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-09-19T08:35:15+08:00">
-                2017-09-19
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="Python中i-x和i-i-x等价吗"><a href="#Python中i-x和i-i-x等价吗" class="headerlink" title="Python中i+=x和i=i+x等价吗"></a>Python中i+=x和i=i+x等价吗</h1><p>先看一个列表例子：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># i += x</span></div><div class="line">&lt;&lt;&lt; a = [1, 2, 3]</div><div class="line">&lt;&lt;&lt; b = a</div><div class="line">&lt;&lt;&lt; a += [9]</div><div class="line">&lt;&lt;&lt; a</div><div class="line">[1, 2, 3, 9]</div><div class="line">&lt;&lt;&lt; b</div><div class="line">[1, 2, 3, 9]</div><div class="line">&lt;&lt;&lt; id(a)</div><div class="line">80528648</div><div class="line">&lt;&lt;&lt; id(b)</div><div class="line">80528648</div><div class="line"><span class="comment"># i = i + x</span></div><div class="line">&lt;&lt;&lt; a1 = [1, 2, 3]</div><div class="line">&lt;&lt;&lt; b1 = a1</div><div class="line">&lt;&lt;&lt; a1 = a1 + [9]</div><div class="line">&lt;&lt;&lt; a1</div><div class="line">[1, 2, 3, 9]</div><div class="line">&lt;&lt;&lt; b1</div><div class="line">[1, 2, 3]</div><div class="line">&lt;&lt;&lt; id(a1)</div><div class="line">81223816</div><div class="line">&lt;&lt;&lt; id(b1)</div><div class="line">80529288</div></pre></td></tr></table></figure></p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/09/19/Python中i+=x和i=i+x等价吗/#more" rel="contents">
-              Weiterlesen &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/17/集成模型之回归/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="jimmydug">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="jimmydug's blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/09/17/集成模型之回归/" itemprop="url">
-                  集成模型之回归
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Veröffentlicht am</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-09-17T15:04:45+08:00">
-                2017-09-17
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="集成模型之回归"><a href="#集成模型之回归" class="headerlink" title="集成模型之回归"></a>集成模型之回归</h1><p>在集成模型(分类)中，介绍过集成模型的大致类型和优势，在回归预测中也有对应的集成模型，本节介绍<strong>普通随机森林回归</strong>(<em>RFR</em>)和<strong>提升树模型回归</strong>(<em>GTR</em>)以及<strong>极端回归随机森林</strong>(<em>Extremely Randomized Trees</em>)，与普通随机森林不同的是，极端随机森林在构建一棵树的分裂节点时，不会任意的选取特征，而是先<strong>随机</strong>收集一部分特征，再利用<strong>信息熵</strong>(<em>Information Gain</em>)和<strong>基尼不纯性</strong>(<em>Gini Impurity</em>)等指标挑选最佳的节点特征。<br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/09/17/集成模型之回归/#more" rel="contents">
-              Weiterlesen &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/17/Python中list常见操作/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="jimmydug">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="jimmydug's blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/09/17/Python中list常见操作/" itemprop="url">
-                  Python中list常见操作
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Veröffentlicht am</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-09-17T10:28:54+08:00">
-                2017-09-17
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="Python中list常见操作"><a href="#Python中list常见操作" class="headerlink" title="Python中list常见操作"></a>Python中list常见操作</h1><p>在使用Python这门编程语言中，常用的数据结构有<em>str</em>，<em>list</em>，<em>tuple</em>，<em>dict</em>，<em>set</em>，<em>class</em>等，但是要说我们使用最频繁的一定是<strong>list</strong>列表了，没有之一！这里来讨论一下它的常用操作。<br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/09/17/Python中list常见操作/#more" rel="contents">
-              Weiterlesen &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/17/Python之==和is/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="jimmydug">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="jimmydug's blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/09/17/Python之==和is/" itemprop="url">
-                  Python之==和is
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Veröffentlicht am</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-09-17T08:40:31+08:00">
-                2017-09-17
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="‘-’和’is’中的门道"><a href="#‘-’和’is’中的门道" class="headerlink" title="‘==’和’is’中的门道"></a>‘==’和’is’中的门道</h1><p>在Python中，比较俩个对象(变量)是否相等时，少不了要用到<strong>is</strong>和<strong><br>==</strong>操作，但其实二者有相当大的区别，这里我们详细探究一下。<br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/09/17/Python之==和is/#more" rel="contents">
-              Weiterlesen &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/15/回归树/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="jimmydug">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="jimmydug's blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/09/15/回归树/" itemprop="url">
-                  回归树
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Veröffentlicht am</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-09-15T15:04:00+08:00">
-                2017-09-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="回归树"><a href="#回归树" class="headerlink" title="回归树"></a>回归树</h1><p>回归树在选择不同特征作为分裂节点的策略上和决策树类似，不同之处在于，回归树叶节点的数据类型是<strong>连续型</strong>而不是离散型，但是严格来说，回归树又不能称为“回归算法”，因为回归树的叶节点返回的是“一团”训练数据的<strong>均值</strong>，并不是具体的、连续的预测值。<br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/09/15/回归树/#more" rel="contents">
-              Weiterlesen &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/15/K近邻之回归(KNR)/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="jimmydug">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="jimmydug's blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/09/15/K近邻之回归(KNR)/" itemprop="url">
-                  K近邻之回归(KNR)
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Veröffentlicht am</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-09-15T11:23:25+08:00">
-                2017-09-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="K近邻之回归-KNR"><a href="#K近邻之回归-KNR" class="headerlink" title="K近邻之回归(KNR)"></a>K近邻之回归(KNR)</h1><p>K近邻回归和K近邻分类一样，都是不需要训练参数的模型，在回归任务中，K近邻同样只借助测试数据周围K个最近训练样本的目标数值，对测试样本的回归值进行决策，衡量待测样本的回归值的方法有<strong>算法平均算法</strong>和<strong>根据距离局部加权平均</strong>，通过在初始化时设置weights参数。K值默认为5.<br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/09/15/K近邻之回归(KNR)/#more" rel="contents">
-              Weiterlesen &raquo;
+            <a class="btn" href="/2017/09/19/requests模块详解/#more" rel="contents">
+              Read more &raquo;
             </a>
           </div>
           <!--/noindex-->
@@ -1459,7 +1472,7 @@
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1504,8 +1517,8 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">26</span>
-                <span class="site-state-item-name">Artikel</span>
+                <span class="site-state-item-count">34</span>
+                <span class="site-state-item-name">posts</span>
               </a>
             </div>
           
@@ -1517,8 +1530,8 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">8</span>
-                <span class="site-state-item-name">Tags</span>
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">tags</span>
               </a>
             </div>
           
@@ -1568,7 +1581,7 @@
 
 
 <div class="powered-by">
-  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
 </div>
 
 <div class="theme-info">

@@ -93,7 +93,7 @@
 <meta property="og:url" content="http://yoursite.com/2017/08/27/分类之支持向量机/index.html">
 <meta property="og:site_name" content="jimmydug's blog">
 <meta property="og:description" content="基于线性假设下支持向量机模型处理二分类问题(来自python机器学习及实践)&amp;emsp;&amp;emsp;对于之前的Logistic回归模型，参数的确定要遍历数据集中所有数据，所有的训练样本都对参数有影响，而支持向量机模型中使用的是可以用来真正帮助我们决策的数据点，即支持向量，即那些离分隔超平面最近的那些点，其余的数据点将被丢弃。支持向量的选取采用序列最小优化算法(SMO),这个算法实在看不懂。。。">
-<meta property="og:updated_time" content="2017-09-14T04:12:42.673Z">
+<meta property="og:updated_time" content="2017-09-22T04:02:39.620Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="分类之支持向量机">
 <meta name="twitter:description" content="基于线性假设下支持向量机模型处理二分类问题(来自python机器学习及实践)&amp;emsp;&amp;emsp;对于之前的Logistic回归模型，参数的确定要遍历数据集中所有数据，所有的训练样本都对参数有影响，而支持向量机模型中使用的是可以用来真正帮助我们决策的数据点，即支持向量，即那些离分隔超平面最近的那些点，其余的数据点将被丢弃。支持向量的选取采用序列最小优化算法(SMO),这个算法实在看不懂。。。">
@@ -196,7 +196,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
-            Startseite
+            Home
           </a>
         </li>
       
@@ -206,7 +206,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
-            Archiv
+            Archives
           </a>
         </li>
       
@@ -283,7 +283,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">Posted on</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-08-27T15:18:57+08:00">
                 2017-08-27
@@ -322,7 +322,7 @@
 
       
         <h2 id="基于线性假设下支持向量机模型处理二分类问题-来自python机器学习及实践"><a href="#基于线性假设下支持向量机模型处理二分类问题-来自python机器学习及实践" class="headerlink" title="基于线性假设下支持向量机模型处理二分类问题(来自python机器学习及实践)"></a>基于线性假设下支持向量机模型处理二分类问题(来自python机器学习及实践)</h2><p>&emsp;&emsp;对于之前的Logistic回归模型，参数的确定要遍历数据集中所有数据，所有的训练样本都对参数有影响，而支持向量机模型中使用的是可以用来真正帮助我们决策的数据点，即支持向量，即那些离分隔超平面最近的那些点，其余的数据点将被丢弃。支持向量的选取采用<strong>序列最小优化算法</strong>(SMO),这个算法实在看不懂。。。<br><a id="more"></a></p>
-<h3 id="手写体数据读取代码样例"><a href="#手写体数据读取代码样例" class="headerlink" title="手写体数据读取代码样例"></a>手写体数据读取代码样例</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 导入手写体数字加载器</span></div><div class="line">from sklearn.datasets import load_digits</div><div class="line"><span class="comment"># 从通过数据加载器获得手写体数字的数码图像数据并储存在digits变量中</span></div><div class="line">digits = load_digits()</div><div class="line"><span class="comment">#1797条数据，为8*8=64的像素矩阵</span></div><div class="line">digits.data.shape</div><div class="line">&lt;&lt;&lt;(1797, 64)</div><div class="line"><span class="comment"># 分割数据集</span></div><div class="line">from sklearn.cross_validation import train_test_split</div><div class="line">X_train, X_test, y_train, y_test = train_test_split(digits.data, digits.target, test_size=0.25, random_state=33)</div><div class="line"><span class="comment"># 导入数据标准化模块</span></div><div class="line">from sklearn.preprocessing import StandardScaler</div><div class="line"><span class="comment"># 导入线性支持向量机分类器</span></div><div class="line">from sklearn.svm import LinearSVC</div><div class="line">ss = StandardScaler()</div><div class="line">X_train = ss.fit_transform(X_train)</div><div class="line">X_test = ss.transform(X_test)</div><div class="line"><span class="comment"># 初始化</span></div><div class="line">lsvc = LinearSVC()</div><div class="line"><span class="comment"># 训练模型</span></div><div class="line">lsvc.fit(X_train, y_train)</div><div class="line">&lt;&lt;&lt;LinearSVC(C=1.0, class_weight=None, dual=True, fit_intercept=True,</div><div class="line"> intercept_scaling=1, loss=<span class="string">'squared_hinge'</span>, max_iter=1000,</div><div class="line"> multi_class=<span class="string">'ovr'</span>, penalty=<span class="string">'l2'</span>, random_state=None, tol=0.0001,</div><div class="line"> verbose=0)</div><div class="line"><span class="comment"># 进行预测</span></div><div class="line">y_predict = lsvc.predict(X_test)</div><div class="line"><span class="comment"># 使用模型自带的评估函数进行准确性测评 </span></div><div class="line"><span class="built_in">print</span> (<span class="string">'The Accuracy of Linear SVC is'</span>, lsvc.score(X_test, y_test))</div><div class="line">&lt;&lt;&lt;The Accuracy of Linear SVC is 0.953333333333</div><div class="line"><span class="comment"># classification_report模块对预测结果做更加详细的分析</span></div><div class="line">from sklearn.metrics import classification_report</div><div class="line"><span class="built_in">print</span>(classification_report(y_test, y_predict, target_names=digits.target_names.astype(str)))</div><div class="line">     precision    recall  f1-score   support</div><div class="line">  0       0.92      1.00      0.96        35</div><div class="line">  1       0.96      0.98      0.97        54</div><div class="line">  2       0.98      1.00      0.99        44</div><div class="line">  3       0.93      0.93      0.93        46</div><div class="line">  4       0.97      1.00      0.99        35</div><div class="line">  5       0.94      0.94      0.94        48</div><div class="line">  6       0.96      0.98      0.97        51</div><div class="line">  7       0.92      1.00      0.96        35</div><div class="line">  8       0.98      0.84      0.91        58</div><div class="line">  9       0.95      0.91      0.93        44</div><div class="line">avg / total       0.95      0.95      0.95       450</div></pre></td></tr></table></figure>
+<h3 id="手写体数据读取代码样例"><a href="#手写体数据读取代码样例" class="headerlink" title="手写体数据读取代码样例"></a>手写体数据读取代码样例</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 导入手写体数字加载器</span></div><div class="line">from sklearn.datasets import load_digits</div><div class="line"><span class="comment"># 从通过数据加载器获得手写体数字的数码图像数据并储存在digits变量中</span></div><div class="line">digits = load_digits()</div><div class="line"><span class="comment">#1797条数据，为8*8=64的像素矩阵</span></div><div class="line">digits.data.shape</div><div class="line">&gt;&gt;&gt; (1797, 64)</div><div class="line"><span class="comment"># 分割数据集</span></div><div class="line">from sklearn.cross_validation import train_test_split</div><div class="line">X_train, X_test, y_train, y_test = train_test_split(digits.data, digits.target, test_size=0.25, random_state=33)</div><div class="line"><span class="comment"># 导入数据标准化模块</span></div><div class="line">from sklearn.preprocessing import StandardScaler</div><div class="line"><span class="comment"># 导入线性支持向量机分类器</span></div><div class="line">from sklearn.svm import LinearSVC</div><div class="line">ss = StandardScaler()</div><div class="line">X_train = ss.fit_transform(X_train)</div><div class="line">X_test = ss.transform(X_test)</div><div class="line"><span class="comment"># 初始化</span></div><div class="line">lsvc = LinearSVC()</div><div class="line"><span class="comment"># 训练模型</span></div><div class="line">lsvc.fit(X_train, y_train)</div><div class="line">&gt;&gt;&gt; LinearSVC(C=1.0, class_weight=None, dual=True, fit_intercept=True,</div><div class="line"> intercept_scaling=1, loss=<span class="string">'squared_hinge'</span>, max_iter=1000,</div><div class="line"> multi_class=<span class="string">'ovr'</span>, penalty=<span class="string">'l2'</span>, random_state=None, tol=0.0001,</div><div class="line"> verbose=0)</div><div class="line"><span class="comment"># 进行预测</span></div><div class="line">y_predict = lsvc.predict(X_test)</div><div class="line"><span class="comment"># 使用模型自带的评估函数进行准确性测评 </span></div><div class="line">&gt;&gt;&gt; <span class="built_in">print</span>(<span class="string">'The Accuracy of Linear SVC is'</span>, lsvc.score(X_test, y_test))</div><div class="line">The Accuracy of Linear SVC is 0.953333333333</div><div class="line"><span class="comment"># classification_report模块对预测结果做更加详细的分析</span></div><div class="line">from sklearn.metrics import classification_report</div><div class="line"><span class="built_in">print</span>(classification_report(y_test, y_predict, target_names=digits.target_names.astype(str)))</div><div class="line">     precision    recall  f1-score   support</div><div class="line">  0       0.92      1.00      0.96        35</div><div class="line">  1       0.96      0.98      0.97        54</div><div class="line">  2       0.98      1.00      0.99        44</div><div class="line">  3       0.93      0.93      0.93        46</div><div class="line">  4       0.97      1.00      0.99        35</div><div class="line">  5       0.94      0.94      0.94        48</div><div class="line">  6       0.96      0.98      0.97        51</div><div class="line">  7       0.92      1.00      0.96        35</div><div class="line">  8       0.98      0.84      0.91        58</div><div class="line">  9       0.95      0.91      0.93        44</div><div class="line">avg / total       0.95      0.95      0.95       450</div></pre></td></tr></table></figure>
 <h2 id="来自机器学习实战"><a href="#来自机器学习实战" class="headerlink" title="来自机器学习实战"></a>来自机器学习实战</h2><p>&emsp;&emsp;SVM本身是一个二类分类器，对于多类问题应用SVM需要对代码做一些修改，机器学习上的例子太难了就没贴上来了。</p>
 
       
@@ -415,10 +415,10 @@
       
         <ul class="sidebar-nav motion-element">
           <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            Inhaltsverzeichnis
+            Table of Contents
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
-            Übersicht
+            Overview
           </li>
         </ul>
       
@@ -438,8 +438,8 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">26</span>
-                <span class="site-state-item-name">Artikel</span>
+                <span class="site-state-item-count">34</span>
+                <span class="site-state-item-name">posts</span>
               </a>
             </div>
           
@@ -451,8 +451,8 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">8</span>
-                <span class="site-state-item-name">Tags</span>
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">tags</span>
               </a>
             </div>
           
@@ -518,7 +518,7 @@
 
 
 <div class="powered-by">
-  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
 </div>
 
 <div class="theme-info">
